@@ -10,6 +10,8 @@ class newVisitScreen extends StatefulWidget {
 class _newVisitScreenState extends State<newVisitScreen> {
   String addressType = 'Home';
 
+  final formKey = GlobalKey<FormState>();
+
   TextEditingController dateController = TextEditingController();
   TextEditingController fromTimeController = TextEditingController();
   TextEditingController toTimeController = TextEditingController();
@@ -113,6 +115,7 @@ class _newVisitScreenState extends State<newVisitScreen> {
               Expanded(
                 child: SingleChildScrollView(
                   child: Form(
+                    key: formKey,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -134,6 +137,9 @@ class _newVisitScreenState extends State<newVisitScreen> {
                           ),
                           autofocus: false,
                           cursorColor: const Color.fromARGB(255, 239, 84, 0),
+                          validator: (name) => name == null
+                              ? 'Patient name can\'t be empty'
+                              : null,
                         ),
                         const SizedBox(height: 12),
                         Row(
@@ -167,6 +173,10 @@ class _newVisitScreenState extends State<newVisitScreen> {
                                 autofocus: false,
                                 cursorColor:
                                     const Color.fromARGB(255, 239, 84, 0),
+                                validator: (familyID) => (familyID == null &&
+                                        familyID!.length >= 7)
+                                    ? 'Patient\'s family ID must be 1 to 6 digits'
+                                    : null,
                               ),
                             ),
                             const Padding(
@@ -198,6 +208,10 @@ class _newVisitScreenState extends State<newVisitScreen> {
                                 autofocus: false,
                                 cursorColor:
                                     const Color.fromARGB(255, 239, 84, 0),
+                                validator: (patientID) => (patientID == null &&
+                                        patientID!.length >= 2)
+                                    ? 'Patient\'s ID must consist of 1 digit'
+                                    : null,
                               ),
                             ),
                           ],
@@ -220,6 +234,10 @@ class _newVisitScreenState extends State<newVisitScreen> {
                           ),
                           autofocus: false,
                           cursorColor: const Color.fromARGB(255, 239, 84, 0),
+                          validator: (phone) =>
+                              (phone == null && phone!.length != 11)
+                                  ? 'Patient\'s family ID must be 1 to 6 digits'
+                                  : null,
                         ),
                         const SizedBox(height: 12),
                         TextFormField(
@@ -258,6 +276,19 @@ class _newVisitScreenState extends State<newVisitScreen> {
                           ),
                           autofocus: false,
                           cursorColor: const Color.fromARGB(255, 239, 84, 0),
+                          validator: (assisstantPhone) {
+                            // Allow the field to be empty
+                            if (assisstantPhone == null ||
+                                assisstantPhone.isEmpty) {
+                              return null; // No error if the field is empty
+                            }
+
+                            // If the field is not empty, check if the value meets the condition
+                            if (assisstantPhone.length != 11) {
+                              return 'Phone must consist of 11 numbers';
+                            }
+                            return null;
+                          },
                         ),
                         const SizedBox(height: 12),
                         DropdownButtonFormField<String>(
@@ -308,6 +339,12 @@ class _newVisitScreenState extends State<newVisitScreen> {
                           ),
                           autofocus: false,
                           cursorColor: const Color.fromARGB(255, 239, 84, 0),
+                          validator: (address) {
+                            if (address == null || address.isEmpty) {
+                              return 'Patient\'s address must be entered';
+                            }
+                            return null;
+                          },
                         ),
                         const SizedBox(height: 12),
                         TextFormField(
@@ -367,6 +404,9 @@ class _newVisitScreenState extends State<newVisitScreen> {
                           ),
                           readOnly: true,
                           autofocus: false,
+                          validator: (date) => date == null
+                              ? 'Date of visit must be chosen'
+                              : null,
                           onTap: () {
                             selectDate(context);
                           },
@@ -403,6 +443,9 @@ class _newVisitScreenState extends State<newVisitScreen> {
                                 ),
                                 readOnly: true,
                                 autofocus: false,
+                                validator: (start) => start == null
+                                    ? 'Start time of visit must be chosen'
+                                    : null,
                                 onTap: () {
                                   selectedFromTime();
                                 },
@@ -481,7 +524,9 @@ class _newVisitScreenState extends State<newVisitScreen> {
                   width: MediaQuery.of(context).size.width * 0.9,
                   height: 58,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      formKey.currentState!.validate();
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(255, 239, 84, 0),
                       foregroundColor: Colors.white,
