@@ -1,4 +1,5 @@
 import 'package:ar_visiting_app/modules/Login_Screen.dart';
+import 'package:ar_visiting_app/modules/New_Visits_Screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       home: LoginScreen(),
       theme: ThemeData(),
+
     );
   }
 }
