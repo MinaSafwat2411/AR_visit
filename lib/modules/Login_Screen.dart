@@ -1,3 +1,5 @@
+import 'package:ar_visiting_app/layouts/ar_visit_layout.dart';
+import 'package:ar_visiting_app/shared/components/components.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -33,10 +35,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 'AVA REWASE VISIT',
                 style: TextStyle(
                   fontSize: 30,
-
                   fontWeight: FontWeight.bold
                 ),
-
               ),
               SizedBox(height: 60,),
 
@@ -48,7 +48,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   return null;
                 },
                 controller: arid,
-
                 decoration: InputDecoration(
                   labelText: 'E1C1FXXXNRX',
 
@@ -56,7 +55,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               SizedBox(height: 20,),
-
               TextFormField(
                 obscureText: observebool,
                 validator: (value) {
@@ -66,14 +64,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   return null;
                 },
                 controller: password,
-
                 decoration: InputDecoration(
                     suffixIcon: IconButton(
                       onPressed: (){
                         setState(() {
                           observebool=!observebool;
-
-
                         });
                       } ,
                       icon: observebool?Icon(Icons.visibility):Icon(Icons.visibility_off)
@@ -85,32 +80,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               SizedBox(height: 40,),
-
-              Container(
-                height: 49,
-                width: double.infinity,
-                child: MaterialButton(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)
-
-                  ),
-
-                    onPressed: (){
-                      if(testfieldkey.currentState!.validate()){
-                        print(arid.text);
-                        print(password.text);
+              DefualtButton(
+                text: 'Login',
+                height: 50,
+                function: (){
+                        if(testfieldkey.currentState!.validate()){
+                        navigateandend(context, ArVisitLayout());
                       }
-
-                    },
-                  child: Text(
-                      'Login',
-                    style: TextStyle(
-                      color: Colors.white
-                    ),
-                  ),
-                  color: Colors.black,
-                ),
-              )
+              },
+                btncolor: Colors.amber),
             ],
           ),
         ),
