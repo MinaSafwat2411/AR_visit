@@ -137,9 +137,12 @@ class _newVisitScreenState extends State<newVisitScreen> {
                           ),
                           autofocus: false,
                           cursorColor: const Color.fromARGB(255, 239, 84, 0),
-                          validator: (name) => name == null
-                              ? 'Patient name can\'t be empty'
-                              : null,
+                          validator: (name) {
+                            if (name == null || name.isEmpty) {
+                              return 'Patient name can\'t be empty';
+                            }
+                            return null;
+                          },
                         ),
                         const SizedBox(height: 12),
                         Row(
@@ -156,28 +159,31 @@ class _newVisitScreenState extends State<newVisitScreen> {
                               width: MediaQuery.of(context).size.width * 0.3,
                               height: 45,
                               child: TextFormField(
-                                decoration: InputDecoration(
-                                  labelText: 'XXXX',
-                                  floatingLabelStyle: const TextStyle(
-                                    color: Colors.black,
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  focusedBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Color.fromARGB(255, 239, 84, 0),
+                                  decoration: InputDecoration(
+                                    labelText: 'XXXX',
+                                    floatingLabelStyle: const TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    focusedBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color.fromARGB(255, 239, 84, 0),
+                                      ),
                                     ),
                                   ),
-                                ),
-                                autofocus: false,
-                                cursorColor:
-                                    const Color.fromARGB(255, 239, 84, 0),
-                                validator: (familyID) => (familyID == null &&
-                                        familyID!.length >= 7)
-                                    ? 'Patient\'s family ID must be 1 to 6 digits'
-                                    : null,
-                              ),
+                                  autofocus: false,
+                                  cursorColor:
+                                      const Color.fromARGB(255, 239, 84, 0),
+                                  validator: (familyID) {
+                                    if (familyID == null || familyID.isEmpty) {
+                                      return 'Patient\'s family ID must be entered';
+                                    } else if (familyID.length >= 7) {
+                                      return 'Patient\'s family ID must be 1 to 6 digits';
+                                    }
+                                    return null;
+                                  }),
                             ),
                             const Padding(
                               padding: EdgeInsets.fromLTRB(15, 8, 12, 8),
@@ -208,37 +214,44 @@ class _newVisitScreenState extends State<newVisitScreen> {
                                 autofocus: false,
                                 cursorColor:
                                     const Color.fromARGB(255, 239, 84, 0),
-                                validator: (patientID) => (patientID == null &&
-                                        patientID!.length >= 2)
-                                    ? 'Patient\'s ID must consist of 1 digit'
-                                    : null,
+                                validator: (patientID) {
+                                  if (patientID == null || patientID.isEmpty) {
+                                    return 'Patient\'s ID must be entered';
+                                  } else if (patientID.length != 1) {
+                                    return 'Patient\'s ID must be 1 digit';
+                                  }
+                                  return null;
+                                },
                               ),
                             ),
                           ],
                         ),
                         const SizedBox(height: 12),
                         TextFormField(
-                          decoration: InputDecoration(
-                            labelText: 'Patient Phone Number',
-                            floatingLabelStyle: const TextStyle(
-                              color: Colors.black,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            focusedBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color.fromARGB(255, 239, 84, 0),
+                            decoration: InputDecoration(
+                              labelText: 'Patient Phone Number',
+                              floatingLabelStyle: const TextStyle(
+                                color: Colors.black,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              focusedBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color.fromARGB(255, 239, 84, 0),
+                                ),
                               ),
                             ),
-                          ),
-                          autofocus: false,
-                          cursorColor: const Color.fromARGB(255, 239, 84, 0),
-                          validator: (phone) =>
-                              (phone == null && phone!.length != 11)
-                                  ? 'Patient\'s family ID must be 1 to 6 digits'
-                                  : null,
-                        ),
+                            autofocus: false,
+                            cursorColor: const Color.fromARGB(255, 239, 84, 0),
+                            validator: (phone) {
+                              if (phone == null || phone.isEmpty) {
+                                return 'Patient\'s phone number must be entered';
+                              } else if (phone.length != 11) {
+                                return 'Patient\'s phone must consist of 11 digits';
+                              }
+                              return null;
+                            }),
                         const SizedBox(height: 12),
                         TextFormField(
                           decoration: InputDecoration(
@@ -404,9 +417,12 @@ class _newVisitScreenState extends State<newVisitScreen> {
                           ),
                           readOnly: true,
                           autofocus: false,
-                          validator: (date) => date == null
-                              ? 'Date of visit must be chosen'
-                              : null,
+                          validator: (date) {
+                            if (date == null || date.isEmpty) {
+                              return 'Date of visit must be chosen';
+                            }
+                            return null;
+                          },
                           onTap: () {
                             selectDate(context);
                           },
@@ -443,9 +459,12 @@ class _newVisitScreenState extends State<newVisitScreen> {
                                 ),
                                 readOnly: true,
                                 autofocus: false,
-                                validator: (start) => start == null
-                                    ? 'Start time of visit must be chosen'
-                                    : null,
+                                validator: (start) {
+                                  if (start == null || start.isEmpty) {
+                                    return 'Start time of visit must be chosen';
+                                  }
+                                  return null;
+                                },
                                 onTap: () {
                                   selectedFromTime();
                                 },
@@ -525,7 +544,9 @@ class _newVisitScreenState extends State<newVisitScreen> {
                   height: 58,
                   child: ElevatedButton(
                     onPressed: () {
-                      formKey.currentState!.validate();
+                      setState(() {
+                        print(formKey.currentState!.validate());
+                      });
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(255, 239, 84, 0),
