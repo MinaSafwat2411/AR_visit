@@ -1,3 +1,5 @@
+import 'package:ar_visiting_app/layouts/ar_visit_layout.dart';
+import 'package:ar_visiting_app/shared/components/components.dart';
 import 'package:flutter/material.dart';
 
 class newVisitScreen extends StatefulWidget {
@@ -103,7 +105,9 @@ class _newVisitScreenState extends State<newVisitScreen> {
           ),
         ),
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            navigateandend(context, ArVisitLayout());
+          },
           icon: const Icon(Icons.chevron_left),
         ),
       ),
