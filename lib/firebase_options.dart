@@ -80,4 +80,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'visits-project-75568.appspot.com',
     measurementId: 'G-QLX8GPJDCR',
   );
+
 }

@@ -1,3 +1,4 @@
+import 'package:ar_visiting_app/shared/network/firebase/areas_retriever.dart';
 import 'package:flutter/material.dart';
 
 class newVisitScreen extends StatefulWidget {
@@ -9,6 +10,8 @@ class newVisitScreen extends StatefulWidget {
 
 class _newVisitScreenState extends State<newVisitScreen> {
   String addressType = 'Home';
+  String areaName = '';
+  List<String> areaNames = [];
 
   final formKey = GlobalKey<FormState>();
 
@@ -87,6 +90,21 @@ class _newVisitScreenState extends State<newVisitScreen> {
         toTimeController.text = toTimePicked.format(context).toString();
       });
     }
+  }
+
+  void getAreasNames() async {
+    List<dynamic> areasData = await areaRetriever.retrieveAreas();
+    for (String area in areasData) {
+      setState(() {
+        areaNames.add(area);
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getAreasNames();
   }
 
   @override
@@ -360,7 +378,19 @@ class _newVisitScreenState extends State<newVisitScreen> {
                           },
                         ),
                         const SizedBox(height: 12),
-                        TextFormField(
+                        DropdownButtonFormField<String>(
+                          items: areaNames.map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (String? value) {
+                            // This is called when the user selects an item.
+                            setState(() {
+                              areaName = value!;
+                            });
+                          },
                           decoration: InputDecoration(
                             labelText: 'Area',
                             floatingLabelStyle: const TextStyle(
@@ -376,7 +406,6 @@ class _newVisitScreenState extends State<newVisitScreen> {
                             ),
                           ),
                           autofocus: false,
-                          cursorColor: const Color.fromARGB(255, 239, 84, 0),
                         ),
                         const SizedBox(height: 12),
                         TextFormField(
