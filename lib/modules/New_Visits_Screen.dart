@@ -13,6 +13,7 @@ class _newVisitScreenState extends State<newVisitScreen> {
   String addressType = 'Home';
   String areaName = '';
   List<String> areaNames = [];
+  Map<String, String> areasData = {};
 
   final formKey = GlobalKey<FormState>();
 
@@ -21,6 +22,8 @@ class _newVisitScreenState extends State<newVisitScreen> {
   TextEditingController toTimeController = TextEditingController();
   TextEditingController patientNameController = TextEditingController();
   TextEditingController patientPhoneController = TextEditingController();
+  TextEditingController patientFamIDController = TextEditingController();
+  TextEditingController patientIDNumeberController = TextEditingController();
 
   Future<void> selectDate(BuildContext context) async {
     DateTime? datePicked = await showDatePicker(
@@ -96,10 +99,10 @@ class _newVisitScreenState extends State<newVisitScreen> {
   }
 
   void getAreasNames() async {
-    List<dynamic> areasData = await areaRetriever.retrieveAreas();
-    for (String area in areasData) {
+    areasData = await areaRetriever.retrieveAreas();
+    for (String areaName in areasData.keys) {
       setState(() {
-        areaNames.add(area);
+        areaNames.add(areaName);
       });
     }
   }
@@ -181,6 +184,7 @@ class _newVisitScreenState extends State<newVisitScreen> {
                               width: MediaQuery.of(context).size.width * 0.3,
                               height: 45,
                               child: TextFormField(
+                                  controller: patientFamIDController,
                                   decoration: InputDecoration(
                                     labelText: 'XXXX',
                                     floatingLabelStyle: const TextStyle(
@@ -219,6 +223,7 @@ class _newVisitScreenState extends State<newVisitScreen> {
                               width: MediaQuery.of(context).size.width * 0.255,
                               height: 45,
                               child: TextFormField(
+                                controller: patientIDNumeberController,
                                 decoration: InputDecoration(
                                   labelText: 'X',
                                   floatingLabelStyle: const TextStyle(
@@ -581,7 +586,10 @@ class _newVisitScreenState extends State<newVisitScreen> {
                       setState(() {
                         print(formKey.currentState!.validate());
                         Visit(
-                          area: {'name': areaName, 'visitId': ''},
+                          area: {
+                            'name': areaName,
+                            'visitId': areasData[areaName]
+                          },
                           father: {
                             'id': '',
                             'isFather': true,
@@ -590,7 +598,9 @@ class _newVisitScreenState extends State<newVisitScreen> {
                           },
                           patient: {
                             'name': patientNameController.text,
-                            'phoneNumber': patientPhoneController.text
+                            'phoneNumber': patientPhoneController.text,
+                            'PatientFamilyId': patientFamIDController,
+                            'PatientIDNumber': patientIDNumeberController
                           },
                           servant: {
                             'id': '',
