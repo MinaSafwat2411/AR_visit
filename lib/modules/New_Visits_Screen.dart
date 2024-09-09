@@ -1,3 +1,4 @@
+import 'package:ar_visiting_app/models/visit_mdel.dart';
 import 'package:ar_visiting_app/shared/network/firebase/areas_retriever.dart';
 import 'package:flutter/material.dart';
 
@@ -18,6 +19,8 @@ class _newVisitScreenState extends State<newVisitScreen> {
   TextEditingController dateController = TextEditingController();
   TextEditingController fromTimeController = TextEditingController();
   TextEditingController toTimeController = TextEditingController();
+  TextEditingController patientNameController = TextEditingController();
+  TextEditingController patientPhoneController = TextEditingController();
 
   Future<void> selectDate(BuildContext context) async {
     DateTime? datePicked = await showDatePicker(
@@ -139,6 +142,7 @@ class _newVisitScreenState extends State<newVisitScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TextFormField(
+                          controller: patientNameController,
                           decoration: InputDecoration(
                             labelText: 'Patient Name',
                             floatingLabelStyle: const TextStyle(
@@ -246,6 +250,7 @@ class _newVisitScreenState extends State<newVisitScreen> {
                         ),
                         const SizedBox(height: 12),
                         TextFormField(
+                            controller: patientPhoneController,
                             decoration: InputDecoration(
                               labelText: 'Patient Phone Number',
                               floatingLabelStyle: const TextStyle(
@@ -575,6 +580,29 @@ class _newVisitScreenState extends State<newVisitScreen> {
                     onPressed: () {
                       setState(() {
                         print(formKey.currentState!.validate());
+                        Visit(
+                          area: {'name': areaName, 'visitId': ''},
+                          father: {
+                            'id': '',
+                            'isFather': true,
+                            'name': '',
+                            'phoneNumber': ''
+                          },
+                          patient: {
+                            'name': patientNameController.text,
+                            'phoneNumber': patientPhoneController.text
+                          },
+                          servant: {
+                            'id': '',
+                            'isFather': false,
+                            'name': '',
+                            'phoneNumber': ''
+                          },
+                          status: 'NEW',
+                          visitDate: dateController.text,
+                          visitTimeRangeFrom: fromTimeController.text,
+                          visitTimeRangeTo: toTimeController.text,
+                        );
                       });
                     },
                     style: ElevatedButton.styleFrom(
