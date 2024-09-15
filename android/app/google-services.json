@@ -45,7 +45,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:591391910151:android:940813d3de0d9b0731fda2",
         "android_client_info": {
-          "package_name": "visiting.mobile.app"
+          "package_name": "com.example.ar_visiting_app"
         }
       },
       "oauth_client": [
