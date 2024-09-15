@@ -1,3 +1,6 @@
+import 'package:ar_visiting_app/models/visit_model.dart';
+import 'package:ar_visiting_app/shared/network/firebase/areas_retriever.dart';
+import 'package:ar_visiting_app/shared/network/firebase/visit_submission.dart';
 import 'package:ar_visiting_app/layouts/ar_visit_layout.dart';
 import 'package:ar_visiting_app/shared/components/components.dart';
 import 'package:flutter/material.dart';
@@ -11,12 +14,19 @@ class newVisitScreen extends StatefulWidget {
 
 class _newVisitScreenState extends State<newVisitScreen> {
   String addressType = 'Home';
+  String areaName = '';
+  List<String> areaNames = [];
+  Map<String, String> areasData = {};
 
   final formKey = GlobalKey<FormState>();
 
   TextEditingController dateController = TextEditingController();
   TextEditingController fromTimeController = TextEditingController();
   TextEditingController toTimeController = TextEditingController();
+  TextEditingController patientNameController = TextEditingController();
+  TextEditingController patientPhoneController = TextEditingController();
+  TextEditingController patientFamIDController = TextEditingController();
+  TextEditingController patientIDNumeberController = TextEditingController();
 
   Future<void> selectDate(BuildContext context) async {
     DateTime? datePicked = await showDatePicker(
@@ -91,6 +101,21 @@ class _newVisitScreenState extends State<newVisitScreen> {
     }
   }
 
+  void getAreasNames() async {
+    areasData = await areaRetriever.retrieveAreas();
+    for (String areaName in areasData.keys) {
+      setState(() {
+        areaNames.add(areaName);
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getAreasNames();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -125,6 +150,7 @@ class _newVisitScreenState extends State<newVisitScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TextFormField(
+                          controller: patientNameController,
                           decoration: InputDecoration(
                             labelText: 'Patient Name',
                             floatingLabelStyle: const TextStyle(
@@ -163,6 +189,7 @@ class _newVisitScreenState extends State<newVisitScreen> {
                               width: MediaQuery.of(context).size.width * 0.3,
                               height: 45,
                               child: TextFormField(
+                                  controller: patientFamIDController,
                                   decoration: InputDecoration(
                                     labelText: 'XXXX',
                                     floatingLabelStyle: const TextStyle(
@@ -201,6 +228,7 @@ class _newVisitScreenState extends State<newVisitScreen> {
                               width: MediaQuery.of(context).size.width * 0.255,
                               height: 45,
                               child: TextFormField(
+                                controller: patientIDNumeberController,
                                 decoration: InputDecoration(
                                   labelText: 'X',
                                   floatingLabelStyle: const TextStyle(
@@ -232,6 +260,7 @@ class _newVisitScreenState extends State<newVisitScreen> {
                         ),
                         const SizedBox(height: 12),
                         TextFormField(
+                            controller: patientPhoneController,
                             decoration: InputDecoration(
                               labelText: 'Patient Phone Number',
                               floatingLabelStyle: const TextStyle(
@@ -364,7 +393,19 @@ class _newVisitScreenState extends State<newVisitScreen> {
                           },
                         ),
                         const SizedBox(height: 12),
-                        TextFormField(
+                        DropdownButtonFormField<String>(
+                          items: areaNames.map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (String? value) {
+                            // This is called when the user selects an item.
+                            setState(() {
+                              areaName = value!;
+                            });
+                          },
                           decoration: InputDecoration(
                             labelText: 'Area',
                             floatingLabelStyle: const TextStyle(
@@ -380,7 +421,6 @@ class _newVisitScreenState extends State<newVisitScreen> {
                             ),
                           ),
                           autofocus: false,
-                          cursorColor: const Color.fromARGB(255, 239, 84, 0),
                         ),
                         const SizedBox(height: 12),
                         TextFormField(
@@ -550,6 +590,35 @@ class _newVisitScreenState extends State<newVisitScreen> {
                     onPressed: () {
                       setState(() {
                         print(formKey.currentState!.validate());
+                        Visit newVisit = Visit(
+                          area: {
+                            'name': areaName,
+                            'visitId': areasData[areaName]
+                          },
+                          father: {
+                            'id': '',
+                            'isFather': true,
+                            'name': '',
+                            'phoneNumber': ''
+                          },
+                          patient: {
+                            'name': patientNameController.text,
+                            'phoneNumber': patientPhoneController.text,
+                            'PatientFamilyId': patientFamIDController,
+                            'PatientIDNumber': patientIDNumeberController
+                          },
+                          servant: {
+                            'id': '',
+                            'isFather': false,
+                            'name': '',
+                            'phoneNumber': ''
+                          },
+                          status: 'NEW',
+                          visitDate: dateController.text,
+                          visitTimeRangeFrom: fromTimeController.text,
+                          visitTimeRangeTo: toTimeController.text,
+                        );
+                        visitSubmission.submitVisit(newVisit);
                       });
                     },
                     style: ElevatedButton.styleFrom(
