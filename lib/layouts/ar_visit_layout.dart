@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../modules/New_Visits_Screen.dart';
 import '../shared/components/components.dart';
 import '../shared/styles/colors.dart';
 
@@ -17,7 +18,9 @@ class ArVisitLayout extends StatelessWidget {
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(70)),
             elevation: 5,
-            onPressed: () {},
+            onPressed: () {
+              navigateto(context, newVisitScreen());
+            },
             backgroundColor: Trinidad,
             child: const Icon(
               Icons.add,

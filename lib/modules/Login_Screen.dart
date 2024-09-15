@@ -2,6 +2,8 @@ import 'package:ar_visiting_app/layouts/ar_visit_layout.dart';
 import 'package:ar_visiting_app/shared/components/components.dart';
 import 'package:flutter/material.dart';
 
+import '../shared/styles/colors.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -35,7 +37,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 'AVA REWASE VISIT',
                 style: TextStyle(
                   fontSize: 30,
-                  fontWeight: FontWeight.bold
+                  fontWeight: FontWeight.bold,
+                  color: Trinidad,
                 ),
               ),
               SizedBox(height: 60,),
@@ -88,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         navigateandend(context, ArVisitLayout());
                       }
               },
-                btncolor: Colors.amber),
+                btncolor: Trinidad),
             ],
           ),
         ),
