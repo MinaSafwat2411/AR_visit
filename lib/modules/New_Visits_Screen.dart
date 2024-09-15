@@ -1,5 +1,6 @@
-import 'package:ar_visiting_app/models/visit_mdel.dart';
+import 'package:ar_visiting_app/models/visit_model.dart';
 import 'package:ar_visiting_app/shared/network/firebase/areas_retriever.dart';
+import 'package:ar_visiting_app/shared/network/firebase/visit_submission.dart';
 import 'package:flutter/material.dart';
 
 class newVisitScreen extends StatefulWidget {
@@ -585,7 +586,7 @@ class _newVisitScreenState extends State<newVisitScreen> {
                     onPressed: () {
                       setState(() {
                         print(formKey.currentState!.validate());
-                        Visit(
+                        Visit newVisit = Visit(
                           area: {
                             'name': areaName,
                             'visitId': areasData[areaName]
@@ -613,6 +614,7 @@ class _newVisitScreenState extends State<newVisitScreen> {
                           visitTimeRangeFrom: fromTimeController.text,
                           visitTimeRangeTo: toTimeController.text,
                         );
+                        visitSubmission.submitVisit(newVisit);
                       });
                     },
                     style: ElevatedButton.styleFrom(
