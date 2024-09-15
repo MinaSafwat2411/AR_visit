@@ -1,5 +1,6 @@
 import 'package:ar_visiting_app/layouts/ar_visit_layout.dart';
 import 'package:ar_visiting_app/shared/components/components.dart';
+import 'package:ar_visiting_app/shared/network/firebase/login.dart';
 import 'package:flutter/material.dart';
 
 import '../shared/styles/colors.dart';
@@ -12,16 +13,16 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  
-  bool observebool= true;
-  var testfieldkey= GlobalKey<FormState>();
-  var arid= TextEditingController();
-  var password= TextEditingController();
+  bool observebool = true;
+  var testfieldkey = GlobalKey<FormState>();
+  var arid = TextEditingController();
+  var password = TextEditingController();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,27 +42,29 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: Trinidad,
                 ),
               ),
-              SizedBox(height: 60,),
-
+              const SizedBox(
+                height: 60,
+              ),
               TextFormField(
                 validator: (value) {
-                  if(value==null || value.isEmpty){
+                  if (value == null || value.isEmpty) {
                     return ' please enter your ARID!';
                   }
                   return null;
                 },
                 controller: arid,
                 decoration: InputDecoration(
-                  labelText: 'E1C1FXXXNRX',
-
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))
-                ),
+                    labelText: 'E1C1FXXXNRX',
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10))),
               ),
-              SizedBox(height: 20,),
+              const SizedBox(
+                height: 20,
+              ),
               TextFormField(
                 obscureText: observebool,
                 validator: (value) {
-                  if(value==null || value.isEmpty){
+                  if (value == null || value.isEmpty) {
                     return ' please enter your password';
                   }
                   return null;
@@ -69,29 +72,33 @@ class _LoginScreenState extends State<LoginScreen> {
                 controller: password,
                 decoration: InputDecoration(
                     suffixIcon: IconButton(
-                      onPressed: (){
-                        setState(() {
-                          observebool=!observebool;
-                        });
-                      } ,
-                      icon: observebool?Icon(Icons.visibility):Icon(Icons.visibility_off)
-                    ),
+                        onPressed: () {
+                          setState(() {
+                            observebool = !observebool;
+                          });
+                        },
+                        icon: observebool
+                            ? const Icon(Icons.visibility)
+                            : const Icon(Icons.visibility_off)),
                     labelText: 'Password',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10)
-                  )
-                ),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10))),
               ),
-              SizedBox(height: 40,),
+              const SizedBox(
+                height: 40,
+              ),
               DefualtButton(
-                text: 'Login',
-                height: 50,
-                function: (){
-                        if(testfieldkey.currentState!.validate()){
-                        navigateandend(context, ArVisitLayout());
+                  text: 'Login',
+                  height: 50,
+                  function: () async {
+                    if (testfieldkey.currentState!.validate()) {
+                      if (await authentication.login(
+                          arid.text, password.text)) {
+                        navigateandend(context, const ArVisitLayout());
                       }
-              },
-                btncolor: Trinidad),
+                    }
+                  },
+                  btncolor: Trinidad),
             ],
           ),
         ),
