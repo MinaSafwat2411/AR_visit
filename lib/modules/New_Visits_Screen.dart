@@ -117,6 +117,18 @@ class _newVisitScreenState extends State<newVisitScreen> {
   }
 
   @override
+  void dispose() {
+    dateController.dispose();
+    fromTimeController.dispose();
+    toTimeController.dispose();
+    patientNameController.dispose();
+    patientFamIDController.dispose();
+    patientIDNumeberController.dispose();
+    patientPhoneController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -604,8 +616,8 @@ class _newVisitScreenState extends State<newVisitScreen> {
                           patient: {
                             'name': patientNameController.text,
                             'phoneNumber': patientPhoneController.text,
-                            'PatientFamilyId': patientFamIDController,
-                            'PatientIDNumber': patientIDNumeberController
+                            'PatientFamilyId': patientFamIDController.text,
+                            'PatientIDNumber': patientIDNumeberController.text,
                           },
                           servant: {
                             'id': '',
@@ -613,12 +625,13 @@ class _newVisitScreenState extends State<newVisitScreen> {
                             'name': '',
                             'phoneNumber': ''
                           },
-                          status: 'NEW',
+                          status: 'PENDING_ASSIGNMENT',
                           visitDate: dateController.text,
                           visitTimeRangeFrom: fromTimeController.text,
                           visitTimeRangeTo: toTimeController.text,
                         );
                         visitSubmission.submitVisit(newVisit);
+                        Navigator.of(context).pop();
                       });
                     },
                     style: ElevatedButton.styleFrom(

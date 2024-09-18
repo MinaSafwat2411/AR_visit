@@ -2,10 +2,10 @@ import 'package:ar_visiting_app/models/visit_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class visitSubmission {
-  static void submitVisit(Visit visit) {
+  static void submitVisit(Visit visit)async {
     CollectionReference collectionReference =
         FirebaseFirestore.instance.collection('Visit');
-    collectionReference.add({
+    await collectionReference.add({
       'area': visit.area,
       'father': visit.father,
       'patient': visit.patient,
