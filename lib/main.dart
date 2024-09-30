@@ -1,7 +1,9 @@
-import 'package:ar_visiting_app/modules/Login_Screen.dart';
-import 'package:ar_visiting_app/modules/New_Visits_Screen.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+
+import 'package:get/get.dart';
+
+import 'app/routes/app_pages.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -13,16 +15,17 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({
+    super.key,
+  });
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      home: const LoginScreen(),
-      theme: ThemeData(),
+      title: "Application",
+      initialRoute: AppPages.INITIAL,
+      getPages: AppPages.routes,
     );
   }
 }
