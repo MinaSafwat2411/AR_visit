@@ -34,7 +34,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.VISITS,
-      page: () => const VisitsView(),
+      page: () =>  VisitsView(),
       binding: VisitsBinding(),
     ),
   ];
