@@ -8,14 +8,16 @@ class VisitController extends GetxController {
   var visitsDates = <String>[].obs;
   var tagsStatusList = [true, false, false, false, false, false].obs;
   var tags=["All","NEW","Assigned","Done","Canceled"];
+  var isLoading=RxBool(false);
 
   @override
   void onInit() {
+    getVisitData();
+    visitData.refresh();
+    visitsDates.refresh();
     super.onInit();
-    getVisitdata();
   }
-
-  void getVisitdata() async {
+  void getVisitData() async {
     List<VisitModel> visits = await VisitDetailsRetriever.retrieveVisits(); // Await the data
 
     Map<String, VisitModel> tempVisitData = {};
