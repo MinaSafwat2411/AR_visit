@@ -1,7 +1,11 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
+import '../../../core/utils/app_colors.dart';
+import '../../../core/widgets/custom_button.dart';
+import '../../../core/widgets/custom_textformfield.dart';
 import '../controllers/add_new_visit_controller.dart';
 
 class AddNewVisitView extends GetView<AddNewVisitController> {
@@ -40,30 +44,15 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        TextFormField(
-                          controller: controller.patientNameController,
-                          decoration: InputDecoration(
-                            labelText: 'Patient Name',
-                            floatingLabelStyle: const TextStyle(
-                              color: Colors.black,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            focusedBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color.fromARGB(255, 239, 84, 0),
-                              ),
-                            ),
-                          ),
-                          autofocus: false,
-                          cursorColor: const Color.fromARGB(255, 239, 84, 0),
-                          validator: (name) {
-                            if (name == null || name.isEmpty) {
-                              return 'Patient name can\'t be empty';
-                            }
-                            return null;
-                          },
+                        CustomTextFormfield(
+                          label:'Patient Name' ,
+                          validator: (name){
+                          if (name == null || name.isEmpty) {
+                            return 'Patient name can\'t be empty';
+                          }
+                          return null;
+                        },
+                          textController: controller.patientNameController,
                         ),
                         const SizedBox(height: 12),
                         Row(
@@ -120,7 +109,7 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                               height: 45,
                               child: TextFormField(
                                 controller:
-                                    controller.patientIDNumeberController,
+                                    controller.patientIDNumberController,
                                 decoration: InputDecoration(
                                   labelText: 'X',
                                   floatingLabelStyle: const TextStyle(
@@ -151,77 +140,36 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                           ],
                         ),
                         const SizedBox(height: 12),
-                        TextFormField(
-                            controller: controller.patientPhoneController,
-                            decoration: InputDecoration(
-                              labelText: 'Patient Phone Number',
-                              floatingLabelStyle: const TextStyle(
-                                color: Colors.black,
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              focusedBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Color.fromARGB(255, 239, 84, 0),
-                                ),
-                              ),
-                            ),
-                            autofocus: false,
-                            cursorColor: const Color.fromARGB(255, 239, 84, 0),
-                            validator: (phone) {
+                        CustomTextFormfield(
+                          textController: controller.patientPhoneController,
+                            label:'Patient Phone Number' ,
+                            validator:(phone) {
                               if (phone == null || phone.isEmpty) {
                                 return 'Patient\'s phone number must be entered';
                               } else if (phone.length != 11) {
                                 return 'Patient\'s phone must consist of 11 digits';
                               }
                               return null;
-                            }),
+                            },
+                            ),
                         const SizedBox(height: 12),
-                        TextFormField(
-                          decoration: InputDecoration(
-                            labelText: 'Assistant Name',
-                            floatingLabelStyle: const TextStyle(
-                              color: Colors.black,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            focusedBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color.fromARGB(255, 239, 84, 0),
-                              ),
-                            ),
-                          ),
-                          autofocus: false,
-                          cursorColor: const Color.fromARGB(255, 239, 84, 0),
+                        CustomTextFormfield(
+                          textController: controller.assistantNameController,
+                          validator: (value) {
+                            return null;
+                          },
+                          label:'Assistant Name' ,
                         ),
                         const SizedBox(height: 12),
-                        TextFormField(
-                          decoration: InputDecoration(
-                            labelText: 'Assistant Phone',
-                            floatingLabelStyle: const TextStyle(
-                              color: Colors.black,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            focusedBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color.fromARGB(255, 239, 84, 0),
-                              ),
-                            ),
-                          ),
-                          autofocus: false,
-                          cursorColor: const Color.fromARGB(255, 239, 84, 0),
+                        CustomTextFormfield(
+                          label: 'Assistant Phone',
+                          textController: controller.assistantPhoneController,
                           validator: (assisstantPhone) {
                             // Allow the field to be empty
                             if (assisstantPhone == null ||
                                 assisstantPhone.isEmpty) {
-                              return null; // No error if the field is empty
+                              return null;
                             }
-
-                            // If the field is not empty, check if the value meets the condition
                             if (assisstantPhone.length != 11) {
                               return 'Phone must consist of 11 numbers';
                             }
@@ -238,12 +186,7 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                             );
                           }).toList(),
                           onChanged: (String? value) {
-                            // This is called when the user selects an item.
-
-                            // TODO: Update the state of the app
-                            // setState(() {
-                            //   addressType = value!;
-                            // });
+                              controller.addressType = value!;
                           },
                           decoration: InputDecoration(
                             labelText: 'Address Type',
@@ -262,23 +205,9 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                           autofocus: false,
                         ),
                         const SizedBox(height: 12),
-                        TextFormField(
-                          decoration: InputDecoration(
-                            labelText: 'Address',
-                            floatingLabelStyle: const TextStyle(
-                              color: Colors.black,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            focusedBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color.fromARGB(255, 239, 84, 0),
-                              ),
-                            ),
-                          ),
-                          autofocus: false,
-                          cursorColor: const Color.fromARGB(255, 239, 84, 0),
+                        CustomTextFormfield(
+                          label: 'Address',
+                          textController: controller.patientAddressController,
                           validator: (address) {
                             if (address == null || address.isEmpty) {
                               return 'Patient\'s address must be entered';
@@ -295,12 +224,7 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                             );
                           }).toList(),
                           onChanged: (String? value) {
-                            // This is called when the user selects an item.
-
-                            // TODO: Update the state of the app
-                            // setState(() {
-                            //   areaName = value!;
-                            // });
+                              controller.areaName = value!;
                           },
                           decoration: InputDecoration(
                             labelText: 'Area',
@@ -319,44 +243,17 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                           autofocus: false,
                         ),
                         const SizedBox(height: 12),
-                        TextFormField(
-                          decoration: InputDecoration(
-                            labelText: 'Google Maps Link',
-                            floatingLabelStyle: const TextStyle(
-                              color: Colors.black,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            focusedBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color.fromARGB(255, 239, 84, 0),
-                              ),
-                            ),
-                          ),
-                          autofocus: false,
-                          cursorColor: const Color.fromARGB(255, 239, 84, 0),
+                        CustomTextFormfield(
+                          textController: controller.patientLocationController,
+                          label: 'Google Maps Link',
+                          validator: (value) {
+                            return null;
+                          },
                         ),
                         const SizedBox(height: 12),
-                        TextFormField(
-                          controller: controller.dateController,
-                          decoration: InputDecoration(
-                            prefixIcon: const Icon(Icons.date_range),
-                            labelText: 'Date',
-                            floatingLabelStyle: const TextStyle(
-                              color: Colors.black,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            focusedBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color.fromARGB(255, 239, 84, 0),
-                              ),
-                            ),
-                          ),
-                          readOnly: true,
-                          autofocus: false,
+                        CustomTextFormfield(
+                          label: 'Date',
+                          textController: controller.dateController,
                           validator: (date) {
                             if (date == null || date.isEmpty) {
                               return 'Date of visit must be chosen';
@@ -406,7 +303,7 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                                   return null;
                                 },
                                 onTap: () {
-                                  controller.selectedFromTime();
+                                  controller.selectedFromTime(context);
                                 },
                               ),
                             ),
@@ -440,7 +337,7 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                                 readOnly: true,
                                 autofocus: false,
                                 onTap: () {
-                                  controller.selectedToTime();
+                                  controller.selectedToTime(context);
                                 },
                               ),
                             ),
@@ -476,61 +373,25 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                   ),
                 ),
               ),
-              //const SizedBox(height: 12),
               Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.9,
                   height: 58,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // TODO: Implement the submit button
-                      // setState(() {
-                      //   print(controller.formKey.currentState!.validate());
-                      //   Visit newVisit = Visit(
-                      //     area: {
-                      //       'name': areaName,
-                      //       'visitId': areasData[areaName]
-                      //     },
-                      //     father: {
-                      //       'id': '',
-                      //       'isFather': true,
-                      //       'name': '',
-                      //       'phoneNumber': ''
-                      //     },
-                      //     patient: {
-                      //       'name': patientNameController.text,
-                      //       'phoneNumber': patientPhoneController.text,
-                      //       'PatientFamilyId': patientFamIDController.text,
-                      //       'PatientIDNumber': patientIDNumeberController.text,
-                      //     },
-                      //     servant: {
-                      //       'id': '',
-                      //       'isFather': false,
-                      //       'name': '',
-                      //       'phoneNumber': ''
-                      //     },
-                      //     status: 'PENDING_ASSIGNMENT',
-                      //     visitDate: dateController.text,
-                      //     visitTimeRangeFrom: fromTimeController.text,
-                      //     visitTimeRangeTo: toTimeController.text,
-                      //   );
-                      //   visitSubmission.submitVisit(newVisit);
-                      //   Navigator.of(context).pop();
-                      // });
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 239, 84, 0),
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
+                  child: ConditionalBuilder(
+                    fallback: (context) => const SizedBox(
+                      width: 50,height: 50,
+                        child: CircularProgressIndicator(color: AppColors.Trinidad,)),
+                    builder: (context) => CustomButton(
+                      text: 'Submit',
+                      btncolor:  AppColors.trinidadColor,
+                      onPressed: () {
+                        if(controller.formKey.currentState!.validate()){
+                          controller.addVisit();
+                        }
+                      },
                     ),
-                    child: const Text(
-                      'Submit',
-                      style:
-                          TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
-                    ),
+                    condition: !controller.isLoading.value,
                   ),
                 ),
               )
