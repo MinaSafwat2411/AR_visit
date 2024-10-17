@@ -4,11 +4,11 @@ import 'package:intl/intl.dart';
 import '../../../../core/models/login/visitsmodel.dart';
 import 'visit_card_item_widget.dart';
 
-Widget MyVisitList(Map<String, VisitModel> visitdata, List<String> visitsdates) {
+Widget MyVisitList(Map<String, VisitModel> visitData, List<String> visitsDates) {
   Map<DateTime, List<VisitModel>> groupedVisits = {};
 
   // Group visits by date
-  for (var item in visitdata.values) {
+  for (var item in visitData.values) {
     DateTime visitDate = DateTime.parse(item.visitDate);  // Accessing visitDate property
     if (!groupedVisits.containsKey(visitDate)) {
       groupedVisits[visitDate] = [];
@@ -19,7 +19,6 @@ Widget MyVisitList(Map<String, VisitModel> visitdata, List<String> visitsdates) 
   // Sort dates
   List<DateTime> sortedDates = groupedVisits.keys.toList()
     ..sort((a, b) => a.compareTo(b));
-
   // Return the list view
   return ListView.separated(
     shrinkWrap: true,

@@ -1,14 +1,9 @@
-import 'package:ar_visiting_app/app/core/utils/app_colors.dart';
+
+import 'package:ar_visiting_app/app/core/models/login/visitsmodel.dart';
 import 'package:ar_visiting_app/app/modules/visits/views/widgets/tag_item_widget.dart';
-import 'package:ar_visiting_app/app/modules/visits/views/widgets/tags_list_widget.dart';
-import 'package:ar_visiting_app/app/modules/visits/views/widgets/visit_card_item_widget.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-
-import '../../../core/models/login/visitsmodel.dart';
 import '../../../routes/app_pages.dart';
 import '../controllers/visits_controller.dart';
 import 'widgets/my_date_visit_list_widget.dart';
@@ -21,6 +16,7 @@ class VisitsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(visitController.visitData);
     return  Scaffold(
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -68,7 +64,7 @@ class VisitsView extends StatelessWidget {
             Obx(() => Padding(
               padding: const EdgeInsets.all(8.0),
               child:  ConditionalBuilder(
-                  condition: visitController.visitData.isNotEmpty,
+                  condition: !visitController.isLoading.value,
                   builder: (context) {
                     // Directly access properties of VisitModel (e.g., visitDate) instead of using array indexing
                     return  Obx(() => MyVisitList(

@@ -1,35 +1,48 @@
+import 'dart:async';
+
 import 'package:ar_visiting_app/app/core/firebase/GetVisitsFirebase.dart';
 import 'package:ar_visiting_app/app/core/models/login/visitsmodel.dart';
 import 'package:get/get.dart';
 
 
 class VisitController extends GetxController {
-  var visitData = <String, dynamic>{}.obs;
+  var visitData = <String, VisitModel>{}.obs;
   var visitsDates = <String>[].obs;
   var tagsStatusList = [true, false, false, false, false, false].obs;
   var tags=["All","NEW","Assigned","Done","Canceled"];
   var isLoading=RxBool(false);
+  Timer? _refreshTimer;
 
   @override
-  void onInit() {
-    getVisitData();
-    visitData.refresh();
-    visitsDates.refresh();
-    super.onInit();
+  void onInit() async{
+    await getVisitData();
+    _startRefreshTimer();
   }
-  void getVisitData() async {
-    List<VisitModel> visits = await VisitDetailsRetriever.retrieveVisits(); // Await the data
 
-    Map<String, VisitModel> tempVisitData = {};
-    List<String> tempVisitsDates = [];
 
-    for (var visit in visits) {
-      tempVisitData[visit.visitDate] = visit;
-      tempVisitsDates.add(visit.visitDate);
+
+  void _startRefreshTimer() {
+    _refreshTimer = Timer.periodic(Duration(seconds: 30), (timer) {
+      getVisitData();
+    });
+  }
+  void _stopRefreshTimer() {
+    _refreshTimer?.cancel();
+  }
+
+  Future<void> getVisitData() async {
+    isLoading.value = true;
+
+    try {
+      final visits = await VisitDetailsRetriever.retrieveVisits();
+      visitData.value = visits;
+      print(visitData.values.length);
+
+    } catch (error) {
+      print("Error fetching visit data: $error");
+    }finally{
+      isLoading.value = false;
     }
-
-    visitData.value = tempVisitData;
-    visitsDates.value = tempVisitsDates;
   }
 
   Map<String, VisitModel> getFilteredVisitData(String selectedStatus) {
