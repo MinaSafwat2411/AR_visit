@@ -16,7 +16,7 @@ class LoginController extends GetxController {
   void login() async {
     isLoading(true);
     try {
-      UserCredential user = await FirebaseAuth.instance
+      await FirebaseAuth.instance
           .signInWithEmailAndPassword(
         email: aridTextController.text,
         password: passwordTextController.text,
@@ -56,10 +56,6 @@ class LoginController extends GetxController {
     Get.snackbar("Login Error", errorMessage);
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
   @override
   void onClose() {
@@ -68,10 +64,4 @@ class LoginController extends GetxController {
     passwordTextController.dispose();
     super.onClose();
   }
-
-  @override
-  void onReady(){
-    super.onReady();
-  }
-
 }

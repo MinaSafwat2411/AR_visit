@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/firebase/AddVisitFirebase.dart';
-import '../../../core/models/addvisitmodel.dart';
+import '../../../core/models/visits/addvisitmodel.dart';
 import '../../../routes/app_pages.dart';
 
 class AddNewVisitController extends GetxController {
@@ -135,7 +135,7 @@ class AddNewVisitController extends GetxController {
         visitTimeRangeFrom: fromTimeController.text,
         visitTimeRangeTo: toTimeController.text,
       );
-      visitSubmission.submitVisit(newVisit);
+      VisitSubmission.submitVisit(newVisit);
       Get.back();
     }catch (e){
       Get.snackbar("Error", e.toString());

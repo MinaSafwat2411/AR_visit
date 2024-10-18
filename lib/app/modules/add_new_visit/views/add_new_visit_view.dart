@@ -381,10 +381,10 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                   child: ConditionalBuilder(
                     fallback: (context) => const SizedBox(
                       width: 50,height: 50,
-                        child: CircularProgressIndicator(color: AppColors.Trinidad,)),
+                        child: CircularProgressIndicator(color: AppColors.trinidadColor,)),
                     builder: (context) => CustomButton(
                       text: 'Submit',
-                      btncolor:  AppColors.trinidadColor,
+                      btnColor:  AppColors.trinidadColor,
                       onPressed: () {
                         if(controller.formKey.currentState!.validate()){
                           controller.addVisit();

@@ -81,7 +81,7 @@ class LoginView extends GetView<LoginController> {
                   onPressed:controller.isLoading.value ? () async {} :() async {
                     controller.login();
                   },
-                  btncolor: AppColors.trinidadColor,
+                  btnColor: AppColors.trinidadColor,
                 ),
               ),
             ],
