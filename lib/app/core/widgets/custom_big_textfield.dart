@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../utils/app_colors.dart';
+
 class CustomBigTextField extends StatelessWidget {
   const CustomBigTextField({
     super.key,
@@ -18,15 +20,21 @@ class CustomBigTextField extends StatelessWidget {
         child: TextFormField(
           decoration: InputDecoration(
             labelText: label,
+            labelStyle:  const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: AppColors.gray,
+            ),
             floatingLabelStyle: const TextStyle(
-              color: Colors.black,
+              color: AppColors.gray,
             ),
             border: OutlineInputBorder(
+              borderSide: const BorderSide(color: AppColors.alto),
               borderRadius: BorderRadius.circular(8),
             ),
             focusedBorder: const OutlineInputBorder(
               borderSide: BorderSide(
-                color: Color.fromARGB(255, 239, 84, 0),
+                color: AppColors.trinidadColor
               ),
             ),
           ),
@@ -34,7 +42,7 @@ class CustomBigTextField extends StatelessWidget {
           expands: true,
           maxLines: null,
           minLines: null,
-          cursorColor: const Color.fromARGB(255, 239, 84, 0),
+          cursorColor:AppColors.trinidadColor,
         ),
       ),
     );

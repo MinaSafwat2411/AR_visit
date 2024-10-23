@@ -12,7 +12,8 @@ class LoginView extends GetView<LoginController> {
     return Scaffold(
       body: Form(
         key: controller.loginFormKey,
-        autovalidateMode: AutovalidateMode.onUserInteraction, // Enable auto validation
+        autovalidateMode:
+            AutovalidateMode.onUserInteraction, // Enable auto validation
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -35,17 +36,29 @@ class LoginView extends GetView<LoginController> {
                   }
                   return null;
                 },
+                cursorColor: AppColors.trinidadColor,
                 controller: controller.aridTextController,
                 decoration: InputDecoration(
                   labelText: 'E1C1FXXXNRX',
+                  labelStyle: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.gray,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide:
+                          const BorderSide(color: AppColors.trinidadColor)),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
+                      borderSide:
+                      const BorderSide(color: AppColors.trinidadColor),
                   ),
                 ),
               ),
               const SizedBox(height: 20),
               Obx(
-                    () => TextFormField(
+                () => TextFormField(
                   obscureText: controller.observeBool(),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -56,8 +69,10 @@ class LoginView extends GetView<LoginController> {
                     }
                     return null;
                   },
+                  cursorColor: AppColors.trinidadColor,
                   controller: controller.passwordTextController,
                   decoration: InputDecoration(
+                    suffixIconColor: AppColors.trinidadColor,
                     suffixIcon: IconButton(
                       onPressed: () {
                         controller.observeBool(!controller.observeBool());
@@ -67,20 +82,33 @@ class LoginView extends GetView<LoginController> {
                           : const Icon(Icons.visibility_off),
                     ),
                     labelText: 'Password',
+                    labelStyle: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.gray,
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide:
+                            const BorderSide(color: AppColors.trinidadColor)),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
+                      borderSide:
+                      const BorderSide(color: AppColors.trinidadColor),
                     ),
                   ),
                 ),
               ),
               const SizedBox(height: 40),
               Obx(
-                    () => CustomButton(
+                () => CustomButton(
                   text: controller.isLoading.value ? 'Logging in...' : 'Login',
                   height: 50,
-                  onPressed:controller.isLoading.value ? () async {} :() async {
-                    controller.login();
-                  },
+                  onPressed: controller.isLoading.value
+                      ? () async {}
+                      : () async {
+                          controller.login();
+                        },
                   btnColor: AppColors.trinidadColor,
                 ),
               ),

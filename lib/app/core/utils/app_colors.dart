@@ -9,4 +9,6 @@ abstract class AppColors {
   static const Color quillGrayColor = Color(0xffD9D9D8);
   static const Color cornflowerBlue= Color(0xff0038FF);
   static const Color softAmber= Color(0xffD7C5BA);
+  static const Color alto= Color(0xffE0E0E0);
+  static const Color gray= Color(0xff828282);
 }
