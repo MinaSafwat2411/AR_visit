@@ -37,7 +37,7 @@ class MyDateVisitListWidget extends StatelessWidget {
               children: [
                 const SizedBox(width: 10),
                 Text(
-                  date.day == DateTime.now().day ? "Today" : date.day == DateTime.now().day + 1 ? "Tomorrow" : DateFormat('MMM-d').format(date),
+                  date.day == DateTime.now().day-1 ? "Yesterday" :date.day == DateTime.now().day ? "Today" : date.day == DateTime.now().day + 1 ? "Tomorrow" : DateFormat('MMM-d').format(date),
                   style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
                 ),
               ],
