@@ -6,11 +6,10 @@ import '../../../routes/app_pages.dart';
 import '../controllers/visits_controller.dart';
 import 'widgets/my_date_visit_list_widget.dart';
 
-class VisitsView extends StatelessWidget {
-  final VisitController visitController = Get.put(VisitController());
+class VisitsView extends GetView<VisitController> {
 
-  VisitsView({super.key});
 
+  const VisitsView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +23,7 @@ class VisitsView extends StatelessWidget {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(70)),
             elevation: 5,
             onPressed: () {
-              Get.toNamed(Routes.ADD_NEW_VISIT);
+              Get.offNamed(Routes.ADD_NEW_VISIT);
             },
             backgroundColor: Colors.red, // Trinidad color
             child: const Icon(
@@ -55,22 +54,22 @@ class VisitsView extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
                     child: TagItemWidget(
                       index: index,
-                      tag: visitController.tags[index],
-                      tagsStatusList: visitController.tagsStatusList,
+                      tag: controller.tags[index],
+                      tagsStatusList: controller.tagsStatusList,
                     ),
                   ),
-                  itemCount: visitController.tags.length,
+                  itemCount: controller.tags.length,
                 )),
             Obx(() => Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ConditionalBuilder(
-                    condition: !visitController.isLoading.value,
+                    condition: !controller.isLoading.value,
                     builder: (context) {
                       // Directly access properties of VisitModel (e.g., visitDate) instead of using array indexing
                       return Obx(() => MyDateVisitListWidget(
-                            visitsDates: visitController.visitsDates,
-                            visitData: visitController.getFilteredVisitData(
-                                visitController.tags[visitController
+                            visitsDates: controller.visitsDates,
+                            visitData: controller.getFilteredVisitData(
+                                controller.tags[controller
                                     .tagsStatusList
                                     .indexOf(true)]),
                           ));

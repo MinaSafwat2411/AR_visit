@@ -1,3 +1,4 @@
+import 'package:ar_visiting_app/app/routes/app_pages.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 
@@ -25,8 +26,7 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
         ),
         leading: IconButton(
           onPressed: () {
-            // navigateandend(context, ArVisitLayout());
-            Get.back();
+            Get.offNamed(Routes.VISITS);
           },
           icon: const Icon(Icons.chevron_left),
         ),

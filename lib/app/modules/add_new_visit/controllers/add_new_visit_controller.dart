@@ -136,7 +136,8 @@ class AddNewVisitController extends GetxController {
         visitTimeRangeTo: toTimeController.text,
       );
       VisitSubmission.submitVisit(newVisit);
-      Get.back();
+      Get.snackbar("Visits", "Visits add successfully");
+      Get.offNamed(Routes.VISITS);
     }catch (e){
       Get.snackbar("Error", e.toString());
     }finally{

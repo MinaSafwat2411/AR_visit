@@ -1,3 +1,5 @@
+import 'package:ar_visiting_app/app/modules/splash/bindings/splash_binding.dart';
+import 'package:ar_visiting_app/app/modules/splash/views/splash_views.dart';
 import 'package:get/get.dart';
 
 import '../modules/add_new_visit/bindings/add_new_visit_binding.dart';
@@ -14,7 +16,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.LOGIN;
+  static const INITIAL = Routes.SPLASH;
 
   static final routes = [
     GetPage(
@@ -36,6 +38,11 @@ class AppPages {
       name: _Paths.VISITS,
       page: () =>  VisitsView(),
       binding: VisitsBinding(),
+    ),
+    GetPage(
+      name: _Paths.SPLASH,
+      page: () =>  const SplashViews(),
+      binding: SplashBinding(),
     ),
   ];
 }
