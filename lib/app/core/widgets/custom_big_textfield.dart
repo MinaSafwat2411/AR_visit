@@ -1,27 +1,21 @@
-
 import 'package:flutter/material.dart';
 
-class CustomTextFormfield extends StatelessWidget {
-  CustomTextFormfield({
+class CustomBigTextField extends StatelessWidget {
+  const CustomBigTextField({
     super.key,
-    required this.textController,
-    required this.label,
-    required this.validator,
-    this.onTap
+    this.label,
+
   });
-  final TextEditingController? textController;
+
   final String? label;
-  final FormFieldValidator validator;
-  GestureTapCallback? onTap = (){};
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: SizedBox(
-        height: 45,
+        height: 120,
         child: TextFormField(
-          controller: textController,
           decoration: InputDecoration(
             labelText: label,
             floatingLabelStyle: const TextStyle(
@@ -37,9 +31,10 @@ class CustomTextFormfield extends StatelessWidget {
             ),
           ),
           autofocus: false,
+          expands: true,
+          maxLines: null,
+          minLines: null,
           cursorColor: const Color.fromARGB(255, 239, 84, 0),
-          validator: validator,
-          onTap: onTap,
         ),
       ),
     );

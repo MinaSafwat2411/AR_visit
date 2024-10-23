@@ -1,26 +1,26 @@
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class CustomTextFormfield extends StatelessWidget {
-  CustomTextFormfield({
+class CustomSmallTextField extends StatelessWidget {
+  const CustomSmallTextField({
     super.key,
-    required this.textController,
-    required this.label,
-    required this.validator,
-    this.onTap
+    this.textController,
+    this.label,
+    this.validator,
+    this.function
+
   });
   final TextEditingController? textController;
   final String? label;
-  final FormFieldValidator validator;
-  GestureTapCallback? onTap = (){};
+  final FormFieldValidator? validator;
+  final Function()? function;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
-      child: SizedBox(
-        height: 45,
-        child: TextFormField(
+    return  SizedBox(
+      width: MediaQuery.of(context).size.width * 0.3,
+      height: 45,
+      child: TextFormField(
           controller: textController,
           decoration: InputDecoration(
             labelText: label,
@@ -37,10 +37,10 @@ class CustomTextFormfield extends StatelessWidget {
             ),
           ),
           autofocus: false,
-          cursorColor: const Color.fromARGB(255, 239, 84, 0),
+          cursorColor:
+          const Color.fromARGB(255, 239, 84, 0),
           validator: validator,
-          onTap: onTap,
-        ),
+        onTap: function,
       ),
     );
   }
