@@ -1,36 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/models/visits/visitsmodel.dart';
+import '../../controllers/visits_controller.dart';
 import 'visit_card_item_widget.dart';
-class MyDateVisitListWidget extends StatelessWidget {
+class MyDateVisitListWidget extends GetView<VisitController> {
   const MyDateVisitListWidget({
     super.key,
-    required this.visitData,
-    required this.visitsDates
   });
-  final Map<String, VisitModel> visitData;
-  final List<String> visitsDates;
+
   @override
   Widget build(BuildContext context) {
-    Map<DateTime, List<VisitModel>> groupedVisits = {};
-    for (var item in visitData.values) {
-      DateTime visitDate = DateTime.parse(item.visitDate);  // Accessing visitDate property
-      if (!groupedVisits.containsKey(visitDate)) {
-        groupedVisits[visitDate] = [];
-      }
-      groupedVisits[visitDate]!.add(item);
-    }
-
-    // Sort dates
-    List<DateTime> sortedDates = groupedVisits.keys.toList()
-      ..sort((a, b) => a.compareTo(b));
     return ListView.separated(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
-        DateTime date = sortedDates[index];
-        List<VisitModel> visitsForDate = groupedVisits[date]!;
-
+        DateTime date = controller.sortedDates[index];
+        List<VisitModel> visitsForDate = controller.groupedVisits[date]!;
         return Column(
           children: [
             Row(
@@ -55,7 +41,7 @@ class MyDateVisitListWidget extends StatelessWidget {
         );
       },
       separatorBuilder: (context, index) => const SizedBox(height: 5),
-      itemCount: sortedDates.length,
+      itemCount: controller.sortedDates.length,
     );
   }
 }

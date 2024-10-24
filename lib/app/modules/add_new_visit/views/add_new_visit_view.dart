@@ -68,7 +68,7 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomTextFormfield(
+                      CustomTextFormField(
                         label: 'Patient Name',
                         validator: (name) {
                           if (name == null || name.isEmpty) {
@@ -121,7 +121,7 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                           ],
                         ),
                       ),
-                      CustomTextFormfield(
+                      CustomTextFormField(
                         textController: controller.patientPhoneController,
                         label: 'Patient Phone Number',
                         validator: (phone) {
@@ -133,14 +133,21 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                           return null;
                         },
                       ),
-                      CustomTextFormfield(
+                      CustomTextFormField(
                         textController: controller.assistantNameController,
                         validator: (value) {
                           return null;
                         },
                         label: 'Assistant Name',
                       ),
-                      CustomTextFormfield(
+                      CustomTextFormField(
+                        textController: controller.numberOfPeopleController,
+                        validator: (value) {
+                          return null;
+                        },
+                        label: 'No. of People',
+                      ),
+                      CustomTextFormField(
                         label: 'Assistant Phone',
                         textController: controller.assistantPhoneController,
                         validator: (assisstantPhone) {
@@ -160,7 +167,7 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                         label: 'Address Type',
                         items: const ['Hospital', 'Home', 'Dar'],
                       ),
-                      CustomTextFormfield(
+                      CustomTextFormField(
                         label: 'Address',
                         textController: controller.patientAddressController,
                         validator: (address) {
@@ -175,14 +182,14 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                         label: 'Area',
                         items: controller.areaNames,
                       ),
-                      CustomTextFormfield(
+                      CustomTextFormField(
                         textController: controller.patientLocationController,
                         label: 'Google Maps Link',
                         validator: (value) {
                           return null;
                         },
                       ),
-                      CustomTextFormfield(
+                      CustomTextFormField(
                         label: 'Date',
                         textController: controller.dateController,
                         validator: (date) {
@@ -239,8 +246,9 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                           ],
                         ),
                       ),
-                      const CustomBigTextField(
+                      CustomBigTextField(
                         label: 'Notes',
+                        controller: controller.noteController
                       ),
                       const SizedBox(
                         height: 80,

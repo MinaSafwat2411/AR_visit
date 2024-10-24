@@ -8,9 +8,12 @@ import 'package:get/get.dart';
 class VisitController extends GetxController {
   var visitData = <String, VisitModel>{}.obs;
   var visitsDates = <String>[].obs;
-  var tagsStatusList = [true, false, false, false, false, false].obs;
+  var tagsStatusList = [false ,true, false, false, false].obs;
   var tags=["All","NEW","Assigned","Done","Canceled"];
   var isLoading=RxBool(false);
+  var groupedVisits = <DateTime, List<VisitModel>>{}.obs;
+  var sortedDates = <DateTime>[].obs;
+
 
   @override
   void onInit() async{
@@ -29,10 +32,31 @@ class VisitController extends GetxController {
 
   Future<void> getVisitData() async {
     isLoading.value = true;
+    String selectedStatus = tags[tagsStatusList.indexOf(true)];
 
     try {
-      final visits = await VisitDetailsRetriever.retrieveVisits();
+      final visits = await VisitListRetriever.retrieveVisits();
       visitData.value = visits;
+      if (selectedStatus == "All") {
+        visitData.value =Map<String, VisitModel>.from(visitData);
+      } else {
+        visitData.value= Map<String, VisitModel>.fromEntries(
+          visitData.entries.where((entry) {
+            final visitModel = entry.value;
+            return visitModel.status == selectedStatus;
+          }).map((entry) => MapEntry<String, VisitModel>(entry.key, entry.value)),
+        );
+      }
+      groupedVisits.value={};
+      for(var item in  visitData.values) {
+        DateTime visitDate = DateTime.parse(item.visitDate);
+        if (!groupedVisits.containsKey(visitDate)) {
+          groupedVisits[visitDate] = [];
+        }
+        groupedVisits[visitDate]!.add(item);
+      }
+      sortedDates.value = groupedVisits.keys.toList()
+        ..sort((a, b) => a.compareTo(b));
     } catch (e) {
       Get.snackbar("Error", e.toString());
     }finally{
@@ -40,16 +64,4 @@ class VisitController extends GetxController {
     }
   }
 
-  Map<String, VisitModel> getFilteredVisitData(String selectedStatus) {
-    if (selectedStatus == "All") {
-      return Map<String, VisitModel>.from(visitData);
-    }
-
-    return Map<String, VisitModel>.fromEntries(
-      visitData.entries.where((entry) {
-        final visitModel = entry.value; // Cast the value to VisitModel
-        return visitModel.status == selectedStatus;
-      }).map((entry) => MapEntry<String, VisitModel>(entry.key, entry.value)),
-    );
-  }
 }
