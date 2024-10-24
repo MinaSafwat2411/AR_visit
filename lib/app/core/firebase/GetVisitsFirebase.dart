@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../models/visits/visitsmodel.dart';
 
-class VisitDetailsRetriever {
+class VisitListRetriever {
   static Future<Map<String, VisitModel>> retrieveVisits() async {
     final yesterday = DateTime.now().subtract(const Duration(days: 2));
     final start = DateTime(yesterday.year, yesterday.month, yesterday.day);
@@ -13,12 +13,11 @@ class VisitDetailsRetriever {
     Map<String, VisitModel> visitsData = {};
 
     for (QueryDocumentSnapshot doc in querySnapshot.docs) {
-      VisitModel visitModel = VisitModel.fromFirestore(doc);
+      VisitModel visitModel = VisitModel.fromFireStore(doc);
       if(DateTime.parse(visitModel.visitDate).isAfter(start)){
         visitsData[doc.id] = visitModel;
       }
     }
-
     return visitsData;
   }
 }

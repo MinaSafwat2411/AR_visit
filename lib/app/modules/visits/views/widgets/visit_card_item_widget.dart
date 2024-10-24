@@ -1,5 +1,9 @@
 import 'package:ar_visiting_app/app/core/utils/app_colors.dart';
+import 'package:ar_visiting_app/app/modules/visit_details/controllers/visit_details_controllers.dart';
+import 'package:ar_visiting_app/app/modules/visits/controllers/visits_controller.dart';
+import 'package:ar_visiting_app/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../../core/models/visits/visitsmodel.dart';
 class VisitCardItemWidget extends StatelessWidget {
@@ -13,7 +17,9 @@ class VisitCardItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Get.offNamed(Routes.VISIT_DETAILS,arguments: visitData.id);
+      },
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
         elevation: 4,
@@ -31,8 +37,8 @@ class VisitCardItemWidget extends StatelessWidget {
                     visitData.patient['name'],  // Accessing patient name
                     style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                   ),
-                  const Text(
-                    'No. of people : 4',
+                  Text(
+                    'No. of people : ${visitData.numberOfPeople}',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                   ),
                   Text(

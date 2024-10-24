@@ -53,9 +53,9 @@ class VisitsView extends GetView<VisitController> {
                   itemBuilder: (context, index) => Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
                     child: TagItemWidget(
+                      visitController: controller,
                       index: index,
                       tag: controller.tags[index],
-                      tagsStatusList: controller.tagsStatusList,
                     ),
                   ),
                   itemCount: controller.tags.length,
@@ -65,14 +65,7 @@ class VisitsView extends GetView<VisitController> {
                   child: ConditionalBuilder(
                     condition: !controller.isLoading.value,
                     builder: (context) {
-                      // Directly access properties of VisitModel (e.g., visitDate) instead of using array indexing
-                      return Obx(() => MyDateVisitListWidget(
-                            visitsDates: controller.visitsDates,
-                            visitData: controller.getFilteredVisitData(
-                                controller.tags[controller
-                                    .tagsStatusList
-                                    .indexOf(true)]),
-                          ));
+                      return  const MyDateVisitListWidget();
                     },
                     fallback: (context) => const Center(
                       child: CircularProgressIndicator(

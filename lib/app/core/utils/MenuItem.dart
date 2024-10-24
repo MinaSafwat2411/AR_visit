@@ -1,0 +1,1 @@
+enum MenuItem { edit, cancelled,nothing }

@@ -17,6 +17,7 @@ class AddNewVisitController extends GetxController {
   TextEditingController dateController = TextEditingController();
   TextEditingController fromTimeController = TextEditingController();
   TextEditingController toTimeController = TextEditingController();
+  TextEditingController numberOfPeopleController = TextEditingController();
   TextEditingController patientNameController = TextEditingController();
   TextEditingController patientLocationController = TextEditingController();
   TextEditingController patientAddressController = TextEditingController();
@@ -25,6 +26,8 @@ class AddNewVisitController extends GetxController {
   TextEditingController assistantPhoneController = TextEditingController();
   TextEditingController patientFamIDController = TextEditingController();
   TextEditingController patientIDNumberController = TextEditingController();
+  TextEditingController noteController = TextEditingController();
+  TextEditingController googleLinkController = TextEditingController();
 
   Future<void> selectDate(BuildContext context) async {
     DateTime? datePicked = await showDatePicker(
@@ -130,10 +133,18 @@ class AddNewVisitController extends GetxController {
           'name': '',
           'phoneNumber': ''
         },
+         assistant: {
+            'name': assistantNameController.text,
+            'phoneNumber':assistantPhoneController.text
+          },
         status: 'NEW',
+        address: patientAddressController.text,
         visitDate: dateController.text,
         visitTimeRangeFrom: fromTimeController.text,
         visitTimeRangeTo: toTimeController.text,
+        numberOfPeople: numberOfPeopleController.text,
+        note: noteController.text,
+        googleLink: googleLinkController.text
       );
       VisitSubmission.submitVisit(newVisit);
       Get.snackbar("Visits", "Visits add successfully");
@@ -171,6 +182,8 @@ class AddNewVisitController extends GetxController {
     patientAddressController.dispose();
     assistantNameController.dispose();
     assistantPhoneController.dispose();
+    numberOfPeopleController.dispose();
+    noteController.dispose();
     super.onClose();
   }
 }

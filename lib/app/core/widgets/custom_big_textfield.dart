@@ -6,10 +6,11 @@ class CustomBigTextField extends StatelessWidget {
   const CustomBigTextField({
     super.key,
     this.label,
-
+    this.controller
   });
 
   final String? label;
+  final TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +19,7 @@ class CustomBigTextField extends StatelessWidget {
       child: SizedBox(
         height: 120,
         child: TextFormField(
+          controller: controller,
           decoration: InputDecoration(
             labelText: label,
             labelStyle:  const TextStyle(

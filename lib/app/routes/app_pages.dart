@@ -1,5 +1,7 @@
 import 'package:ar_visiting_app/app/modules/splash/bindings/splash_binding.dart';
 import 'package:ar_visiting_app/app/modules/splash/views/splash_views.dart';
+import 'package:ar_visiting_app/app/modules/visit_details/blinding/visit_details_blinding.dart';
+import 'package:ar_visiting_app/app/modules/visit_details/views/visit_details_views.dart';
 import 'package:get/get.dart';
 
 import '../modules/add_new_visit/bindings/add_new_visit_binding.dart';
@@ -44,5 +46,10 @@ class AppPages {
       page: () =>  const SplashViews(),
       binding: SplashBinding(),
     ),
+    GetPage(
+        name: _Paths.VISIT_DETAILS,
+        page: () => const VisitDetailsViews(),
+        binding: VisitDetailsBlinding(),
+    )
   ];
 }

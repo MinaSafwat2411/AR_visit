@@ -11,11 +11,15 @@ class VisitSubmission {
       'area': visit.area,
       'father': visit.father,
       'patient': visit.patient,
+      'assistant': visit.assistant,
       'servant': visit.servant,
       'status': visit.status,
+      'address':visit.address,
+      'googleLink':visit.googleLink,
       'visitDate': visit.visitDate,
       'visitTimeRangeFrom': visit.visitTimeRangeFrom,
       'visitTimeRangeTo': visit.visitTimeRangeTo,
+      'numberOfPeople' :visit.numberOfPeople
     });
   }
 }
