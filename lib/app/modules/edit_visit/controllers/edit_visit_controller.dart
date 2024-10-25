@@ -1,18 +1,48 @@
-import 'package:ar_visiting_app/app/core/models/area/areamodel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/firebase/AddVisitFirebase.dart';
 import '../../../core/firebase/GetAreaFirebase.dart';
+import '../../../core/firebase/GetVisitDetailsFirebase.dart';
+import '../../../core/models/area/areamodel.dart';
 import '../../../core/models/visits/addvisitmodel.dart';
-import '../../../routes/app_pages.dart';
+import '../../../core/models/visits/visitsmodel.dart';
 
-class AddNewVisitController extends GetxController {
-  var addressType = ''.obs;
+class EditVisitController extends GetxController {
   var areaName = ''.obs;
   var areaNames = <String>[].obs;
   var areaData =<Area>[].obs;
   var isLoading = false.obs;
+  String id =Get.arguments;
+  var visitData=VisitModel(
+      id: '',
+      status: '',
+      area: {},
+      father: {},
+      patient: {},
+      assistant: {},
+      servant: {},
+      visitDate: '',
+      visitTimeRangeFrom: '',
+      visitTimeRangeTo: '',
+      numberOfPeople: '',
+      address: {},
+      googleLink: '',
+      note: ''
+  ).obs;
+  var addressType = ''.obs;
+
+  Future<void> getVisitDetails() async {
+    isLoading.value = true;
+    try {
+      VisitModel? visitDetails = await VisitDetailRetriever.retrieveVisitDetails(id);
+      visitData.value=visitDetails!;
+    } catch (e) {
+      Get.snackbar("Error", "Failed to retrieve visit details: $e");
+    } finally {
+      isLoading.value = false;
+    }
+  }
 
   final formKey = GlobalKey<FormState>();
 
@@ -50,9 +80,8 @@ class AddNewVisitController extends GetxController {
               child: child!);
         });
     if (datePicked != null) {
-      // setState(() {
       dateController.text = datePicked.toString().split(" ")[0];
-      // });
+
     }
   }
 
@@ -99,7 +128,6 @@ class AddNewVisitController extends GetxController {
         toTimeController.text = toTimePicked.format(context).toString();
     }
   }
-
   Future<void> getAreasNames() async {
     isLoading.value = true;
     try {
@@ -112,19 +140,20 @@ class AddNewVisitController extends GetxController {
     }
   }
 
-  void addVisit() async{
+  void editVisit() async{
     isLoading(true);
     try{
+      print(areaName);
       Visit newVisit = Visit(
         area: {
           'name': areaName.value,
           'visitId': ''
         },
         father: {
-          'id': '',
+          'id': visitData.value.father['id'],
           'isFather': true,
-          'name': '',
-          'phoneNumber': ''
+          'name': visitData.value.father['name'],
+          'phoneNumber': visitData.value.father['phone']
         },
         patient: {
           'name': patientNameController.text,
@@ -133,10 +162,10 @@ class AddNewVisitController extends GetxController {
           'PatientIDNumber': patientIDNumberController.text,
         },
         servant: {
-          'id': '',
+          'id': visitData.value.servant['id'],
           'isFather': false,
-          'name': '',
-          'phoneNumber': ''
+          'name': visitData.value.servant['name'],
+          'phoneNumber': visitData.value.servant['phoneNumber']
         },
          assistant: {
             'name': assistantNameController.text,
@@ -154,9 +183,8 @@ class AddNewVisitController extends GetxController {
         note: noteController.text,
         googleLink: googleLinkController.text
       );
-      VisitSubmission.submitVisit(newVisit);
+      VisitSubmission.updateVisit(id,newVisit);
       Get.snackbar("Visits", "Visits add successfully");
-
     }catch (e){
       Get.snackbar("Error", e.toString());
     }finally{
@@ -164,9 +192,27 @@ class AddNewVisitController extends GetxController {
     }
   }
 
+  void displayData(){
+    dateController = TextEditingController(text: visitData.value.visitDate);
+    fromTimeController = TextEditingController(text: visitData.value.visitTimeRangeFrom);
+    toTimeController = TextEditingController(text: visitData.value.visitTimeRangeTo);
+    numberOfPeopleController = TextEditingController(text: visitData.value.numberOfPeople);
+    patientNameController = TextEditingController(text: visitData.value.patient['name']);
+    patientLocationController = TextEditingController(text: visitData.value.googleLink);
+    patientAddressController = TextEditingController(text: visitData.value.address['address']);
+    assistantNameController = TextEditingController(text: visitData.value.assistant['name']);
+    patientPhoneController = TextEditingController(text: visitData.value.patient['phoneNumber']);
+    assistantPhoneController = TextEditingController(text: visitData.value.assistant['phoneNumber']);
+    patientFamIDController = TextEditingController(text: visitData.value.patient['PatientFamilyId']);
+    patientIDNumberController = TextEditingController(text: visitData.value.patient['PatientIDNumber']);
+    noteController = TextEditingController(text:  visitData.value.note);
+    googleLinkController = TextEditingController(text:  visitData.value.googleLink);
+  }
   @override
-  void onInit() async{
+  void onInit () async{
+    await getVisitDetails();
     await getAreasNames();
+    displayData();
     super.onInit();
   }
 }

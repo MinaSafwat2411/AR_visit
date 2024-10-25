@@ -6,6 +6,7 @@ abstract class Routes {
   static const HOME = _Paths.HOME;
   static const LOGIN = _Paths.LOGIN;
   static const ADD_NEW_VISIT = _Paths.ADD_NEW_VISIT;
+  static const EDIT_VISIT = _Paths.EDIT_VISIT;
   static const VISITS = _Paths.VISITS;
   static const SPLASH = _Paths.SPLASH;
   static const VISIT_DETAILS = _Paths.VISIT_DETAILS;
@@ -16,6 +17,7 @@ abstract class _Paths {
   static const HOME = '/home';
   static const LOGIN = '/login';
   static const ADD_NEW_VISIT = '/add-new-visit';
+  static const EDIT_VISIT = '/edit-visit';
   static const VISITS = '/visits';
   static const SPLASH = '/splash';
   static const VISIT_DETAILS = '/visit-details';

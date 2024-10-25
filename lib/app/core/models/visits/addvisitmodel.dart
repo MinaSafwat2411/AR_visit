@@ -19,9 +19,9 @@ class Visit {
   Map<String, dynamic> patient;
   Map<String, dynamic> assistant;
   Map<String, dynamic> servant;
+  Map<String, dynamic> address;
   String status;
   String googleLink;
-  String address;
   String visitDate;
   String visitTimeRangeFrom;
   String visitTimeRangeTo;

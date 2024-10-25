@@ -23,12 +23,12 @@ class VisitModel {
   final Map<String, dynamic> patient;
   final Map<String, dynamic> assistant;
   final Map<String, dynamic> servant;
+  final Map<String, dynamic> address;
   final String status;
   final String visitDate;
   final String visitTimeRangeFrom;
   final String visitTimeRangeTo;
   final String numberOfPeople;
-  final String address;
   final String googleLink;
   final String note;
 
@@ -47,7 +47,7 @@ class VisitModel {
       visitTimeRangeFrom: data['visitTimeRangeFrom'] ?? "",
       visitTimeRangeTo: data['visitTimeRangeTo'] ?? "",
       numberOfPeople: data['numberOfPeople']?? "",
-      address: data['address']?? "",
+      address: data['address']?? {},
       note: data['note']?? "",
       googleLink: data['googleLink']?? "",
     );
