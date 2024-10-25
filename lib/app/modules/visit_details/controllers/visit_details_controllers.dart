@@ -19,7 +19,7 @@ class VisitDetailsControllers extends GetxController {
     visitTimeRangeFrom: '',
     visitTimeRangeTo: '',
     numberOfPeople: '',
-    address: '',
+    address: {},
     googleLink: '',
     note: ''
   ).obs;

@@ -10,8 +10,7 @@ import '../../../core/widgets/custom_button.dart';
 import '../../../routes/app_pages.dart';
 
 class VisitDetailsViews extends GetView<VisitDetailsControllers> {
-  const VisitDetailsViews({super.key, this.id});
-  final String? id;
+  const VisitDetailsViews({super.key});
   @override
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
@@ -35,7 +34,10 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                 initialValue: 'nothing',
                 onSelected: (String value) {
                   if (value == 'edit') {
-                  } else if (value == 'cancelled') {}
+                    Get.offNamed(Routes.EDIT_VISIT,arguments: controller.id);
+                  } else if (value == 'cancelled') {
+
+                  }
                 },
                 position: PopupMenuPosition.under,
                 color: AppColors.white,
@@ -103,10 +105,7 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                   ),
                   TestVisitDetails(
                     title: 'ARID',
-                    value: "E1C1F" +
-                        controller.visitData.value.patient['PatientFamilyId'] +
-                        "NR" +
-                        controller.visitData.value.patient['PatientIDNumber'],
+                    value: "E1C1F${controller.visitData.value.patient['PatientFamilyId']}NR${controller.visitData.value.patient['PatientIDNumber']}"
                   ),
                   const SizedBox(
                     height: 30,
@@ -119,19 +118,25 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                   ),
                   TestVisitDetails(
                       title: 'assistant name',
-                      value: controller.visitData.value.patient['name']),
+                      value: controller.visitData.value.assistant['name']),
                   const SizedBox(
                     height: 30,
                   ),
                   TestVisitDetails(
                       title: 'assistant phone',
-                      value: controller.visitData.value.patient['phoneNumber']),
+                      value: controller.visitData.value.assistant['phoneNumber']),
                   const SizedBox(
                     height: 30,
                   ),
                   TestVisitDetails(
                       title: 'address',
-                      value: controller.visitData.value.address),
+                      value: controller.visitData.value.address['address']),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  TestVisitDetails(
+                      title: 'address Type',
+                      value: controller.visitData.value.address['addressType']),
                   const SizedBox(
                     height: 30,
                   ),
