@@ -35,7 +35,7 @@ class EditVisitController extends GetxController {
   Future<void> getVisitDetails() async {
     isLoading.value = true;
     try {
-      VisitModel? visitDetails = await VisitDetailRetriever.retrieveVisitDetails(id);
+      VisitModel? visitDetails = await VisitsRetriever.retrieveVisitDetails(id);
       visitData.value=visitDetails!;
     } catch (e) {
       Get.snackbar("Error", "Failed to retrieve visit details: $e");
@@ -140,10 +140,9 @@ class EditVisitController extends GetxController {
     }
   }
 
-  void editVisit() async{
+  void editVisit(){
     isLoading(true);
     try{
-      print(areaName);
       Visit newVisit = Visit(
         area: {
           'name': areaName.value,

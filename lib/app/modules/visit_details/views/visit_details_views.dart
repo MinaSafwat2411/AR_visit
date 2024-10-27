@@ -1,4 +1,3 @@
-import 'package:ar_visiting_app/app/core/utils/MenuItem.dart';
 import 'package:ar_visiting_app/app/modules/visit_details/controllers/visit_details_controllers.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
@@ -34,9 +33,40 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                 initialValue: 'nothing',
                 onSelected: (String value) {
                   if (value == 'edit') {
-                    Get.offNamed(Routes.EDIT_VISIT,arguments: controller.id);
-                  } else if (value == 'cancelled') {
-
+                    showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          actionsAlignment: MainAxisAlignment.spaceBetween,
+                              title: const Text('You want to Edit the Visit ',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500,
+                                  )),
+                              actionsPadding: const EdgeInsets.symmetric(horizontal: 45,vertical: 15),
+                              actions: <Widget>[
+                                ElevatedButton(
+                                  style:  ElevatedButton.styleFrom(
+                                    shape:  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8), // Makes it a rectangle
+                                    ),
+                                  ),
+                                  onPressed: () => Get.offNamed(Routes.EDIT_VISIT,arguments: controller.id),
+                                  child: const Text('Yes'),
+                                ),
+                                const Spacer(),
+                                ElevatedButton(
+                                    onPressed: () {},
+                                    style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                    child: const Text('No')),
+                              ],
+                            ));
+                  } else if (value == 'canceled') {
+                    controller.onCanceled();
+                    Get.offNamed(Routes.VISIT_DETAILS);
                   }
                 },
                 position: PopupMenuPosition.under,
@@ -104,9 +134,9 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                     height: 30,
                   ),
                   TestVisitDetails(
-                    title: 'ARID',
-                    value: "E1C1F${controller.visitData.value.patient['PatientFamilyId']}NR${controller.visitData.value.patient['PatientIDNumber']}"
-                  ),
+                      title: 'ARID',
+                      value:
+                          "E1C1F${controller.visitData.value.patient['PatientFamilyId']}NR${controller.visitData.value.patient['PatientIDNumber']}"),
                   const SizedBox(
                     height: 30,
                   ),
@@ -124,7 +154,8 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                   ),
                   TestVisitDetails(
                       title: 'assistant phone',
-                      value: controller.visitData.value.assistant['phoneNumber']),
+                      value:
+                          controller.visitData.value.assistant['phoneNumber']),
                   const SizedBox(
                     height: 30,
                   ),
@@ -168,12 +199,9 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                         width: 15,
                       ),
                       TestVisitDetails(
-                          title: 'Time',
-                          value: controller.visitData.value.visitTimeRangeFrom
-                                  .substring(0, 4) +
-                              ' To ' +
-                              controller.visitData.value.visitTimeRangeTo
-                                  .substring(0, 4)),
+                        title: 'Time',
+                        value: controller.visitTime.value,
+                      )
                     ],
                   ),
                   const SizedBox(
@@ -218,7 +246,10 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                     child: CustomButton(
                       text: 'Done',
                       btnColor: AppColors.green,
-                      onPressed: () {},
+                      onPressed: () {
+                        controller.onDone();
+                        Get.offNamed(Routes.VISIT_DETAILS);
+                      },
                     ),
                   ),
                   const SizedBox(

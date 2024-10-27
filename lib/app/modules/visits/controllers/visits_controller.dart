@@ -1,8 +1,9 @@
 import 'dart:async';
 
-import 'package:ar_visiting_app/app/core/firebase/GetVisitsFirebase.dart';
 import 'package:ar_visiting_app/app/core/models/visits/visitsmodel.dart';
 import 'package:get/get.dart';
+
+import '../../../core/firebase/GetVisitDetailsFirebase.dart';
 
 
 class VisitController extends GetxController {
@@ -35,7 +36,7 @@ class VisitController extends GetxController {
     String selectedStatus = tags[tagsStatusList.indexOf(true)];
 
     try {
-      final visits = await VisitListRetriever.retrieveVisits();
+      final visits = await VisitsRetriever.retrieveVisits();
       visitData.value = visits;
       if (selectedStatus == "All") {
         visitData.value =Map<String, VisitModel>.from(visitData);

@@ -23,7 +23,7 @@ class VisitSubmission {
       'note':visit.note,
     });
   }
-  static Future<void> updateVisit(String documentId, Visit visit) async {
+  static void updateVisit(String documentId, Visit visit) async {
     CollectionReference collectionReference = FirebaseFirestore.instance.collection('Visit');
     await collectionReference.doc(documentId).update(
         {

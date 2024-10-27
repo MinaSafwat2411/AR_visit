@@ -44,7 +44,7 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
             if (controller.formKey.currentState!.validate()) {
               controller.addVisit();
               if(!controller.isLoading.value){
-                Get.offNamed(Routes.VISITS);
+                Get.offAll(Routes.VISITS);
               }
             }
           },

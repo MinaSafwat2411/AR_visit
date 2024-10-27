@@ -43,10 +43,8 @@ class EditVisitView extends GetView<EditVisitController> {
           onPressed: () {
             if (controller.formKey.currentState!.validate()) {
               controller.editVisit();
+              Get.offAll(Routes.VISIT_DETAILS,arguments: controller.id);
             }
-              if(!controller.isLoading.value){
-                Get.offNamed(Routes.VISIT_DETAILS,arguments: controller.id);
-              }
             },
         ),
       ),
