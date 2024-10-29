@@ -1,4 +1,5 @@
 import 'package:ar_visiting_app/app/core/models/visits/visitsmodel.dart';
+import 'package:ar_visiting_app/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 
 import '../../../core/firebase/AddVisitFirebase.dart';
@@ -68,6 +69,7 @@ class VisitDetailsControllers extends GetxController {
       );
       VisitSubmission.updateVisit(id,newVisit);
       Get.snackbar("Visits", "Visits has been Done");
+      Get.offNamed(Routes.VISITS);
     }catch (e){
       Get.snackbar("Error", e.toString());
     }finally{
@@ -111,6 +113,7 @@ class VisitDetailsControllers extends GetxController {
       );
       VisitSubmission.updateVisit(id,newVisit);
       Get.snackbar("Visits", "Visits has been canceled");
+      Get.offNamed(Routes.VISITS);
     }catch (e){
       Get.snackbar("Error", e.toString());
     }finally{

@@ -1,0 +1,3 @@
+enum OperationType{
+  CANCELED,EDIT,DONE,ASSIGN,NEW
+}

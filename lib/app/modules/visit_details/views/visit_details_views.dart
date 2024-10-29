@@ -1,3 +1,4 @@
+import 'package:ar_visiting_app/app/core/widgets/custom_alert.dart';
 import 'package:ar_visiting_app/app/modules/visit_details/controllers/visit_details_controllers.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import '../../../core/utils/app_colors.dart';
 import '../../../core/widgets/TestVisitdetails.dart';
 import '../../../core/widgets/custom_button.dart';
 import '../../../routes/app_pages.dart';
+import '../di/operation_type.dart';
 
 class VisitDetailsViews extends GetView<VisitDetailsControllers> {
   const VisitDetailsViews({super.key});
@@ -30,50 +32,37 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                       20), // Set your desired border radius here
                 ),
                 iconSize: 30,
-                initialValue: 'nothing',
-                onSelected: (String value) {
-                  if (value == 'edit') {
-                    showDialog<String>(
+                initialValue: OperationType.NEW,
+                onSelected: (OperationType value) {
+                  if (value == OperationType.EDIT) {
+                    showDialog(
                         context: context,
-                        builder: (BuildContext context) => AlertDialog(
-                          actionsAlignment: MainAxisAlignment.spaceBetween,
-                              title: const Text('You want to Edit the Visit ',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w500,
-                                  )),
-                              actionsPadding: const EdgeInsets.symmetric(horizontal: 45,vertical: 15),
-                              actions: <Widget>[
-                                ElevatedButton(
-                                  style:  ElevatedButton.styleFrom(
-                                    shape:  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8), // Makes it a rectangle
-                                    ),
-                                  ),
-                                  onPressed: () => Get.offNamed(Routes.EDIT_VISIT,arguments: controller.id),
-                                  child: const Text('Yes'),
-                                ),
-                                const Spacer(),
-                                ElevatedButton(
-                                    onPressed: () {},
-                                    style: ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                    ),
-                                    child: const Text('No')),
-                              ],
-                            ));
-                  } else if (value == 'canceled') {
-                    controller.onCanceled();
-                    Get.offNamed(Routes.VISIT_DETAILS);
+                        builder: (context) =>  CustomDoubleAlert(
+                          title: 'You want to Edit this Visit ',
+                          leftButtonText: 'Yes',
+                          rightButtonText: 'No',
+                          leftFunction: () => Get.offNamed(Routes.EDIT_VISIT,arguments: controller.id),
+                          rightFunction: () => Get.back(closeOverlays: true),
+                        )
+                    );
+                  } else if (value == OperationType.CANCELED) {
+                    showDialog(
+                        context: context,
+                        builder: (context) =>  CustomDoubleAlert(
+                          title: 'You want to Cancel this Visit ',
+                          leftButtonText: 'Yes',
+                          rightButtonText: 'No',
+                          leftFunction: () => controller.onCanceled(),
+                          rightFunction: () => Get.back(closeOverlays: true),
+                        )
+                    );
                   }
                 },
                 position: PopupMenuPosition.under,
                 color: AppColors.white,
-                itemBuilder: (context) => <PopupMenuEntry<String>>[
-                      const PopupMenuItem<String>(
-                        value: 'edit',
+                itemBuilder: (context) => <PopupMenuEntry<OperationType>>[
+                      const PopupMenuItem<OperationType>(
+                        value: OperationType.EDIT,
                         child: Row(
                           children: [
                             Image(
@@ -91,8 +80,8 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                       const PopupMenuDivider(
                         height: 1,
                       ),
-                      const PopupMenuItem<String>(
-                        value: 'canceled',
+                      const PopupMenuItem<OperationType>(
+                        value: OperationType.CANCELED,
                         child: Row(
                           children: [
                             Image(
@@ -234,7 +223,18 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                     child: CustomButton(
                       text: 'Assign',
                       btnColor: AppColors.chartreuseYellow,
-                      onPressed: () {},
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) =>  CustomDoubleAlert(
+                              title: 'Choose who You want to assign to?',
+                              leftButtonText: 'Father',
+                              rightButtonText: 'Servant',
+                              leftFunction: () => Get.back(closeOverlays: true),
+                              rightFunction: () => Get.back(closeOverlays: true),
+                            )
+                        );
+                      },
                     ),
                   ),
                   const SizedBox(
@@ -247,8 +247,16 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                       text: 'Done',
                       btnColor: AppColors.green,
                       onPressed: () {
-                        controller.onDone();
-                        Get.offNamed(Routes.VISIT_DETAILS);
+                        showDialog(
+                            context: context,
+                            builder: (context) =>  CustomDoubleAlert(
+                              title: 'This Visit is Done',
+                              leftButtonText: 'Yes',
+                              rightButtonText: 'No',
+                              leftFunction: () => controller.onDone(),
+                              rightFunction: () => Get.back(closeOverlays: true),
+                            )
+                        );
                       },
                     ),
                   ),
