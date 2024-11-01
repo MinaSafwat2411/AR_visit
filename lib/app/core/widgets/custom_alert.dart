@@ -8,7 +8,7 @@ class CustomDoubleAlert extends StatelessWidget {
     this.leftFunction,
     this.rightFunction,
     this.rightButtonText,
-    this.leftButtonText
+    this.leftButtonText,
   });
 
   final String? title;
@@ -16,52 +16,57 @@ class CustomDoubleAlert extends StatelessWidget {
   final String? rightButtonText;
   final VoidCallback? leftFunction;
   final String? leftButtonText;
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-          actionsAlignment: MainAxisAlignment.spaceBetween,
-          title: Text(
-              title!,
-              textAlign: TextAlign.center,
+      title: title != null
+          ? Text(
+        title!,
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.w500,
+        ),
+      )
+          : null,
+      actionsAlignment: MainAxisAlignment.spaceEvenly,
+      actionsPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      actions: <Widget>[
+        if (leftButtonText != null)
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              backgroundColor: AppColors.trinidadColor,
+            ),
+            onPressed: leftFunction,
+            child: Text(
+              leftButtonText!,
               style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-              )),
-          actionsPadding: const EdgeInsets.symmetric(horizontal: 45,vertical: 15),
-          actions: <Widget>[
-            ElevatedButton(
-              style:  ElevatedButton.styleFrom(
-                shape:  RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8), // Makes it a rectangle
-                ),
-                  backgroundColor: AppColors.trinidadColor
-              ),
-              onPressed:leftFunction,
-              child: Text(
-                leftButtonText!,
-                style: const TextStyle(
-                  color: AppColors.white
-                ),
+                color: AppColors.white,
               ),
             ),
-            const Spacer(),
-            ElevatedButton(
-                onPressed: rightFunction,
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    side: const BorderSide(color: AppColors.black,width: 1),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  backgroundColor: AppColors.white
-                ),
-                child: Text(
-                    rightButtonText!,
-                    style: const TextStyle(
-                      color: AppColors.black
-                  ),
-                )
+          ),
+        if (rightButtonText != null)
+          ElevatedButton(
+            onPressed: rightFunction,
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                side: const BorderSide(color: AppColors.black, width: 1),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              backgroundColor: AppColors.white,
             ),
-          ],
-        );
+            child: Text(
+              rightButtonText!,
+              style: const TextStyle(
+                color: AppColors.black,
+              ),
+            ),
+          ),
+      ],
+    );
   }
 }
