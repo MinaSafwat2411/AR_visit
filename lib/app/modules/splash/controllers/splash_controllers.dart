@@ -10,8 +10,7 @@ class SplashController extends GetxController {
   }
 
   void onNavigate(){
-    print("object");
-    Timer(const Duration(seconds: 5), () {
+    Timer(const Duration(seconds: 2), () {
       Get.offNamed(Routes.LOGIN);
     });
   }

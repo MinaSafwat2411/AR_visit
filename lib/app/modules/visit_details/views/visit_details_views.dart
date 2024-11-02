@@ -41,7 +41,10 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                           title: 'You want to Edit this Visit ',
                           leftButtonText: 'Yes',
                           rightButtonText: 'No',
-                          leftFunction: () => Get.offNamed(Routes.EDIT_VISIT,arguments: controller.id),
+                          leftFunction: () {
+                            Get.back(closeOverlays: true);
+                            Get.toNamed(Routes.EDIT_VISIT,arguments: controller.id);
+                          },
                           rightFunction: () => Get.back(closeOverlays: true),
                         )
                     );

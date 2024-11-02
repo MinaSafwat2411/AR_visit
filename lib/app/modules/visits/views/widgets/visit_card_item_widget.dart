@@ -18,7 +18,7 @@ class VisitCardItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.offNamed(Routes.VISIT_DETAILS,arguments: visitData.id);
+        Get.toNamed(Routes.VISIT_DETAILS,arguments: visitData.id);
       },
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),

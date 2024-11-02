@@ -7,6 +7,7 @@ import '../../../core/firebase/GetVisitDetailsFirebase.dart';
 import '../../../core/models/area/areamodel.dart';
 import '../../../core/models/visits/addvisitmodel.dart';
 import '../../../core/models/visits/visitsmodel.dart';
+import '../../../routes/app_pages.dart';
 
 class EditVisitController extends GetxController {
   var areaName = ''.obs;
@@ -184,6 +185,11 @@ class EditVisitController extends GetxController {
       );
       VisitSubmission.updateVisit(id,newVisit);
       Get.snackbar("Visits", "Visits add successfully");
+      Get.offNamedUntil(
+          Routes.VISIT_DETAILS,
+              (route) => route.settings.name == Routes.HOME,
+          arguments: id
+      );
     }catch (e){
       Get.snackbar("Error", e.toString());
     }finally{
