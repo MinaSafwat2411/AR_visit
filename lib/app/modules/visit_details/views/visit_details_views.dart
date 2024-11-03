@@ -35,19 +35,8 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                 initialValue: OperationType.NEW,
                 onSelected: (OperationType value) {
                   if (value == OperationType.EDIT) {
-                    showDialog(
-                        context: context,
-                        builder: (context) =>  CustomDoubleAlert(
-                          title: 'You want to Edit this Visit ',
-                          leftButtonText: 'Yes',
-                          rightButtonText: 'No',
-                          leftFunction: () {
-                            Get.back(closeOverlays: true);
-                            Get.toNamed(Routes.EDIT_VISIT,arguments: controller.id);
-                          },
-                          rightFunction: () => Get.back(closeOverlays: true),
-                        )
-                    );
+                    Get.back(closeOverlays: true);
+                    Get.toNamed(Routes.EDIT_VISIT,arguments: controller.id);
                   } else if (value == OperationType.CANCELED) {
                     showDialog(
                         context: context,
@@ -214,7 +203,8 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                   const SizedBox(
                     height: 30,
                   ),
-                  SizedBox(
+                      controller.visitData.value.status=="Assigned"||
+                      controller.visitData.value.status=="NEW" ? SizedBox(
                     width: MediaQuery.of(context).size.width * 0.9,
                     height: 58,
                     child: CustomButton(
@@ -239,11 +229,11 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                         );
                       },
                     ),
-                  ),
+                  ) : const SizedBox(height: 0,),
                   const SizedBox(
                     height: 12,
                   ),
-                  SizedBox(
+                  controller.visitData.value.status=="Assigned" ? SizedBox(
                     width: MediaQuery.of(context).size.width * 0.9,
                     height: 58,
                     child: CustomButton(
@@ -262,7 +252,7 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                         );
                       },
                     ),
-                  ),
+                  ): const SizedBox(height: 0,),
                   const SizedBox(
                     height: 12,
                   ),

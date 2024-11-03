@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/utils/app_colors.dart';
+import '../../../core/widgets/custom_alert.dart';
 import '../../../core/widgets/custom_big_textfield.dart';
 import '../../../core/widgets/custom_button.dart';
 import '../../../core/widgets/custom_dropdownlist.dart';
@@ -46,7 +47,19 @@ class EditVisitView extends GetView<EditVisitController> {
           btnColor: AppColors.trinidadColor,
           onPressed: () {
             if (controller.formKey.currentState!.validate()) {
-              controller.editVisit();
+              showDialog(
+                  context: context,
+                  builder:(context) =>CustomDoubleAlert(
+                    title: 'You sure to submit edit',
+                    rightFunction: () {
+                      Get.back(closeOverlays: true);
+                    },
+                    leftFunction: () {
+                      controller.editVisit();
+                    },
+                    rightButtonText: 'No',
+                    leftButtonText: 'Yes',
+                  ));
             }
             },
         ),
