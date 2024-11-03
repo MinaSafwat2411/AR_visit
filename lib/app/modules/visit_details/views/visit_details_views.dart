@@ -35,19 +35,8 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                 initialValue: OperationType.NEW,
                 onSelected: (OperationType value) {
                   if (value == OperationType.EDIT) {
-                    showDialog(
-                        context: context,
-                        builder: (context) =>  CustomDoubleAlert(
-                          title: 'You want to Edit this Visit ',
-                          leftButtonText: 'Yes',
-                          rightButtonText: 'No',
-                          leftFunction: () {
-                            Get.back(closeOverlays: true);
-                            Get.toNamed(Routes.EDIT_VISIT,arguments: controller.id);
-                          },
-                          rightFunction: () => Get.back(closeOverlays: true),
-                        )
-                    );
+                    Get.back(closeOverlays: true);
+                    Get.toNamed(Routes.EDIT_VISIT,arguments: controller.id);
                   } else if (value == OperationType.CANCELED) {
                     showDialog(
                         context: context,
