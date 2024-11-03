@@ -65,6 +65,42 @@ class AssignFatherVisitController extends GetxController{
     this.father.value =father;
     onAssign();
   }
+  onCanceledAssign(){
+    isLoading(true);
+    try{
+      Visit newVisit = Visit(
+          area: visitData.value.area,
+          father: {
+            "id":"",
+            "name":"",
+            "phoneNumber":"",
+            "isFather":father.value.isFather,
+          },
+          patient: visitData.value.patient,
+          servant: visitData.value.servant,
+          assistant: visitData.value.assistant,
+          status: 'NEW',
+          address: visitData.value.address,
+          visitDate: visitData.value.visitDate,
+          visitTimeRangeFrom: visitData.value.visitTimeRangeFrom,
+          visitTimeRangeTo:visitData.value.visitTimeRangeTo,
+          numberOfPeople: visitData.value.numberOfPeople,
+          note: visitData.value.note,
+          googleLink: visitData.value.googleLink
+      );
+      VisitSubmission.updateVisit(id,newVisit);
+      Get.snackbar("Visits", "Visits has been Assigned");
+      Get.offNamedUntil(
+          Routes.VISIT_DETAILS,
+              (route) => route.settings.name == Routes.HOME,
+          arguments: id
+      );
+    }catch (e){
+      Get.snackbar("Error", e.toString());
+    }finally{
+      isLoading(false);
+    }
+  }
   @override
   void onInit() async{
     await getVisitDetails();

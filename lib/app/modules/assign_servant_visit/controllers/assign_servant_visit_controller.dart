@@ -72,6 +72,43 @@ class AssignServantVisitController extends GetxController{
     super.onInit();
   }
 
+  onCanceledAssign(){
+    isLoading(true);
+    try{
+      Visit newVisit = Visit(
+          area: visitData.value.area,
+          father: visitData.value.father,
+          patient: visitData.value.patient,
+          servant: {
+            "id":"",
+            "name":"",
+            "phoneNumber":"",
+            "isFather":servant.value.isFather,
+          },
+          assistant: visitData.value.assistant,
+          status: visitData.value.status,
+          address: visitData.value.address,
+          visitDate: visitData.value.visitDate,
+          visitTimeRangeFrom: visitData.value.visitTimeRangeFrom,
+          visitTimeRangeTo:visitData.value.visitTimeRangeTo,
+          numberOfPeople: visitData.value.numberOfPeople,
+          note: visitData.value.note,
+          googleLink: visitData.value.googleLink
+      );
+      VisitSubmission.updateVisit(id,newVisit);
+      Get.snackbar("Visits", "Visits has been Assigned");
+      Get.offNamedUntil(
+          Routes.VISIT_DETAILS,
+              (route) => route.settings.name == Routes.HOME,
+          arguments: id
+      );
+    }catch (e){
+      Get.snackbar("Error", e.toString());
+    }finally{
+      isLoading(false);
+    }
+  }
+
   void onAssign(){
     isLoading(true);
     try{

@@ -30,6 +30,16 @@ class AssignFatherVisitView extends GetView<AssignFatherVisitController> {
           },
           icon: const Icon(Icons.arrow_back),
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextButton(onPressed: (){
+              controller.onCanceledAssign();
+            }, child: const Text('Cancel',style: TextStyle(
+              color: AppColors.trinidadColor
+            ),),),
+          )
+        ],
       ),
       body: ConditionalBuilder(
         condition: !controller.isLoading.value,

@@ -214,7 +214,8 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                   const SizedBox(
                     height: 30,
                   ),
-                  SizedBox(
+                      controller.visitData.value.status=="Assigned"||
+                      controller.visitData.value.status=="NEW" ? SizedBox(
                     width: MediaQuery.of(context).size.width * 0.9,
                     height: 58,
                     child: CustomButton(
@@ -239,11 +240,11 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                         );
                       },
                     ),
-                  ),
+                  ) : const SizedBox(height: 0,),
                   const SizedBox(
                     height: 12,
                   ),
-                  SizedBox(
+                  controller.visitData.value.status=="Assigned" ? SizedBox(
                     width: MediaQuery.of(context).size.width * 0.9,
                     height: 58,
                     child: CustomButton(
@@ -262,7 +263,7 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                         );
                       },
                     ),
-                  ),
+                  ): const SizedBox(height: 0,),
                   const SizedBox(
                     height: 12,
                   ),

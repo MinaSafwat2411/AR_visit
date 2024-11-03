@@ -69,7 +69,7 @@ class VisitDetailsControllers extends GetxController {
       );
       VisitSubmission.updateVisit(id,newVisit);
       Get.snackbar("Visits", "Visits has been Done");
-      Get.offNamed(Routes.VISITS);
+      Get.offAllNamed(Routes.VISITS);
     }catch (e){
       Get.snackbar("Error", e.toString());
     }finally{
@@ -113,7 +113,7 @@ class VisitDetailsControllers extends GetxController {
       );
       VisitSubmission.updateVisit(id,newVisit);
       Get.snackbar("Visits", "Visits has been canceled");
-      Get.offNamed(Routes.VISITS);
+      Get.offAllNamed(Routes.VISITS);
     }catch (e){
       Get.snackbar("Error", e.toString());
     }finally{
