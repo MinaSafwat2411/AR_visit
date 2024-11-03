@@ -23,7 +23,7 @@ class VisitsView extends GetView<VisitController> {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(70)),
             elevation: 5,
             onPressed: () {
-              Get.offNamed(Routes.ADD_NEW_VISIT);
+              Get.toNamed(Routes.ADD_NEW_VISIT);
             },
             backgroundColor: Colors.red, // Trinidad color
             child: const Icon(

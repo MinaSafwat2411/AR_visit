@@ -29,7 +29,11 @@ class EditVisitView extends GetView<EditVisitController> {
         ),
         leading: IconButton(
           onPressed: () {
-            Get.offNamed(Routes.VISIT_DETAILS,arguments: controller.id);
+            Get.offNamedUntil(
+                Routes.VISIT_DETAILS,
+                    (route) => route.settings.name == Routes.HOME,
+                arguments: controller.id
+            );
           },
           icon: const Icon(Icons.arrow_back),
         ),

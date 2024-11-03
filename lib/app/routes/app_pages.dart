@@ -1,3 +1,6 @@
+import 'package:ar_visiting_app/app/modules/assign_father_visit/bindings/assign_father_visit_binding.dart';
+import 'package:ar_visiting_app/app/modules/assign_father_visit/views/assign_father_visit_view.dart';
+import 'package:ar_visiting_app/app/modules/assign_servant_visit/views/assign_servant_visit_view.dart';
 import 'package:ar_visiting_app/app/modules/edit_visit/bindings/edit_visit_binding.dart';
 import 'package:ar_visiting_app/app/modules/edit_visit/views/edit_visit_view.dart';
 import 'package:ar_visiting_app/app/modules/splash/bindings/splash_binding.dart';
@@ -8,6 +11,7 @@ import 'package:get/get.dart';
 
 import '../modules/add_new_visit/bindings/add_new_visit_binding.dart';
 import '../modules/add_new_visit/views/add_new_visit_view.dart';
+import '../modules/assign_servant_visit/bindings/assign_servant_visit_binding.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/visits/bindings/visits_binding.dart';
@@ -50,6 +54,16 @@ class AppPages {
       name: _Paths.EDIT_VISIT,
       page: () => const EditVisitView(),
       binding: EditVisitBinding(),
+    )    ,
+    GetPage(
+      name: _Paths.ASSIN_Father_VISIT,
+      page: () => const AssignFatherVisitView(),
+      binding: AssignFatherVisitBinding(),
+    ),
+    GetPage(
+      name: _Paths.ASSIN_SERVANT_VISIT,
+      page: () => const AssignServantVisitView(),
+      binding: AssignServantVisitBinding(),
     )
   ];
 }
