@@ -103,7 +103,7 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
           ],
           leading: IconButton(
             onPressed: () {
-              Get.offNamed(Routes.VISITS);
+              Get.offAllNamed(Routes.VISITS);
             },
             icon: const Icon(Icons.arrow_back),
           ),
@@ -181,36 +181,30 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                   const SizedBox(
                     height: 30,
                   ),
-                  Row(
-                    children: [
-                      TestVisitDetails(
-                          title: 'Date',
-                          value: controller.visitData.value.visitDate
-                              .substring(5)),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      TestVisitDetails(
-                        title: 'Time',
-                        value: controller.visitTime.value,
-                      )
-                    ],
+                  TestVisitDetails(
+                      title: 'Date',
+                      value: controller.visitData.value.visitDate
+                          .substring(5)
                   ),
                   const SizedBox(
                     height: 30,
                   ),
-                  Row(
-                    children: [
-                      TestVisitDetails(
-                          title: 'Father',
-                          value: controller.visitData.value.father['name']),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      TestVisitDetails(
-                          title: 'Servant',
-                          value: controller.visitData.value.servant['name']),
-                    ],
+                  TestVisitDetails(
+                    title: 'Time',
+                    value: controller.visitTime.value,
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  TestVisitDetails(
+                      title: 'Father',
+                      value: controller.visitData.value.father['name']),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  TestVisitDetails(
+                      title: 'Servant',
+                      value: controller.visitData.value.servant['name']
                   ),
                   const SizedBox(
                     height: 30,
@@ -233,8 +227,14 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                               title: 'Choose who You want to assign to?',
                               leftButtonText: 'Father',
                               rightButtonText: 'Servant',
-                              leftFunction: () => Get.back(closeOverlays: true),
-                              rightFunction: () => Get.back(closeOverlays: true),
+                              leftFunction: () {
+                                Get.back(closeOverlays: true);
+                                Get.toNamed(Routes.ASSIN_Father_VISIT,arguments: controller.id);
+                              },
+                              rightFunction: () {
+                                Get.back(closeOverlays: true);
+                                Get.toNamed(Routes.ASSIN_SERVANT_VISIT,arguments: controller.id);
+                              },
                             )
                         );
                       },

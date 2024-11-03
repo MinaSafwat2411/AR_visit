@@ -1,6 +1,4 @@
 import 'package:ar_visiting_app/app/core/utils/app_colors.dart';
-import 'package:ar_visiting_app/app/modules/visit_details/controllers/visit_details_controllers.dart';
-import 'package:ar_visiting_app/app/modules/visits/controllers/visits_controller.dart';
 import 'package:ar_visiting_app/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -39,7 +37,7 @@ class VisitCardItemWidget extends StatelessWidget {
                   ),
                   Text(
                     'No. of people : ${visitData.numberOfPeople}',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                   ),
                   Text(
                     'Father: ${visitData.father['name']}',  // Accessing father name
@@ -47,7 +45,7 @@ class VisitCardItemWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(width: 40),
+              const Spacer(),
               Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,

@@ -29,7 +29,7 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
         ),
         leading: IconButton(
           onPressed: () {
-            Get.offNamed(Routes.VISITS);
+            Get.back();
           },
           icon: const Icon(Icons.arrow_back),
         ),
