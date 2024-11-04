@@ -31,13 +31,14 @@ class AssignServantVisitView extends GetView<AssignServantVisitController> {
           icon: const Icon(Icons.arrow_back),
         ),
         actions: [
+          controller.visitData.value.servant['id']==""? const SizedBox(height: 0,):
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextButton(onPressed: (){
               controller.onCanceledAssign();
-            }, child:  const Text('Cancel',style: TextStyle(
+            }, child: const Text('Cancel',style: TextStyle(
                 color: AppColors.trinidadColor
-            ),)),
+            ),),),
           )
         ],
       ),
