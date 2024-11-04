@@ -2,6 +2,7 @@ import 'package:ar_visiting_app/app/modules/visits/views/widgets/tag_item_widget
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../core/utils/app_colors.dart';
 import '../../../routes/app_pages.dart';
 import '../controllers/visits_controller.dart';
 import 'widgets/my_date_visit_list_widget.dart';
@@ -35,6 +36,16 @@ class VisitsView extends GetView<VisitController> {
         ),
       ),
       appBar: AppBar(
+        actions:  [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextButton(onPressed: (){
+              controller.logout();
+            }, child: const Text('logout',style: TextStyle(
+                color: AppColors.trinidadColor
+            ),),),
+          )
+        ],
         title: const Text(
           "My Visit list",
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
