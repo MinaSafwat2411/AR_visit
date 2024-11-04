@@ -1,4 +1,5 @@
 
+import 'package:ar_visiting_app/app/core/sharedchache/cache_helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -18,20 +19,18 @@ class LoginController extends GetxController {
   void login() async {
     isLoading(true);
     try {
-      // Step 1: Retrieve email associated with the username
       String? email = await getEmailFromUsername(aridTextController.text);
 
       if (email != null) {
-        // Step 2: Use the retrieved email to sign in
         await auth.signInWithEmailAndPassword(
           email: email,
           password: passwordTextController.text,
         );
-
         Get.snackbar("Login", "Logged in successfully!");
         Get.offNamed(Routes.VISITS);
+        CacheHelper.saveData(key: 'loginDone', value: true);
+        CacheHelper.saveData(key: 'user', value: aridTextController.text);
       } else {
-        // If username not found, show error message
         Get.snackbar("Error", "Username not found");
       }
     } catch (e) {
@@ -43,23 +42,16 @@ class LoginController extends GetxController {
 
   Future<String?> getEmailFromUsername(String username) async {
     try {
-      // Query Firestore for the document with the username
       var querySnapshot = await FirebaseFirestore.instance
           .collection('users')
           .where('username', isEqualTo: username)
           .get();
-
-      // Check if a document was found
       if (querySnapshot.docs.isNotEmpty) {
-        // Get the email field from the document
         return querySnapshot.docs.first.data()['email'] as String;
       } else {
-        // No user found with that username
-        print("No user found with that username");
         return null;
       }
     } catch (e) {
-      print('Error fetching email: $e');
       return null;
     }
   }
