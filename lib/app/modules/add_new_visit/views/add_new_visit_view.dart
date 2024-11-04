@@ -156,7 +156,9 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                             },
                           ),
                           CustomDropDownList(
-                            onChangeValue: controller.addressType.value,
+                            onChangeValue: (String? value) {
+                              controller.addressType.value = value!;
+                            },
                             label: 'Address Type',
                             items: const ['Hospital', 'Home', 'Dar'],
                           ),
@@ -171,7 +173,9 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                             },
                           ),
                           CustomDropDownList(
-                            onChangeValue: controller.areaName.value,
+                            onChangeValue:(String? value) {
+                              controller.areaName.value = value!;
+                            },
                             label: 'Area',
                             items: controller.areaNames,
                           ),

@@ -11,7 +11,7 @@ class CustomDropDownList extends StatelessWidget {
   });
 
   final List<String>? items;
-  String? onChangeValue;
+   final ValueChanged<String?> onChangeValue;
   final String? label;
 
   @override
@@ -25,9 +25,7 @@ class CustomDropDownList extends StatelessWidget {
             child: Text(value),
           );
         }).toList(),
-        onChanged: (String? value) {
-          onChangeValue = value!;
-        },
+        onChanged: onChangeValue ,
         decoration: InputDecoration(
           labelText: label,
           labelStyle:  const TextStyle(

@@ -172,7 +172,9 @@ class EditVisitView extends GetView<EditVisitController> {
                           },
                         ),
                         CustomDropDownList(
-                          onChangeValue: controller.addressType.value,
+                          onChangeValue: (String? value) {
+                            controller.addressType.value = value!;
+                          },
                           label: 'Address Type',
                           items: const ['Hospital', 'Home', 'Dar'],
                         ),
@@ -187,7 +189,9 @@ class EditVisitView extends GetView<EditVisitController> {
                           },
                         ),
                         CustomDropDownList(
-                          onChangeValue: controller.areaName.value,
+                          onChangeValue: (String? value) {
+                            controller.areaName.value = value!;
+                          },
                           label: 'Area',
                           items: controller.areaNames,
                         ),
