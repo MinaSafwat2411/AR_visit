@@ -1,10 +1,11 @@
 import 'package:ar_visiting_app/app/core/utils/app_colors.dart';
+import 'package:ar_visiting_app/app/modules/visits/controllers/visits_controller.dart';
 import 'package:ar_visiting_app/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../core/models/visits/visitsmodel.dart';
-class VisitCardItemWidget extends StatelessWidget {
+class VisitCardItemWidget extends GetView<VisitController> {
   const VisitCardItemWidget({
     super.key,
     required this.visitData
@@ -36,11 +37,11 @@ class VisitCardItemWidget extends StatelessWidget {
                     style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                   ),
                   Text(
-                    'No. of people : ${visitData.numberOfPeople}',
+                    '${controller.getNoOfPeople()} : ${visitData.numberOfPeople}',
                     style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                   ),
                   Text(
-                    'Father: ${visitData.father['name']}',  // Accessing father name
+                    '${controller.getFather()}: ${visitData.father['name']}',  // Accessing father name
                     style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                   ),
                 ],
@@ -53,7 +54,7 @@ class VisitCardItemWidget extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 4.0),
                     child: Text(
-                      visitData.status,
+                      controller.getStatus(visitData.status),
                       style: TextStyle(
                         color: visitData.status == "Canceled"
                             ? AppColors.redColor
@@ -66,11 +67,11 @@ class VisitCardItemWidget extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    'Zone: ${visitData.area['name']}',  // Accessing area name
+                    '${controller.getZone()}: ${visitData.area['name']}',  // Accessing area name
                     style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                   ),
                   Text(
-                    'Servant: ${visitData.servant['name']}',  // Accessing servant name
+                    '${controller.getServant()}: ${visitData.servant['name']}',  // Accessing servant name
                     style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                   ),
                 ],

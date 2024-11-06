@@ -2,26 +2,70 @@ import 'dart:async';
 
 import 'package:ar_visiting_app/app/core/models/visits/visitsmodel.dart';
 import 'package:ar_visiting_app/app/core/sharedchache/cache_helper.dart';
-import 'package:ar_visiting_app/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 
 import '../../../core/firebase/GetVisitDetailsFirebase.dart';
+import '../../../core/utils/app_string.dart';
 
 
 class VisitController extends GetxController {
   var visitData = <String, VisitModel>{}.obs;
   var visitsDates = <String>[].obs;
   var tagsStatusList = [false ,true ,false, false, false, false].obs;
-  var tags=["Me","All","NEW","Assigned","Done","Canceled"];
   var isLoading=RxBool(false);
   var groupedVisits = <DateTime, List<VisitModel>>{}.obs;
   var sortedDates = <DateTime>[].obs;
   var id=''.obs;
   String lang=CacheHelper.getData(key: 'lang')??'en';
+  var tags= ["Me","All","NEW","Assigned","Done","Canceled"];
+  var tagsAr= ["أنا","الكل", "جديد", "تم تعيينه", "تم", "تم إلغاؤه"];
 
   void getUserId(){
     id.value=CacheHelper.getData(key: 'user');
   }
+  String getYesterday(){
+    return lang =='en'? AppStringsEn.yesterday : AppStringsAr.yesterday;
+  }
+  String getToday(){
+    return lang =='en'? AppStringsEn.today : AppStringsAr.today;
+  }
+  String getTomorrow(){
+    return lang =='en'? AppStringsEn.tomorrow : AppStringsAr.tomorrow;
+  }
+  String getVisitTitle(){
+    return lang =='en'? AppStringsEn.visitTitle : AppStringsAr.visitTitle;
+  }
+  String getNoOfPeople(){
+    return lang =='en'? AppStringsEn.noOfPeople : AppStringsAr.noOfPeople;
+  }
+  String getFather(){
+    return lang =='en'? AppStringsEn.father : AppStringsAr.father;
+  }
+
+  String getStatus(String status){
+    if(lang =='en'){
+      return status;
+    }else{
+      switch(status){
+        case "NEW":
+          return 'جديد';
+        case "Assigned":
+          return 'تم تعيينه';
+        case "Done":
+          return 'تم';
+        case "Canceled":
+          return 'تم الغاؤه';
+      }
+      return status;
+    }
+  }
+  String getZone(){
+    return lang =='en'? AppStringsEn.zone : AppStringsAr.zone;
+  }
+  String getServant(){
+    return lang =='en'? AppStringsEn.servant : AppStringsAr.servant;
+  }
+
 
   @override
   void onInit() async{

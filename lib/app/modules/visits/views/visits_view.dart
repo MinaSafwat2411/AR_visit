@@ -1,8 +1,8 @@
+import 'package:ar_visiting_app/app/core/utils/app_string.dart';
 import 'package:ar_visiting_app/app/modules/visits/views/widgets/tag_item_widget.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../core/utils/app_colors.dart';
 import '../../../routes/app_pages.dart';
 import '../controllers/visits_controller.dart';
 import 'widgets/my_date_visit_list_widget.dart';
@@ -38,10 +38,10 @@ class VisitsView extends GetView<VisitController> {
       appBar: AppBar(
         leading: IconButton(onPressed: (){
           Get.offAllNamed(Routes.PROFILE);
-        }, icon: const Image(image: AssetImage('assets/ava_rewase.png'))),
-        title: const Text(
-          "My Visit list",
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+        }, icon:  const Image(image: AssetImage(AppStrings.avaRewase))),
+        title:  Text(
+          controller.getVisitTitle(),
+          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
         ),
         centerTitle: true,
       ),
@@ -59,7 +59,7 @@ class VisitsView extends GetView<VisitController> {
                     child: TagItemWidget(
                       visitController: controller,
                       index: index,
-                      tag: controller.tags[index],
+                      tag: controller.lang=='en'?controller.tags[index]:controller.tagsAr[index],
                     ),
                   ),
                   itemCount: controller.tags.length,

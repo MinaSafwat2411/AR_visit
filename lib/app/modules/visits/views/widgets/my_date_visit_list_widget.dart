@@ -23,7 +23,7 @@ class MyDateVisitListWidget extends GetView<VisitController> {
               children: [
                 const SizedBox(width: 10),
                 Text(
-                  date.day == DateTime.now().day-1 ? "Yesterday" :date.day == DateTime.now().day ? "Today" : date.day == DateTime.now().day + 1 ? "Tomorrow" : DateFormat('MMM-d').format(date),
+                  date.day == DateTime.now().day-1 ? controller.getYesterday() :date.day == DateTime.now().day ? controller.getToday() : date.day == DateTime.now().day + 1 ? controller.getTomorrow() : DateFormat('MMM-d',controller.lang).format(date),
                   style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
                 ),
               ],
