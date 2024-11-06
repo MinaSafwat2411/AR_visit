@@ -74,6 +74,11 @@ flutter:
     - assets/Logo.png
     - assets/cancel.png
     - assets/edit.png
+    - assets/ava_rewase.png
+    - assets/settings.png
+    - assets/translate.png
+    - assets/faq.png
+    - assets/account.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

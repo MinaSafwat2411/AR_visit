@@ -45,21 +45,24 @@ class VisitCardItemWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(width: 15,),
+              visitData.servant['name']=="" ?const SizedBox(width: 10,):const Spacer(),
               Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    visitData.status,
-                    style: TextStyle(
-                      color: visitData.status == "Canceled"
-                          ? AppColors.redColor
-                          : visitData.status == "Assigned"
-                          ? AppColors.cornflowerBlue
-                          : AppColors.japaneseLaurelColor,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                    child: Text(
+                      visitData.status,
+                      style: TextStyle(
+                        color: visitData.status == "Canceled"
+                            ? AppColors.redColor
+                            : visitData.status == "Assigned"
+                            ? AppColors.cornflowerBlue
+                            : AppColors.japaneseLaurelColor,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                   Text(

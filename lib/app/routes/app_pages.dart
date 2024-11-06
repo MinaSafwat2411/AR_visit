@@ -3,6 +3,8 @@ import 'package:ar_visiting_app/app/modules/assign_father_visit/views/assign_fat
 import 'package:ar_visiting_app/app/modules/assign_servant_visit/views/assign_servant_visit_view.dart';
 import 'package:ar_visiting_app/app/modules/edit_visit/bindings/edit_visit_binding.dart';
 import 'package:ar_visiting_app/app/modules/edit_visit/views/edit_visit_view.dart';
+import 'package:ar_visiting_app/app/modules/profile/bindings/profile_bindings.dart';
+import 'package:ar_visiting_app/app/modules/profile/views/profile_views.dart';
 import 'package:ar_visiting_app/app/modules/splash/bindings/splash_binding.dart';
 import 'package:ar_visiting_app/app/modules/splash/views/splash_views.dart';
 import 'package:ar_visiting_app/app/modules/visit_details/blinding/visit_details_blinding.dart';
@@ -64,6 +66,11 @@ class AppPages {
       name: _Paths.ASSIN_SERVANT_VISIT,
       page: () => const AssignServantVisitView(),
       binding: AssignServantVisitBinding(),
+    ),
+    GetPage(
+      name: _Paths.PROFILE,
+      page: () => const ProfileViews(),
+      binding: ProfileBinding(),
     )
   ];
 }

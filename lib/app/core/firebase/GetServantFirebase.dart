@@ -9,8 +9,8 @@ class GetServantFirebase {
     List<Servant> servants = [];
 
     for (QueryDocumentSnapshot doc in querySnapshot.docs) {
-      Servant father=Servant.fromFireStore(doc);
-      servants.add(father);
+      Servant servant=Servant.fromFireStore(doc);
+      servants.add(servant);
     }
     return servants;
   }

@@ -36,16 +36,9 @@ class VisitsView extends GetView<VisitController> {
         ),
       ),
       appBar: AppBar(
-        actions:  [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextButton(onPressed: (){
-              controller.logout();
-            }, child: const Text('logout',style: TextStyle(
-                color: AppColors.trinidadColor
-            ),),),
-          )
-        ],
+        leading: IconButton(onPressed: (){
+          Get.offAllNamed(Routes.PROFILE);
+        }, icon: const Image(image: AssetImage('assets/ava_rewase.png'))),
         title: const Text(
           "My Visit list",
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
