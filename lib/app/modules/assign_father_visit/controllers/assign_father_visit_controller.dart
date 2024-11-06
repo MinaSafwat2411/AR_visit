@@ -8,6 +8,7 @@ import '../../../core/firebase/AddVisitFirebase.dart';
 import '../../../core/firebase/GetVisitDetailsFirebase.dart';
 import '../../../core/models/visits/addvisitmodel.dart';
 import '../../../core/models/visits/visitsmodel.dart';
+import '../../../core/sharedchache/cache_helper.dart';
 import '../../../routes/app_pages.dart';
 
 class AssignFatherVisitController extends GetxController{
@@ -36,7 +37,7 @@ class AssignFatherVisitController extends GetxController{
       googleLink: '',
       note: ''
   ).obs;
-
+  String lang=CacheHelper.getData(key: 'lang')??'en';
 
 
   Future<void> getVisitDetails() async {

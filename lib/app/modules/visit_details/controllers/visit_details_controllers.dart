@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../../../core/firebase/AddVisitFirebase.dart';
 import '../../../core/firebase/GetVisitDetailsFirebase.dart';
 import '../../../core/models/visits/addvisitmodel.dart';
+import '../../../core/sharedchache/cache_helper.dart';
 
 class VisitDetailsControllers extends GetxController {
   var isLoading = false.obs;
@@ -27,6 +28,7 @@ class VisitDetailsControllers extends GetxController {
     googleLink: '',
     note: ''
   ).obs;
+  String lang=CacheHelper.getData(key: 'lang')??'en';
 
   @override
   void onInit() async{

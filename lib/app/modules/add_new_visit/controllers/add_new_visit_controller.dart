@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../../../core/firebase/AddVisitFirebase.dart';
 import '../../../core/firebase/GetAreaFirebase.dart';
 import '../../../core/models/visits/addvisitmodel.dart';
+import '../../../core/sharedchache/cache_helper.dart';
 import '../../../routes/app_pages.dart';
 
 class AddNewVisitController extends GetxController {
@@ -13,7 +14,7 @@ class AddNewVisitController extends GetxController {
   var areaNames = <String>[].obs;
   var areaData =<Area>[].obs;
   var isLoading = false.obs;
-
+  String lang=CacheHelper.getData(key: 'lang')??'en';
   final formKey = GlobalKey<FormState>();
 
   TextEditingController dateController = TextEditingController();

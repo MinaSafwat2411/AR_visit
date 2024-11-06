@@ -20,9 +20,9 @@ class LoginView extends GetView<LoginController> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'AVA REWASE VISIT',
-                style: TextStyle(
+               Text(
+                controller.getLoginTitle(),
+                style: const TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
                   color: AppColors.trinidadColor,
@@ -32,14 +32,14 @@ class LoginView extends GetView<LoginController> {
               TextFormField(
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter your ARID!';
+                    return controller.getUserValidate();
                   }
                   return null;
                 },
                 cursorColor: AppColors.trinidadColor,
                 controller: controller.aridTextController,
                 decoration: InputDecoration(
-                  labelText: 'E1C1FXXXNRX',
+                  labelText: controller.getUserTitle(),
                   labelStyle: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
@@ -62,10 +62,10 @@ class LoginView extends GetView<LoginController> {
                   obscureText: controller.observeBool(),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your password';
+                      return controller.getPasswordValidate1();
                     }
                     if (value.length < 6) {
-                      return 'Password must be at least 6 characters';
+                      return controller.getPasswordValidate2();
                     }
                     return null;
                   },
@@ -81,7 +81,7 @@ class LoginView extends GetView<LoginController> {
                           ? const Icon(Icons.visibility)
                           : const Icon(Icons.visibility_off),
                     ),
-                    labelText: 'Password',
+                    labelText: controller.getPasswordTitle(),
                     labelStyle: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
@@ -102,7 +102,7 @@ class LoginView extends GetView<LoginController> {
               const SizedBox(height: 40),
               Obx(
                 () => CustomButton(
-                  text: controller.isLoading.value ? 'Logging in...' : 'Login',
+                  text: controller.isLoading.value ? controller.getButtonTitleLoading() : controller.getButtonTitle(),
                   height: 50,
                   onPressed: controller.isLoading.value
                       ? () async {}

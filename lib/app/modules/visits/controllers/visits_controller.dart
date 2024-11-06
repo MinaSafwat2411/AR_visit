@@ -17,17 +17,11 @@ class VisitController extends GetxController {
   var groupedVisits = <DateTime, List<VisitModel>>{}.obs;
   var sortedDates = <DateTime>[].obs;
   var id=''.obs;
+  String lang=CacheHelper.getData(key: 'lang')??'en';
 
   void getUserId(){
     id.value=CacheHelper.getData(key: 'user');
   }
-
-  void logout(){
-    CacheHelper.removeData(key: 'user');
-    CacheHelper.removeData(key: 'loginDone');
-    Get.offAllNamed(Routes.LOGIN);
-  }
-
 
   @override
   void onInit() async{
