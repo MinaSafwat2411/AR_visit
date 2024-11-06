@@ -41,6 +41,12 @@ class AddNewVisitController extends GetxController {
   String getSubmit(){
     return lang =='en'? AppStringsEn.submit : AppStringsAr.submit;
   }
+  String getComfirmYes(){
+    return lang =='en'? AppStringsEn.yes : AppStringsAr.yes;
+  }
+  String getComfirmNo(){
+    return lang =='en'? AppStringsEn.no : AppStringsAr.no;
+  }
   String getPatientName(){
     return lang =='en'? AppStringsEn.patientName : AppStringsAr.patientName;
   }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/utils/app_colors.dart';
+import '../../../core/widgets/custom_alert.dart';
 import '../../../core/widgets/custom_big_textfield.dart';
 import '../../../core/widgets/custom_button.dart';
 import '../../../core/widgets/custom_dropdownlist.dart';
@@ -41,7 +42,19 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
           btnColor: AppColors.trinidadColor,
           onPressed: () {
             if (controller.formKey.currentState!.validate()) {
-              controller.addVisit();
+              showDialog(
+                  context: context,
+                  builder:(context) =>CustomDoubleAlert(
+                    title: controller.getNewVisitTitle(),
+                    rightFunction: () {
+                      Get.back(closeOverlays: true);
+                    },
+                    leftFunction: () {
+                      controller.addVisit();
+                    },
+                    rightButtonText: controller.getComfirmNo(),
+                    leftButtonText: controller.getComfirmYes(),
+                  ));
             }
           },
         ),

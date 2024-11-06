@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_string.dart';
 import '../../../routes/app_pages.dart';
 
 class ProfileViews extends GetView<ProfileControllers> {
@@ -14,10 +15,10 @@ class ProfileViews extends GetView<ProfileControllers> {
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Profile',
+        title:  Text(
+          controller.getProfile(),
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 26,
             fontFamily: 'Inter',
@@ -44,7 +45,7 @@ class ProfileViews extends GetView<ProfileControllers> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const Image(
-                        image: AssetImage('assets/ava_rewase.png'),
+                        image: AssetImage(AppStrings.avaRewase),
                       width: 80,
                       height: 80,
                     ),
@@ -53,7 +54,7 @@ class ProfileViews extends GetView<ProfileControllers> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          controller.user.value.name!,
+                          controller.name.value,
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
@@ -73,19 +74,19 @@ class ProfileViews extends GetView<ProfileControllers> {
                   ],
                 ),
                 const SizedBox(height: 50,),
-                const CustomProfileCard(title: 'Account',image: 'assets/account.png',),
+                CustomProfileCard(title: controller.getAccount(),image: AppStrings.account,),
                 const SizedBox(height: 25,),
-                const CustomProfileCard(title: 'Language',image: 'assets/translate.png',),
+                CustomProfileCard(title: controller.getLanguage(),image: AppStrings.translate,),
                 const SizedBox(height: 25,),
-                const CustomProfileCard(title: 'Settings',image: 'assets/settings.png',),
+                CustomProfileCard(title: controller.getSettings(),image: AppStrings.settings,),
                 const SizedBox(height: 25,),
-                const CustomProfileCard(title: 'FAQ',image: 'assets/faq.png',),
+                CustomProfileCard(title: controller.getFQA(),image: AppStrings.faq,),
                 const SizedBox(height: 25,),
                 Padding(
                   padding:  const EdgeInsets.all(8.0),
                   child: TextButton(onPressed: (){
                     controller.logout();
-                  }, child: const Text('logout',style: TextStyle(
+                  }, child:  Text(controller.getLogout(),style: const TextStyle(
                       color: AppColors.trinidadColor
                   ),),),
                 )

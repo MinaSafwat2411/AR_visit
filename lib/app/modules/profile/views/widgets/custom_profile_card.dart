@@ -33,12 +33,12 @@ class CustomProfileCard extends GetView<ProfileControllers> {
           )
       ),
       const Spacer(),
-      title == 'Language' ? GestureDetector(
+      title == 'Language' ||title == 'اللغة'? GestureDetector(
         onTap: (){
           showDialog(context: context, builder: (context) =>  CustomDoubleAlert(
-            title: 'choose your language',
-            leftButtonText: 'English',
-            rightButtonText: 'Arabic',
+            title: controller.getLanguageComfim(),
+            leftButtonText: controller.getEnglish(),
+            rightButtonText: controller.getArabic(),
             leftFunction: (){
               controller.changeToEnglish();
             },
@@ -47,9 +47,9 @@ class CustomProfileCard extends GetView<ProfileControllers> {
             },
           ));
         },
-        child: const Text(
-            "English",
-            style: TextStyle(
+        child: Text(
+            controller.getLang(),
+            style: const TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w400,
             )

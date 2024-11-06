@@ -3,6 +3,10 @@ class AppStrings{
   static const String avaRewase= 'assets/ava_rewase.png';
   static const String edit= 'assets/edit.png';
   static const String cancel= 'assets/cancel.png';
+  static const String account= 'assets/account.png';
+  static const String translate= 'assets/translate.png';
+  static const String settings= 'assets/settings.png';
+  static const String faq= 'assets/faq.png';
 }
 class AppStringsEn extends AppStrings{
   static const String CopyRight = 'Take-out service program Mosa Al-Nabi family for technological and information services The Churches of the Virgin Mary and Bishop Bishoy The Virgin Mary and Bishop Royce At the Cathedral of Bishop Royce in Abbasiya Version 1.0 Copyright 2024';
@@ -42,6 +46,7 @@ class AppStringsEn extends AppStrings{
   static const String date ='Date';
   static const String time ='Time';
   static const String from ='From:';
+  static const String english ='English:';
   static const String start ='Start';
   static const String end ='End';
   static const String fromValidate ='Start time of visit must be chosen';
@@ -51,14 +56,24 @@ class AppStringsEn extends AppStrings{
   static const String notes ='Notes';
   static const String assign ='Assign';
   static const String done ='Done';
+  static const String profile ='Profile';
+  static const String account ='Account';
+  static const String fAQ ='FAQ';
+  static const String settings ='Settings';
+  static const String language ='Language';
+  static const String languageComfim ='choose your language';
   static const String toValidate ='End time of visit must be chosen';
   static const String dateValidate ='Date of visit must be chosen';
   static const String googleMapsLink ='Location';
   static const String addressValidate ='Patient\'s address must be entered';
-  static const String cancelComfirm ='You want to Cancel this Visit';
-  static const String editComfirm ='You sure to submit edit';
+  static const String cancelComfirm ='You want to Cancel this Visit?';
+  static const String editComfirm ='You sure to submit edit?';
+  static const String newComfirm ='You sure to submit new visit?';
   static const String assignComfirm ='Choose who You want to assign to?';
   static const String doneComfirm ='This Visit is Done?';
+  static const String lang ='English';
+  static const String arabic ='Arabic';
+  static const String logout ='Logout';
 
 }
 class AppStringsAr extends AppStrings{
@@ -96,6 +111,7 @@ class AppStringsAr extends AppStrings{
   static const String assistantPhoneNumberValidate2 ='يجب أن يتكون الهاتف من 11 رقم';
   static const String addressType ='نوع العنوان';
   static const String address ='العنوان';
+  static const String profile ='الملف الشخصي';
   static const String date ='تاريخ الزيارة';
   static const String time ='وقت الزيارة';
   static const String from ='من:';
@@ -112,10 +128,21 @@ class AppStringsAr extends AppStrings{
   static const String notes ='ملحوظات';
   static const String assign ='تعيين';
   static const String done ='انتهت';
-  static const String cancelComfirm ='تريد إلغاء هذه الزيارة';
-  static const String editComfirm ='تريد تعديل هذه الزيارة';
+  static const String cancelComfirm ='هل تريد إلغاء هذه الزيارة؟';
+  static const String editComfirm ='هل أنت متأكد من تقديم التعديل؟';
+  static const String newComfirm ='هل أنت متأكد من تقديم زيارة جديدة؟';
   static const String assignComfirm ='اختر من تريد التعيين إليه؟';
   static const String doneComfirm ='هل تمت هذه الزيارة؟';
+  static const String account ='حسابي';
+  static const String fAQ ='الاسئلة الشائعة';
+  static const String settings ='إعدادات';
+  static const String language ='اللغة';
+  static const String languageComfim ='اختر لغتك';
+  static const String lang ='العربيه';
+  static const String english ='إنجليزي';
+  static const String arabic ='عربي';
+  static const String logout ='تسجيل الخروج';
+
 
 
 }
