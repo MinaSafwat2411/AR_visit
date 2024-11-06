@@ -1,5 +1,5 @@
 import 'package:ar_visiting_app/app/core/widgets/custom_small_textField.dart';
-import 'package:ar_visiting_app/app/routes/app_pages.dart';
+import 'package:ar_visiting_app/app/modules/edit_visit/controllers/edit_visit_controller.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 
@@ -11,277 +11,255 @@ import '../../../core/widgets/custom_big_textfield.dart';
 import '../../../core/widgets/custom_button.dart';
 import '../../../core/widgets/custom_dropdownlist.dart';
 import '../../../core/widgets/custom_textformfield.dart';
-import '../controllers/edit_visit_controller.dart';
 
 class EditVisitView extends GetView<EditVisitController> {
   const EditVisitView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'New Visit',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 26,
-            fontFamily: 'Inter',
+        appBar: AppBar(
+          title:  Text(
+            controller.getEditVisitTitle(),
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 26,
+              fontFamily: 'Inter',
+            ),
+          ),
+          leading: IconButton(
+            onPressed: () {
+              Get.back();
+            },
+            icon: const Icon(Icons.arrow_back),
           ),
         ),
-        leading: IconButton(
-          onPressed: () {
-            Get.offNamedUntil(
-                Routes.VISIT_DETAILS,
-                    (route) => route.settings.name == Routes.HOME,
-                arguments: controller.id
-            );
-          },
-          icon: const Icon(Icons.arrow_back),
-        ),
-      ),
-      floatingActionButton: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.9,
-        height: 58,
-        child: CustomButton(
-          text: 'Edit',
-          btnColor: AppColors.trinidadColor,
-          onPressed: () {
-            if (controller.formKey.currentState!.validate()) {
-              showDialog(
-                  context: context,
-                  builder:(context) =>CustomDoubleAlert(
-                    title: 'You sure to submit edit',
-                    rightFunction: () {
-                      Get.back(closeOverlays: true);
-                    },
-                    leftFunction: () {
-                      controller.editVisit();
-                    },
-                    rightButtonText: 'No',
-                    leftButtonText: 'Yes',
-                  ));
-            }
+        floatingActionButton: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.9,
+          height: 58,
+          child: CustomButton(
+            text: controller.getEdit(),
+            btnColor: AppColors.trinidadColor,
+            onPressed: () {
+              if (controller.formKey.currentState!.validate()) {
+                showDialog(
+                    context: context,
+                    builder:(context) =>CustomDoubleAlert(
+                      title: controller.getEditVisitComfirm(),
+                      rightFunction: () {
+                        Get.back(closeOverlays: true);
+                      },
+                      leftFunction: () {
+                        controller.editVisit();
+                      },
+                      rightButtonText: controller.getComfirmNo(),
+                      leftButtonText: controller.getComfirmYes(),
+                    ));
+              }
             },
+          ),
         ),
-      ),
-      body: Obx(() => ConditionalBuilder(
-        builder: (context) =>  Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25),
-          child: Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Form(
-                    key: controller.formKey,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomTextFormField(
-                          label: 'Patient Name',
-                          validator: (name) {
-                            if (name == null || name.isEmpty) {
-                              return 'Patient name can\'t be empty';
-                            }
-                            return null;
-                          },
-                          textController: controller.patientNameController,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 6),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              const Text(
-                                'E1C1F',
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w500),
+        body: Obx(() =>ConditionalBuilder(
+            condition: !controller.isLoading.value,
+            builder: (context) => Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Form(
+                        key: controller.formKey,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomTextFormField(
+                              label: controller.getPatientName(),
+                              validator: (name) {
+                                if (name == null || name.isEmpty) {
+                                  return controller.getPatientNameValidate();
+                                }
+                                return null;
+                              },
+                              textController: controller.patientNameController,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 6),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  const Text(
+                                    'E1C1F',
+                                    style: TextStyle(
+                                        fontSize: 16, fontWeight: FontWeight.w500),
+                                  ),
+                                  CustomSmallTextField(
+                                    textController: controller.patientFamIDController,
+                                    label: 'XXXX',
+                                  ),
+                                  const Text(
+                                    'NR',
+                                    style: TextStyle(
+                                        fontSize: 16, fontWeight: FontWeight.w500),
+                                  ),
+                                  CustomSmallTextField(
+                                    label: 'X',
+                                    textController:
+                                    controller.patientIDNumberController,
+                                  ),
+                                ],
                               ),
-                              CustomSmallTextField(
-                                validator: (familyID) {
-                                  if (familyID == null || familyID.isEmpty) {
-                                    return 'Patient\'s family ID must be entered';
-                                  } else if (familyID.length >= 7) {
-                                    return 'Patient\'s family ID must be 1 to 6 digits';
-                                  }
+                            ),
+                            CustomTextFormField(
+                              textController: controller.patientPhoneController,
+                              label: controller.getPatientPhoneNumber(),
+                              validator: (phone) {
+                                return null;
+                              },
+                            ),
+                            CustomTextFormField(
+                              textController: controller.assistantNameController,
+                              validator: (value) {
+                                if(value ==null||value.isEmpty){
+                                  return controller.getAssistantNameValidate();
+                                }else {
                                   return null;
-                                },
-                                textController: controller.patientFamIDController,
-                                label: 'XXXX',
+                                }
+                              },
+                              label: controller.getAssistantName(),
+                            ),
+                            CustomTextFormField(
+                              textController: controller.numberOfPeopleController,
+                              validator: (value) {
+                                return null;
+                              },
+                              label: controller.getNoOfPeople(),
+                            ),
+                            CustomTextFormField(
+                              label: controller.getAssistantPhoneNumber(),
+                              textController: controller.assistantPhoneController,
+                              validator: (assistantPhone) {
+                                // Allow the field to be empty
+                                if (assistantPhone == null ||
+                                    assistantPhone.isEmpty) {
+                                  return controller.getAssistantPhoneNumberValidate1();
+                                }
+                                if (assistantPhone.length != 11) {
+                                  return controller.getAssistantPhoneNumberValidate2();
+                                }
+                                return null;
+                              },
+                            ),
+                            CustomDropDownList(
+                              onChangeValue: (String? value) {
+                                controller.addressType.value = value!;
+                              },
+                              label: controller.getAddressType(),
+                              items: controller.getAddressTypeList(),
+                            ),
+                            CustomTextFormField(
+                              label: controller.getAddress(),
+                              textController: controller.patientAddressController,
+                              validator: (address) {
+                                if (address == null || address.isEmpty) {
+                                  return controller.getAddressValidate();
+                                }
+                                return null;
+                              },
+                            ),
+                            CustomDropDownList(
+                              onChangeValue:(String? value) {
+                                controller.areaName.value = value!;
+                              },
+                              label: controller.getZone(),
+                              items: controller.areaNames,
+                            ),
+                            CustomTextFormField(
+                              textController: controller.googleLinkController,
+                              label: controller.getGoogleMapLink(),
+                              validator: (value) {
+                                return null;
+                              },
+                            ),
+                            CustomTextFormField(
+                              label: controller.getDate(),
+                              textController: controller.dateController,
+                              validator: (date) {
+                                if (date == null || date.isEmpty) {
+                                  return controller.getDateValidate();
+                                }
+                                return null;
+                              },
+                              onTap: () {
+                                controller.selectDate(context);
+                              },
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 6),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  Text(
+                                    controller.getFrom(),
+                                    style: const TextStyle(
+                                        fontSize: 16, fontWeight: FontWeight.w500),
+                                  ),
+                                  CustomSmallTextField(
+                                    label: controller.getStart(),
+                                    validator: (start) {
+                                      if (start == null || start.isEmpty) {
+                                        return controller.getFromValidate();
+                                      }
+                                      return null;
+                                    },
+                                    textController: controller.fromTimeController,
+                                    function: () {
+                                      controller.selectedFromTime(context);
+                                    },
+                                  ),
+                                  Text(
+                                    controller.getTo(),
+                                    style: const TextStyle(
+                                        fontSize: 16, fontWeight: FontWeight.w500),
+                                  ),
+                                  CustomSmallTextField(
+                                    function: () {
+                                      controller.selectedToTime(context);
+                                    },
+                                    textController: controller.toTimeController,
+                                    validator: (end) {
+                                      if (end == null || end.isEmpty) {
+                                        return controller.getToValidate();
+                                      }
+                                      return null;
+                                    },
+                                    label: controller.getEnd(),
+                                  ),
+                                ],
                               ),
-                              const Text(
-                                'NR',
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w500),
-                              ),
-                              CustomSmallTextField(
-                                label: 'X',
-                                textController:
-                                controller.patientIDNumberController,
-                                validator: (patientID) {
-                                  if (patientID == null || patientID.isEmpty) {
-                                    return 'Patient\'s ID must be entered';
-                                  } else if (patientID.length != 1) {
-                                    return 'Patient\'s ID must be 1 digit';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ],
-                          ),
+                            ),
+                            CustomBigTextField(
+                                label: controller.getNotes(),
+                                controller: controller.noteController
+                            ),
+                            const SizedBox(
+                              height: 80,
+                            )
+                          ],
                         ),
-                        CustomTextFormField(
-                          textController: controller.patientPhoneController,
-                          label: 'Patient Phone Number',
-                          validator: (phone) {
-                            if (phone == null || phone.isEmpty) {
-                              return 'Patient\'s phone number must be entered';
-                            } else if (phone.length != 11) {
-                              return 'Patient\'s phone must consist of 11 digits';
-                            }
-                            return null;
-                          },
-                        ),
-                        CustomTextFormField(
-                          textController: controller.assistantNameController,
-                          validator: (value) {
-                            return null;
-                          },
-                          label: 'Assistant Name',
-                        ),
-                        CustomTextFormField(
-                          textController: controller.numberOfPeopleController,
-                          validator: (value) {
-                            return null;
-                          },
-                          label: 'No. of People',
-                        ),
-                        CustomTextFormField(
-                          label: 'Assistant Phone',
-                          textController: controller.assistantPhoneController,
-                          validator: (assisstantPhone) {
-                            // Allow the field to be empty
-                            if (assisstantPhone == null ||
-                                assisstantPhone.isEmpty) {
-                              return null;
-                            }
-                            if (assisstantPhone.length != 11) {
-                              return 'Phone must consist of 11 numbers';
-                            }
-                            return null;
-                          },
-                        ),
-                        CustomDropDownList(
-                          onChangeValue: (String? value) {
-                            controller.addressType.value = value!;
-                          },
-                          label: 'Address Type',
-                          items: const ['Hospital', 'Home', 'Dar'],
-                        ),
-                        CustomTextFormField(
-                          label: 'Address',
-                          textController: controller.patientAddressController,
-                          validator: (address) {
-                            if (address == null || address.isEmpty) {
-                              return 'Patient\'s address must be entered';
-                            }
-                            return null;
-                          },
-                        ),
-                        CustomDropDownList(
-                          onChangeValue: (String? value) {
-                            controller.areaName.value = value!;
-                          },
-                          label: 'Area',
-                          items: controller.areaNames,
-                        ),
-                        CustomTextFormField(
-                          textController: controller.googleLinkController,
-                          label: 'Google Maps Link',
-                          validator: (value) {
-                            return null;
-                          },
-                        ),
-                        CustomTextFormField(
-                          label: 'Date',
-                          textController: controller.dateController,
-                          validator: (date) {
-                            if (date == null || date.isEmpty) {
-                              return 'Date of visit must be chosen';
-                            }
-                            return null;
-                          },
-                          onTap: () {
-                            controller.selectDate(context);
-                          },
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 6),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              const Text(
-                                'From:',
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w500),
-                              ),
-                              CustomSmallTextField(
-                                label: 'Start',
-                                validator: (start) {
-                                  if (start == null || start.isEmpty) {
-                                    return 'Start time of visit must be chosen';
-                                  }
-                                  return null;
-                                },
-                                textController: controller.fromTimeController,
-                                function: () {
-                                  controller.selectedFromTime(context);
-                                },
-                              ),
-                              const Text(
-                                'To:',
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w500),
-                              ),
-                              CustomSmallTextField(
-                                function: () {
-                                  controller.selectedToTime(context);
-                                },
-                                textController: controller.toTimeController,
-                                validator: (end) {
-                                  if (end == null || end.isEmpty) {
-                                    return 'Start time of visit must be chosen';
-                                  }
-                                  return null;
-                                },
-                                label: 'End',
-                              ),
-                            ],
-                          ),
-                        ),
-                        CustomBigTextField(
-                            label: 'Notes',
-                            controller: controller.noteController
-                        ),
-                        const SizedBox(
-                          height: 80,
-                        )
-                      ],
+                      ),
                     ),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
-        ),
-        fallback: (context) => const Center(
-          child: CircularProgressIndicator(
-            color: AppColors.trinidadColor,
-          ),
-        ),
-        condition: !controller.isLoading.value,
-      ),
-    )
+            ),
+            fallback: (context) => const Center(
+              child: CircularProgressIndicator(
+                color: AppColors.trinidadColor,
+              ),
+            ))
+
+        )
     );
   }
 }

@@ -1,5 +1,4 @@
 import 'package:ar_visiting_app/app/core/widgets/custom_small_textField.dart';
-import 'package:ar_visiting_app/app/routes/app_pages.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 
@@ -18,10 +17,10 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'New Visit',
+        title:  Text(
+          controller.getNewVisitTitle(),
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 26,
             fontFamily: 'Inter',
@@ -38,7 +37,7 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
         width: MediaQuery.of(context).size.width * 0.9,
         height: 58,
         child: CustomButton(
-          text: 'Submit',
+          text: controller.getSubmit(),
           btnColor: AppColors.trinidadColor,
           onPressed: () {
             if (controller.formKey.currentState!.validate()) {
@@ -62,10 +61,10 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CustomTextFormField(
-                            label: 'Patient Name',
+                            label: controller.getPatientName(),
                             validator: (name) {
                               if (name == null || name.isEmpty) {
-                                return 'Patient name can\'t be empty';
+                                return controller.getPatientNameValidate();
                               }
                               return null;
                             },
@@ -82,14 +81,6 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                                       fontSize: 16, fontWeight: FontWeight.w500),
                                 ),
                                 CustomSmallTextField(
-                                  validator: (familyID) {
-                                    if (familyID == null || familyID.isEmpty) {
-                                      return 'Patient\'s family ID must be entered';
-                                    } else if (familyID.length >= 7) {
-                                      return 'Patient\'s family ID must be 1 to 6 digits';
-                                    }
-                                    return null;
-                                  },
                                   textController: controller.patientFamIDController,
                                   label: 'XXXX',
                                 ),
@@ -102,55 +93,46 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                                   label: 'X',
                                   textController:
                                   controller.patientIDNumberController,
-                                  validator: (patientID) {
-                                    if (patientID == null || patientID.isEmpty) {
-                                      return 'Patient\'s ID must be entered';
-                                    } else if (patientID.length != 1) {
-                                      return 'Patient\'s ID must be 1 digit';
-                                    }
-                                    return null;
-                                  },
                                 ),
                               ],
                             ),
                           ),
                           CustomTextFormField(
                             textController: controller.patientPhoneController,
-                            label: 'Patient Phone Number',
+                            label: controller.getPatientPhoneNumber(),
                             validator: (phone) {
-                              if (phone == null || phone.isEmpty) {
-                                return 'Patient\'s phone number must be entered';
-                              } else if (phone.length != 11) {
-                                return 'Patient\'s phone must consist of 11 digits';
-                              }
                               return null;
                             },
                           ),
                           CustomTextFormField(
                             textController: controller.assistantNameController,
                             validator: (value) {
-                              return null;
+                              if(value ==null||value.isEmpty){
+                                return controller.getAssistantNameValidate();
+                              }else {
+                                return null;
+                              }
                             },
-                            label: 'Assistant Name',
+                            label: controller.getAssistantName(),
                           ),
                           CustomTextFormField(
                             textController: controller.numberOfPeopleController,
                             validator: (value) {
                               return null;
                             },
-                            label: 'No. of People',
+                            label: controller.getNoOfPeople(),
                           ),
                           CustomTextFormField(
-                            label: 'Assistant Phone',
+                            label: controller.getAssistantPhoneNumber(),
                             textController: controller.assistantPhoneController,
-                            validator: (assisstantPhone) {
+                            validator: (assistantPhone) {
                               // Allow the field to be empty
-                              if (assisstantPhone == null ||
-                                  assisstantPhone.isEmpty) {
-                                return null;
+                              if (assistantPhone == null ||
+                                  assistantPhone.isEmpty) {
+                                return controller.getAssistantPhoneNumberValidate1();
                               }
-                              if (assisstantPhone.length != 11) {
-                                return 'Phone must consist of 11 numbers';
+                              if (assistantPhone.length != 11) {
+                                return controller.getAssistantPhoneNumberValidate2();
                               }
                               return null;
                             },
@@ -159,15 +141,15 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                             onChangeValue: (String? value) {
                               controller.addressType.value = value!;
                             },
-                            label: 'Address Type',
-                            items: const ['Hospital', 'Home', 'Dar'],
+                            label: controller.getAddressType(),
+                            items: controller.getAddressTypeList(),
                           ),
                           CustomTextFormField(
-                            label: 'Address',
+                            label: controller.getAddress(),
                             textController: controller.patientAddressController,
                             validator: (address) {
                               if (address == null || address.isEmpty) {
-                                return 'Patient\'s address must be entered';
+                                return controller.getAddressValidate();
                               }
                               return null;
                             },
@@ -176,22 +158,22 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                             onChangeValue:(String? value) {
                               controller.areaName.value = value!;
                             },
-                            label: 'Area',
+                            label: controller.getZone(),
                             items: controller.areaNames,
                           ),
                           CustomTextFormField(
                             textController: controller.googleLinkController,
-                            label: 'Google Maps Link',
+                            label: controller.getGoogleMapLink(),
                             validator: (value) {
                               return null;
                             },
                           ),
                           CustomTextFormField(
-                            label: 'Date',
+                            label: controller.getDate(),
                             textController: controller.dateController,
                             validator: (date) {
                               if (date == null || date.isEmpty) {
-                                return 'Date of visit must be chosen';
+                                return controller.getDateValidate();
                               }
                               return null;
                             },
@@ -204,16 +186,16 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                const Text(
-                                  'From:',
-                                  style: TextStyle(
+                                 Text(
+                                  controller.getFrom(),
+                                  style: const TextStyle(
                                       fontSize: 16, fontWeight: FontWeight.w500),
                                 ),
                                 CustomSmallTextField(
-                                  label: 'Start',
+                                  label: controller.getStart(),
                                   validator: (start) {
                                     if (start == null || start.isEmpty) {
-                                      return 'Start time of visit must be chosen';
+                                      return controller.getFromValidate();
                                     }
                                     return null;
                                   },
@@ -222,9 +204,9 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                                     controller.selectedFromTime(context);
                                   },
                                 ),
-                                const Text(
-                                  'To:',
-                                  style: TextStyle(
+                                 Text(
+                                  controller.getTo(),
+                                  style: const TextStyle(
                                       fontSize: 16, fontWeight: FontWeight.w500),
                                 ),
                                 CustomSmallTextField(
@@ -234,17 +216,17 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                                   textController: controller.toTimeController,
                                   validator: (end) {
                                     if (end == null || end.isEmpty) {
-                                      return 'Start time of visit must be chosen';
+                                      return controller.getToValidate();
                                     }
                                     return null;
                                   },
-                                  label: 'End',
+                                  label: controller.getEnd(),
                                 ),
                               ],
                             ),
                           ),
                           CustomBigTextField(
-                              label: 'Notes',
+                              label: controller.getNotes(),
                               controller: controller.noteController
                           ),
                           const SizedBox(

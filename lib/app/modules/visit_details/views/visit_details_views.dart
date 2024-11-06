@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_string.dart';
 import '../../../core/widgets/TestVisitdetails.dart';
 import '../../../core/widgets/custom_button.dart';
 import '../../../routes/app_pages.dart';
@@ -16,10 +17,10 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
         appBar: AppBar(
-          title: const Text(
-            'Visit Details',
+          title:  Text(
+            controller.getVisitDetailsTitle(),
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 26,
               fontFamily: 'Inter',
@@ -41,9 +42,9 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                     showDialog(
                         context: context,
                         builder: (context) =>  CustomDoubleAlert(
-                          title: 'You want to Cancel this Visit ',
-                          leftButtonText: 'Yes',
-                          rightButtonText: 'No',
+                          title:  controller.getVisitCancelComfirm(),
+                          leftButtonText: controller.getComfirmYes(),
+                          rightButtonText: controller.getComfirmNo(),
                           leftFunction: () => controller.onCanceled(),
                           rightFunction: () => Get.back(closeOverlays: true),
                         )
@@ -53,38 +54,38 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                 position: PopupMenuPosition.under,
                 color: AppColors.white,
                 itemBuilder: (context) => <PopupMenuEntry<OperationType>>[
-                      const PopupMenuItem<OperationType>(
+                  PopupMenuItem<OperationType>(
                         value: OperationType.EDIT,
                         child: Row(
                           children: [
-                            Image(
-                              image: AssetImage('assets/edit.png'),
+                            const Image(
+                              image: AssetImage(AppStrings.edit),
                               width: 25,
                               height: 25,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 15,
                             ),
-                            Text('Edit'),
+                            Text(controller.getEdit()),
                           ],
                         ),
                       ),
                       const PopupMenuDivider(
                         height: 1,
                       ),
-                      const PopupMenuItem<OperationType>(
+                       PopupMenuItem<OperationType>(
                         value: OperationType.CANCELED,
                         child: Row(
                           children: [
-                            Image(
-                              image: AssetImage('assets/cancel.png'),
+                            const Image(
+                              image: AssetImage(AppStrings.cancel),
                               width: 25,
                               height: 25,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 15,
                             ),
-                            Text('Cancel'),
+                            Text(controller.getCancel()),
                           ],
                         ),
                       ),
@@ -108,70 +109,70 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                     height: 45,
                   ),
                   TestVisitDetails(
-                    title: 'Name',
+                    title: controller.getPatientName(),
                     value: controller.visitData.value.patient['name'],
                   ),
                   const SizedBox(
                     height: 30,
                   ),
                   TestVisitDetails(
-                      title: 'ARID',
+                      title: controller.getPatientArid(),
                       value:
                           "E1C1F${controller.visitData.value.patient['PatientFamilyId']}NR${controller.visitData.value.patient['PatientIDNumber']}"),
                   const SizedBox(
                     height: 30,
                   ),
                   TestVisitDetails(
-                      title: 'patient number',
+                      title: controller.getPatientPhoneNumber(),
                       value: controller.visitData.value.patient['phoneNumber']),
                   const SizedBox(
                     height: 30,
                   ),
                   TestVisitDetails(
-                      title: 'assistant name',
+                      title: controller.getAssistantName(),
                       value: controller.visitData.value.assistant['name']),
                   const SizedBox(
                     height: 30,
                   ),
                   TestVisitDetails(
-                      title: 'assistant phone',
+                      title: controller.getAssistantPhoneNumber(),
                       value:
                           controller.visitData.value.assistant['phoneNumber']),
                   const SizedBox(
                     height: 30,
                   ),
                   TestVisitDetails(
-                      title: 'address',
+                      title: controller.getAddress(),
                       value: controller.visitData.value.address['address']),
                   const SizedBox(
                     height: 30,
                   ),
                   TestVisitDetails(
-                      title: 'address Type',
+                      title: controller.getAddressType(),
                       value: controller.visitData.value.address['addressType']),
                   const SizedBox(
                     height: 30,
                   ),
                   TestVisitDetails(
-                      title: 'area',
+                      title: controller.getZone(),
                       value: controller.visitData.value.area['name']),
                   const SizedBox(
                     height: 30,
                   ),
                   TestVisitDetails(
-                      title: 'location',
+                      title: controller.getGoogleMapLink(),
                       value: controller.visitData.value.googleLink),
                   const SizedBox(
                     height: 30,
                   ),
                   TestVisitDetails(
-                      title: 'No. of people',
+                      title: controller.getNoOfPeople(),
                       value: controller.visitData.value.numberOfPeople),
                   const SizedBox(
                     height: 30,
                   ),
                   TestVisitDetails(
-                      title: 'Date',
+                      title: controller.getDate(),
                       value: controller.visitData.value.visitDate
                           .substring(5)
                   ),
@@ -179,27 +180,27 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                     height: 30,
                   ),
                   TestVisitDetails(
-                    title: 'Time',
+                    title: controller.getTimeSting(),
                     value: controller.visitTime.value,
                   ),
                   const SizedBox(
                     height: 30,
                   ),
                   TestVisitDetails(
-                      title: 'Father',
+                      title: controller.getFather(),
                       value: controller.visitData.value.father['name']),
                   const SizedBox(
                     height: 30,
                   ),
                   TestVisitDetails(
-                      title: 'Servant',
+                      title: controller.getServant(),
                       value: controller.visitData.value.servant['name']
                   ),
                   const SizedBox(
                     height: 30,
                   ),
                   TestVisitDetails(
-                      title: 'Note', value: controller.visitData.value.note),
+                      title: controller.getNotes(), value: controller.visitData.value.note),
                   const SizedBox(
                     height: 30,
                   ),
@@ -208,15 +209,15 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                     width: MediaQuery.of(context).size.width * 0.9,
                     height: 58,
                     child: CustomButton(
-                      text: 'Assign',
+                      text: controller.getAssign(),
                       btnColor: AppColors.chartreuseYellow,
                       onPressed: () {
                         showDialog(
                             context: context,
                             builder: (context) =>  CustomDoubleAlert(
-                              title: 'Choose who You want to assign to?',
-                              leftButtonText: 'Father',
-                              rightButtonText: 'Servant',
+                              title: controller.getAssignComfim(),
+                              leftButtonText: controller.getFather(),
+                              rightButtonText: controller.getServant(),
                               leftFunction: () {
                                 Get.back(closeOverlays: true);
                                 Get.toNamed(Routes.ASSIN_Father_VISIT,arguments: controller.id);
@@ -237,15 +238,15 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                     width: MediaQuery.of(context).size.width * 0.9,
                     height: 58,
                     child: CustomButton(
-                      text: 'Done',
+                      text: controller.getDone(),
                       btnColor: AppColors.green,
                       onPressed: () {
                         showDialog(
                             context: context,
                             builder: (context) =>  CustomDoubleAlert(
-                              title: 'This Visit is Done',
-                              leftButtonText: 'Yes',
-                              rightButtonText: 'No',
+                              title: controller.getDoneComfim(),
+                              leftButtonText: controller.getComfirmYes(),
+                              rightButtonText: controller.getComfirmNo(),
                               leftFunction: () => controller.onDone(),
                               rightFunction: () => Get.back(closeOverlays: true),
                             )

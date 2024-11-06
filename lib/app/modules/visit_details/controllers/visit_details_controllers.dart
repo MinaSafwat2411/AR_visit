@@ -6,6 +6,7 @@ import '../../../core/firebase/AddVisitFirebase.dart';
 import '../../../core/firebase/GetVisitDetailsFirebase.dart';
 import '../../../core/models/visits/addvisitmodel.dart';
 import '../../../core/sharedchache/cache_helper.dart';
+import '../../../core/utils/app_string.dart';
 
 class VisitDetailsControllers extends GetxController {
   var isLoading = false.obs;
@@ -29,6 +30,119 @@ class VisitDetailsControllers extends GetxController {
     note: ''
   ).obs;
   String lang=CacheHelper.getData(key: 'lang')??'en';
+
+  String getVisitDetailsTitle(){
+    return lang =='en'? AppStringsEn.visitDetailsTitle : AppStringsAr.visitDetailsTitle;
+  }
+  String getVisitCancelComfirm(){
+    return lang =='en'? AppStringsEn.cancelComfirm : AppStringsAr.cancelComfirm;
+  }
+  String getComfirmYes(){
+    return lang =='en'? AppStringsEn.yes : AppStringsAr.yes;
+  }
+  String getComfirmNo(){
+    return lang =='en'? AppStringsEn.no : AppStringsAr.no;
+  }
+  String getEdit(){
+    return lang =='en'? AppStringsEn.edit : AppStringsAr.edit;
+  }
+  String getCancel(){
+    return lang =='en'? AppStringsEn.cancel : AppStringsAr.cancel;
+  }
+  String getPatientName(){
+    return lang =='en'? AppStringsEn.patientName : AppStringsAr.patientName;
+  }
+  String getPatientArid(){
+    return lang =='en'? AppStringsEn.arid : AppStringsAr.arid;
+  }
+  String getAssistantName(){
+    return lang =='en'? AppStringsEn.assistantName : AppStringsAr.assistantName;
+  }
+  String getPatientNameValidate(){
+    return lang =='en'? AppStringsEn.patientNameValidate : AppStringsAr.patientNameValidate;
+  }
+  String getPatientPhoneNumber(){
+    return lang =='en'? AppStringsEn.patientPhoneNumber : AppStringsAr.patientPhoneNumber;
+  }
+  String getNoOfPeople(){
+    return lang =='en'? AppStringsEn.noOfPeople : AppStringsAr.noOfPeople;
+  }
+  String getAssistantPhoneNumber(){
+    return lang =='en'? AppStringsEn.assistantPhoneNumber : AppStringsAr.assistantPhoneNumber;
+  }
+  String getAssistantNameValidate(){
+    return lang =='en'? AppStringsEn.assistantNameValidate : AppStringsAr.assistantNameValidate;
+  }
+  String getAssistantPhoneNumberValidate1(){
+    return lang =='en'? AppStringsEn.assistantPhoneNumberValidate1 : AppStringsAr.assistantPhoneNumberValidate1;
+  }
+  String getAssistantPhoneNumberValidate2(){
+    return lang =='en'? AppStringsEn.assistantPhoneNumberValidate2 : AppStringsAr.assistantPhoneNumberValidate2;
+  }
+  String getAddressType(){
+    return lang =='en'? AppStringsEn.addressType : AppStringsAr.addressType;
+  }
+  String getAddress(){
+    return lang =='en'? AppStringsEn.address : AppStringsAr.address;
+  }
+  String getAddressValidate(){
+    return lang =='en'? AppStringsEn.addressValidate : AppStringsAr.addressValidate;
+  }
+  String getZone(){
+    return lang =='en'? AppStringsEn.zone : AppStringsAr.zone;
+  }
+  String getDate(){
+    return lang =='en'? AppStringsEn.date : AppStringsAr.date;
+  }
+  String getTimeSting(){
+    return lang =='en'? AppStringsEn.time : AppStringsAr.time;
+  }
+  String getFrom(){
+    return lang =='en'? AppStringsEn.from : AppStringsAr.from;
+  }
+  String getStart(){
+    return lang =='en'? AppStringsEn.start : AppStringsAr.start;
+  }
+  String getNotes(){
+    return lang =='en'? AppStringsEn.notes : AppStringsAr.notes;
+  }
+  String getEnd(){
+    return lang =='en'? AppStringsEn.end : AppStringsAr.end;
+  }
+  String getTo(){
+    return lang =='en'? AppStringsEn.to : AppStringsAr.to;
+  }
+  String getFromValidate(){
+    return lang =='en'? AppStringsEn.fromValidate : AppStringsAr.fromValidate;
+  }
+  String getToValidate(){
+    return lang =='en'? AppStringsEn.toValidate : AppStringsAr.toValidate;
+  }
+  String getDateValidate(){
+    return lang =='en'? AppStringsEn.dateValidate : AppStringsAr.dateValidate;
+  }
+  String getGoogleMapLink(){
+    return lang =='en'? AppStringsEn.googleMapsLink : AppStringsAr.googleMapsLink;
+  }
+  String getServant(){
+    return lang =='en'? AppStringsEn.servant : AppStringsAr.servant;
+  }
+  String getFather(){
+    return lang =='en'? AppStringsEn.father : AppStringsAr.father;
+  }
+  String getAssign(){
+    return lang =='en'? AppStringsEn.assign : AppStringsAr.assign;
+  }
+  String getDone(){
+    return lang =='en'? AppStringsEn.assign : AppStringsAr.assign;
+  }
+  String getAssignComfim(){
+    return lang =='en'? AppStringsEn.assignComfirm : AppStringsAr.assignComfirm;
+  }
+  String getDoneComfim(){
+    return lang =='en'? AppStringsEn.doneComfirm : AppStringsAr.doneComfirm;
+  }
+
 
   @override
   void onInit() async{
@@ -92,7 +206,7 @@ class VisitDetailsControllers extends GetxController {
       from=visitData.value.visitTimeRangeFrom.substring(0,5);
     }
 
-    visitTime.value='$from To $to';
+    lang == 'en'? visitTime.value='$from To $to':visitTime.value='$from الي $to';
   }
 
   void onCanceled() {

@@ -1,6 +1,8 @@
 class AppStrings{
   static const String imageLogo= 'assets/Logo.png';
   static const String avaRewase= 'assets/ava_rewase.png';
+  static const String edit= 'assets/edit.png';
+  static const String cancel= 'assets/cancel.png';
 }
 class AppStringsEn extends AppStrings{
   static const String CopyRight = 'Take-out service program Mosa Al-Nabi family for technological and information services The Churches of the Virgin Mary and Bishop Bishoy The Virgin Mary and Bishop Royce At the Cathedral of Bishop Royce in Abbasiya Version 1.0 Copyright 2024';
@@ -13,6 +15,7 @@ class AppStringsEn extends AppStrings{
   static const String login ='Login';
   static const String loginLoading ='Login';
   static const String visitTitle ='Visit list';
+  static const String visitDetailsTitle ='Visit Details';
   static const String yesterday ='Yesterday';
   static const String today ='Today';
   static const String tomorrow ='Tomorrow';
@@ -20,6 +23,42 @@ class AppStringsEn extends AppStrings{
   static const String father ='Father';
   static const String servant ='Father';
   static const String zone ='Zone';
+  static const String newVisitTitle ='New Visit';
+  static const String editVisitTitle ='Edit Visit';
+  static const String submit ='Submit';
+  static const String edit ='Edit';
+  static const String cancel ='Cancel';
+  static const String arid ='ARID';
+  static const String patientName ='Patient Name';
+  static const String assistantName ='Assistant Name';
+  static const String patientNameValidate ='Patient name can\'t be empty';
+  static const String assistantNameValidate ='assistant name must be entered';
+  static const String assistantPhoneNumberValidate1 ='assistant phone must be entered';
+  static const String assistantPhoneNumberValidate2 ='Phone must consist of 11 numbers';
+  static const String patientPhoneNumber ='Patient Phone Number';
+  static const String assistantPhoneNumber ='Assistant Phone';
+  static const String addressType ='Address Type';
+  static const String address ='Address';
+  static const String date ='Date';
+  static const String time ='Time';
+  static const String from ='From:';
+  static const String start ='Start';
+  static const String end ='End';
+  static const String fromValidate ='Start time of visit must be chosen';
+  static const String to ='To:';
+  static const String yes ='Yes';
+  static const String no ='No';
+  static const String notes ='Notes';
+  static const String assign ='Assign';
+  static const String done ='Done';
+  static const String toValidate ='End time of visit must be chosen';
+  static const String dateValidate ='Date of visit must be chosen';
+  static const String googleMapsLink ='Location';
+  static const String addressValidate ='Patient\'s address must be entered';
+  static const String cancelComfirm ='You want to Cancel this Visit';
+  static const String editComfirm ='You sure to submit edit';
+  static const String assignComfirm ='Choose who You want to assign to?';
+  static const String doneComfirm ='This Visit is Done?';
 
 }
 class AppStringsAr extends AppStrings{
@@ -29,16 +68,54 @@ class AppStringsAr extends AppStrings{
   static const String passwordValidate1 ='رجاء ادخال كلمه السر';
   static const String passwordValidate2 ='يجب أن تتكون كلمة المرور من 6 أحرف على الأقل';
   static const String userTitle ='ادخل رقم العضويه';
+  static const String arid ='رقم العضويه';
   static const String userValidate ='رجاء ادخال رقم العضوية';
   static const String login ='تسجيل الدخول';
   static const String loginLoading ='تسجيل الدخول...';
   static const String visitTitle ='قائمة الزيارة';
+  static const String visitDetailsTitle ='تفاصيل الزيارة';
   static const String yesterday ='امس';
   static const String today ='اليوم';
   static const String tomorrow ='غدا';
   static const String noOfPeople ='عدد الاشخاص';
   static const String father ='الكاهن';
   static const String servant ='الخادم';
-  static const String zone ='المنضقة';
+  static const String zone ='المنطقة';
+  static const String newVisitTitle ='زيارة جديدة';
+  static const String editVisitTitle ='تعديل زيارة';
+  static const String submit ='اضف';
+  static const String edit ='تعديل';
+  static const String cancel ='الغاء';
+  static const String patientName ='اسم المريض';
+  static const String assistantName ='اسم المرافق';
+  static const String patientNameValidate ='لا يمكن أن يكون اسم المريض فارغًا';
+  static const String assistantNameValidate ='لا يمكن أن يكون اسم المرافق فارغًا';
+  static const String patientPhoneNumber ='رقم هاتف المريض';
+  static const String assistantPhoneNumber ='رقم هاتف المرافق';
+  static const String assistantPhoneNumberValidate1 ='لا يمكن أن يكون هاتف المرافق فارغًا';
+  static const String assistantPhoneNumberValidate2 ='يجب أن يتكون الهاتف من 11 رقم';
+  static const String addressType ='نوع العنوان';
+  static const String address ='العنوان';
+  static const String date ='تاريخ الزيارة';
+  static const String time ='وقت الزيارة';
+  static const String from ='من:';
+  static const String start ='يبدا';
+  static const String end ='ينتهي';
+  static const String fromValidate ='يجب اختيار وقت بدء الزيارة';
+  static const String to ='الي:';
+  static const String yes ='نعم';
+  static const String no ='لا';
+  static const String toValidate ='يجب اختيار وقت انتهاء الزيارة';
+  static const String dateValidate ='لا يمكن أن يكون تاريخ الزيارة فارغًا';
+  static const String googleMapsLink ='رابط عنوان المريض';
+  static const String addressValidate ='لا يمكن أن يكون عنوان المريض فارغًا';
+  static const String notes ='ملحوظات';
+  static const String assign ='تعيين';
+  static const String done ='انتهت';
+  static const String cancelComfirm ='تريد إلغاء هذه الزيارة';
+  static const String editComfirm ='تريد تعديل هذه الزيارة';
+  static const String assignComfirm ='اختر من تريد التعيين إليه؟';
+  static const String doneComfirm ='هل تمت هذه الزيارة؟';
+
 
 }

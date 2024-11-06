@@ -6,6 +6,7 @@ import '../../../core/firebase/AddVisitFirebase.dart';
 import '../../../core/firebase/GetAreaFirebase.dart';
 import '../../../core/models/visits/addvisitmodel.dart';
 import '../../../core/sharedchache/cache_helper.dart';
+import '../../../core/utils/app_string.dart';
 import '../../../routes/app_pages.dart';
 
 class AddNewVisitController extends GetxController {
@@ -16,6 +17,8 @@ class AddNewVisitController extends GetxController {
   var isLoading = false.obs;
   String lang=CacheHelper.getData(key: 'lang')??'en';
   final formKey = GlobalKey<FormState>();
+  var addressTypeList=['Hospital', 'Home', 'Dar'];
+  var addressTypeListAr=['مستشفى', 'منزل', 'دار'];
 
   TextEditingController dateController = TextEditingController();
   TextEditingController fromTimeController = TextEditingController();
@@ -31,6 +34,85 @@ class AddNewVisitController extends GetxController {
   TextEditingController patientIDNumberController = TextEditingController();
   TextEditingController noteController = TextEditingController();
   TextEditingController googleLinkController = TextEditingController();
+
+  String getNewVisitTitle(){
+    return lang =='en'? AppStringsEn.newVisitTitle : AppStringsAr.newVisitTitle;
+  }
+  String getSubmit(){
+    return lang =='en'? AppStringsEn.submit : AppStringsAr.submit;
+  }
+  String getPatientName(){
+    return lang =='en'? AppStringsEn.patientName : AppStringsAr.patientName;
+  }
+  String getAssistantName(){
+    return lang =='en'? AppStringsEn.assistantName : AppStringsAr.assistantName;
+  }
+  String getPatientNameValidate(){
+    return lang =='en'? AppStringsEn.patientNameValidate : AppStringsAr.patientNameValidate;
+  }
+  String getPatientPhoneNumber(){
+    return lang =='en'? AppStringsEn.patientPhoneNumber : AppStringsAr.patientPhoneNumber;
+  }
+  String getNoOfPeople(){
+    return lang =='en'? AppStringsEn.noOfPeople : AppStringsAr.noOfPeople;
+  }
+  String getAssistantPhoneNumber(){
+    return lang =='en'? AppStringsEn.assistantPhoneNumber : AppStringsAr.assistantPhoneNumber;
+  }
+  String getAssistantNameValidate(){
+    return lang =='en'? AppStringsEn.assistantNameValidate : AppStringsAr.assistantNameValidate;
+  }
+  String getAssistantPhoneNumberValidate1(){
+    return lang =='en'? AppStringsEn.assistantPhoneNumberValidate1 : AppStringsAr.assistantPhoneNumberValidate1;
+  }
+  String getAssistantPhoneNumberValidate2(){
+    return lang =='en'? AppStringsEn.assistantPhoneNumberValidate2 : AppStringsAr.assistantPhoneNumberValidate2;
+  }
+  String getAddressType(){
+    return lang =='en'? AppStringsEn.addressType : AppStringsAr.addressType;
+  }
+  String getAddress(){
+    return lang =='en'? AppStringsEn.address : AppStringsAr.address;
+  }
+  String getAddressValidate(){
+    return lang =='en'? AppStringsEn.addressValidate : AppStringsAr.addressValidate;
+  }
+  String getZone(){
+    return lang =='en'? AppStringsEn.zone : AppStringsAr.zone;
+  }
+  String getDate(){
+    return lang =='en'? AppStringsEn.date : AppStringsAr.date;
+  }
+  String getFrom(){
+    return lang =='en'? AppStringsEn.from : AppStringsAr.from;
+  }
+  String getStart(){
+    return lang =='en'? AppStringsEn.start : AppStringsAr.start;
+  }
+  String getNotes(){
+    return lang =='en'? AppStringsEn.notes : AppStringsAr.notes;
+  }
+  String getEnd(){
+    return lang =='en'? AppStringsEn.end : AppStringsAr.end;
+  }
+  String getTo(){
+    return lang =='en'? AppStringsEn.to : AppStringsAr.to;
+  }
+  String getFromValidate(){
+    return lang =='en'? AppStringsEn.fromValidate : AppStringsAr.fromValidate;
+  }
+  String getToValidate(){
+    return lang =='en'? AppStringsEn.toValidate : AppStringsAr.toValidate;
+  }
+  String getDateValidate(){
+    return lang =='en'? AppStringsEn.dateValidate : AppStringsAr.dateValidate;
+  }
+  String getGoogleMapLink(){
+    return lang =='en'? AppStringsEn.googleMapsLink : AppStringsAr.googleMapsLink;
+  }
+  List<String> getAddressTypeList(){
+    return lang =='en'? addressTypeList: addressTypeListAr;
+  }
 
   Future<void> selectDate(BuildContext context) async {
     DateTime? datePicked = await showDatePicker(
