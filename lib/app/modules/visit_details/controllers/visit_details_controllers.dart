@@ -134,7 +134,7 @@ class VisitDetailsControllers extends GetxController {
     return lang =='en'? AppStringsEn.assign : AppStringsAr.assign;
   }
   String getDone(){
-    return lang =='en'? AppStringsEn.assign : AppStringsAr.assign;
+    return lang =='en'? AppStringsEn.done : AppStringsAr.done;
   }
   String getAssignComfim(){
     return lang =='en'? AppStringsEn.assignComfirm : AppStringsAr.assignComfirm;
