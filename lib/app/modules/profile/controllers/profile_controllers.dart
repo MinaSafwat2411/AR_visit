@@ -63,10 +63,12 @@ class ProfileControllers extends GetxController {
   }
   void changeToArabic(){
     CacheHelper.saveData(key: 'lang',value: 'ar');
+    Get.offAllNamed(Routes.PROFILE);
     runApp(MyApp());
   }
   void changeToEnglish(){
     CacheHelper.saveData(key: 'lang',value: 'en');
+    Get.offAllNamed(Routes.PROFILE);
     runApp(MyApp());
   }
 

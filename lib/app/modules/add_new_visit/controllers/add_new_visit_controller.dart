@@ -11,8 +11,11 @@ import '../../../routes/app_pages.dart';
 
 class AddNewVisitController extends GetxController {
   var addressType = ''.obs;
+  var addressTypeAr = ''.obs;
   var areaName = ''.obs;
+  var areaNameAr = ''.obs;
   var areaNames = <String>[].obs;
+  var areaNamesAr = <String>[].obs;
   var areaData =<Area>[].obs;
   var isLoading = false.obs;
   String lang=CacheHelper.getData(key: 'lang')??'en';
@@ -144,7 +147,28 @@ class AddNewVisitController extends GetxController {
       // });
     }
   }
-
+  void getAreaData(){
+    int? index;
+    if(areaName.value==''){
+      index=areaNamesAr.value.indexOf(areaNameAr.value);
+      areaName.value = areaNames[index];
+    }else if(areaNameAr.value ==''){
+      index=areaNames.value.indexOf(areaName.value);
+      areaNameAr.value = areaNamesAr[index];
+    }
+  }
+  void getTypeAddress(){
+    int? index;
+    if(addressType.value==''){
+      index=addressTypeListAr.indexOf(addressTypeAr.value);
+      print(index);
+      addressType.value = addressTypeList[index];
+    }else if(addressTypeAr.value ==''){
+      index=addressTypeList.indexOf(addressType.value);
+      print(index);
+      addressTypeAr.value = addressTypeListAr[index];
+    }
+  }
   Future<void> selectedFromTime(BuildContext context) async {
     TimeOfDay? fromTimePicked = await showTimePicker(
         context: context,
@@ -194,6 +218,7 @@ class AddNewVisitController extends GetxController {
     try {
       areaData.value = await GetAreaFirebase.retrieveArea();
       areaNames.value = areaData.map((area) => area.area!).toList();
+      areaNamesAr.value = areaData.map((area) => area.areaAr!).toList();
     }catch(e){
       Get.snackbar("Error", "Failed to retrieve area details");
     }finally{
@@ -204,15 +229,18 @@ class AddNewVisitController extends GetxController {
   void addVisit() async{
     isLoading(true);
     try{
+      getAreaData();
+      getTypeAddress();
       Visit newVisit = Visit(
         area: {
           'name': areaName.value,
-          'visitId': ''
+          'nameAr': areaNameAr.value
         },
         father: {
           'id': '',
           'isFather': true,
           'name': '',
+          'nameAr': '',
           'phoneNumber': ''
         },
         patient: {
@@ -225,6 +253,7 @@ class AddNewVisitController extends GetxController {
           'id': '',
           'isFather': false,
           'name': '',
+          'nameAr': '',
           'phoneNumber': ''
         },
          assistant: {
@@ -234,7 +263,8 @@ class AddNewVisitController extends GetxController {
         status: 'NEW',
         address: {
           'address':patientAddressController.text,
-          'addressType':addressType.value
+          'addressType':addressType.value,
+          'addressTypeAr':addressTypeAr.value,
         },
         visitDate: dateController.text,
         visitTimeRangeFrom: fromTimeController.text,

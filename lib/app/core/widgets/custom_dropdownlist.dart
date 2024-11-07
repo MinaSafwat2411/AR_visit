@@ -7,18 +7,21 @@ class CustomDropDownList extends StatelessWidget {
     super.key,
     this.items,
     this.label,
+    this.value,
     required this.onChangeValue
   });
 
   final List<String>? items;
-   final ValueChanged<String?> onChangeValue;
+  final ValueChanged<String?> onChangeValue;
   final String? label;
+  final String? value;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 45,
       child: DropdownButtonFormField<String>(
+        value: value,
         items: items?.map((String value) {
           return DropdownMenuItem<String>(
             value: value,

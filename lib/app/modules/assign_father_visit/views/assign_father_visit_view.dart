@@ -14,8 +14,9 @@ class AssignFatherVisitView extends GetView<AssignFatherVisitController> {
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
       appBar: AppBar(
-        title: const Text('Fathers',
-            style: TextStyle(
+        title: Text(
+            controller.getFather(),
+            style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.w600,
             )),
@@ -35,7 +36,9 @@ class AssignFatherVisitView extends GetView<AssignFatherVisitController> {
             padding: const EdgeInsets.all(8.0),
             child: TextButton(onPressed: (){
               controller.onCanceledAssign();
-            }, child: const Text('Cancel',style: TextStyle(
+            }, child: Text(
+              controller.getCancel(),
+              style: const TextStyle(
               color: AppColors.trinidadColor
             ),),),
           ):const SizedBox(height: 0,)
@@ -56,9 +59,11 @@ class AssignFatherVisitView extends GetView<AssignFatherVisitController> {
                   showDialog(
                       context: context,
                       builder: (context) =>  CustomDoubleAlert(
-                        title: 'You want to Assign \n${controller.fatherList[index].name}?',
-                        leftButtonText: 'Yes',
-                        rightButtonText: 'No',
+                        title: '${controller.getAssignPerson()} \n${
+                            controller.lang =='en'?controller.fatherList[index].name:
+                        controller.fatherList[index].nameAr}?',
+                        leftButtonText: controller.getComfirmYes(),
+                        rightButtonText: controller.getComfirmNo(),
                         leftFunction: () {
                           Get.back(closeOverlays: true);
                           controller.onFatherSelected(controller.fatherList[index]);
@@ -71,7 +76,9 @@ class AssignFatherVisitView extends GetView<AssignFatherVisitController> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [Text(
-                      '${controller.fatherList[index].name}',
+                      '${
+                          controller.lang =='en'?controller.fatherList[index].name:
+                      controller.fatherList[index].nameAr}',
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w400,

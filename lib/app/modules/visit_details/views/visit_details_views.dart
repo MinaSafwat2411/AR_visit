@@ -149,13 +149,16 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                   ),
                   TestVisitDetails(
                       title: controller.getAddressType(),
-                      value: controller.visitData.value.address['addressType']),
+                      value: controller.lang=='en'?controller.visitData.value.address['addressType']:
+                      controller.visitData.value.address['addressTypeAr']
+                  ),
                   const SizedBox(
                     height: 30,
                   ),
                   TestVisitDetails(
                       title: controller.getZone(),
-                      value: controller.visitData.value.area['name']),
+                      value: controller.lang=='en'? controller.visitData.value.area['name']:
+                      controller.visitData.value.area['nameAr']),
                   const SizedBox(
                     height: 30,
                   ),

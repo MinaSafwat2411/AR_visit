@@ -25,7 +25,7 @@ class AppStringsEn extends AppStrings{
   static const String tomorrow ='Tomorrow';
   static const String noOfPeople ='No. of people';
   static const String father ='Father';
-  static const String servant ='Father';
+  static const String servant ='Servant';
   static const String zone ='Zone';
   static const String newVisitTitle ='New Visit';
   static const String editVisitTitle ='Edit Visit';
@@ -39,7 +39,7 @@ class AppStringsEn extends AppStrings{
   static const String assistantNameValidate ='assistant name must be entered';
   static const String assistantPhoneNumberValidate1 ='assistant phone must be entered';
   static const String assistantPhoneNumberValidate2 ='Phone must consist of 11 numbers';
-  static const String patientPhoneNumber ='Patient Phone Number';
+  static const String patientPhoneNumber ='Patient Phone';
   static const String assistantPhoneNumber ='Assistant Phone';
   static const String addressType ='Address Type';
   static const String address ='Address';
@@ -74,6 +74,7 @@ class AppStringsEn extends AppStrings{
   static const String lang ='English';
   static const String arabic ='Arabic';
   static const String logout ='Logout';
+  static const String assignPerson ='You want to Assign';
 
 }
 class AppStringsAr extends AppStrings{
@@ -132,6 +133,7 @@ class AppStringsAr extends AppStrings{
   static const String editComfirm ='هل أنت متأكد من تقديم التعديل؟';
   static const String newComfirm ='هل أنت متأكد من تقديم زيارة جديدة؟';
   static const String assignComfirm ='اختر من تريد التعيين إليه؟';
+  static const String assignPerson ='هل تريد التعيين ';
   static const String doneComfirm ='هل تمت هذه الزيارة؟';
   static const String account ='حسابي';
   static const String fAQ ='الاسئلة الشائعة';

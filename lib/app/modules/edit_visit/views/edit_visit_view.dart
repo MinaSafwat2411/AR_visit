@@ -152,9 +152,11 @@ class EditVisitView extends GetView<EditVisitController> {
                             ),
                             CustomDropDownList(
                               onChangeValue: (String? value) {
-                                controller.addressType.value = value!;
+                                controller.lang =='en'? controller.addressType.value = value!
+                                    :controller.addressTypeAr.value = value!;
                               },
                               label: controller.getAddressType(),
+                              value: controller.lang =='en'? controller.addressType.value:controller.addressTypeAr.value,
                               items: controller.getAddressTypeList(),
                             ),
                             CustomTextFormField(
@@ -169,10 +171,12 @@ class EditVisitView extends GetView<EditVisitController> {
                             ),
                             CustomDropDownList(
                               onChangeValue:(String? value) {
-                                controller.areaName.value = value!;
+                                controller.lang =='en'? controller.visitArea.value = value!
+                                :controller.visitAreaAr.value = value!;
                               },
+                              value: controller.lang =='en'?controller.visitArea.value:controller.visitAreaAr.value,
                               label: controller.getZone(),
-                              items: controller.areaNames,
+                              items: controller.lang=='en'?controller.areaNames:controller.areaNamesAr,
                             ),
                             CustomTextFormField(
                               textController: controller.googleLinkController,

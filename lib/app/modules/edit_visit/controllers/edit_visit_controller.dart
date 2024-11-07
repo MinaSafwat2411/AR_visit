@@ -12,13 +12,18 @@ import '../../../core/utils/app_string.dart';
 import '../../../routes/app_pages.dart';
 
 class EditVisitController extends GetxController {
-  var areaName = ''.obs;
+  var addressType = ''.obs;
+  var addressTypeAr = ''.obs;
+  var visitArea = ''.obs;
+  var visitAreaAr = ''.obs;
   var areaNames = <String>[].obs;
+  var areaNamesAr = <String>[].obs;
   var areaData =<Area>[].obs;
   var isLoading = false.obs;
   String id =Get.arguments;
   var addressTypeList=['Hospital', 'Home', 'Dar'];
   var addressTypeListAr=['مستشفى', 'منزل', 'دار'];
+  Rx<int> index=0.obs;
   var visitData=VisitModel(
       id: '',
       status: '',
@@ -35,7 +40,7 @@ class EditVisitController extends GetxController {
       googleLink: '',
       note: ''
   ).obs;
-  var addressType = ''.obs;
+
   String lang=CacheHelper.getData(key: 'lang')??'en';
 
   Future<void> getVisitDetails() async {
@@ -43,6 +48,10 @@ class EditVisitController extends GetxController {
     try {
       VisitModel? visitDetails = await VisitsRetriever.retrieveVisitDetails(id);
       visitData.value=visitDetails!;
+      visitArea.value=visitDetails.area.values.last;
+      visitAreaAr.value=visitDetails.area.values.first;
+      addressType.value =visitDetails.address.values.last.toString();
+      addressTypeAr.value =addressTypeListAr[addressTypeList.indexOf(addressType.value)];
     } catch (e) {
       Get.snackbar("Error", "Failed to retrieve visit details: $e");
     } finally {
@@ -227,25 +236,36 @@ class EditVisitController extends GetxController {
     try {
       areaData.value = await GetAreaFirebase.retrieveArea();
       areaNames.value = areaData.map((area) => area.area!).toList();
+      areaNamesAr.value = areaData.map((area) => area.areaAr!).toList();
     }catch(e){
       Get.snackbar("Error", "Failed to retrieve area details");
     }finally{
       isLoading.value=false;
     }
   }
-
+  void changeOtherInLanguage(){
+    if(lang=='en'){
+      addressTypeAr.value=addressTypeListAr[addressTypeList.indexOf(addressType.value)];
+      visitAreaAr.value=areaNamesAr[areaNames.indexOf(visitArea.value)];
+    }else{
+      addressType.value=addressTypeList[addressTypeListAr.indexOf(addressTypeAr.value)];
+      visitArea.value=areaNames[areaNamesAr.indexOf(visitAreaAr.value)];
+    }
+  }
   void editVisit(){
     isLoading(true);
+    changeOtherInLanguage();
     try{
       Visit newVisit = Visit(
         area: {
-          'name': areaName.value,
-          'visitId': ''
+          'name': visitArea.value,
+          'nameAr': visitAreaAr.value,
         },
         father: {
           'id': visitData.value.father['id'],
           'isFather': true,
           'name': visitData.value.father['name'],
+          'nameAr':visitData.value.father['nameAr'],
           'phoneNumber': visitData.value.father['phone']
         },
         patient: {
@@ -258,6 +278,7 @@ class EditVisitController extends GetxController {
           'id': visitData.value.servant['id'],
           'isFather': false,
           'name': visitData.value.servant['name'],
+          'nameAr': visitData.value.servant['nameAr'],
           'phoneNumber': visitData.value.servant['phoneNumber']
         },
          assistant: {
@@ -267,7 +288,8 @@ class EditVisitController extends GetxController {
         status: 'NEW',
         address: {
           'address':patientAddressController.text,
-          'addressType':addressType.value
+          'addressType':addressType.value,
+          'addressTypeAr':addressTypeAr.value
         },
         visitDate: dateController.text,
         visitTimeRangeFrom: fromTimeController.text,

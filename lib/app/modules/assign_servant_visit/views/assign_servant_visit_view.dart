@@ -14,8 +14,9 @@ class AssignServantVisitView extends GetView<AssignServantVisitController> {
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
       appBar: AppBar(
-        title: const Text('Servant',
-            style: TextStyle(
+        title:  Text(
+            controller.getServant(),
+            style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.w600,
             )),
@@ -36,7 +37,9 @@ class AssignServantVisitView extends GetView<AssignServantVisitController> {
             padding: const EdgeInsets.all(8.0),
             child: TextButton(onPressed: (){
               controller.onCanceledAssign();
-            }, child: const Text('Cancel',style: TextStyle(
+            }, child:  Text(
+              controller.getCancel(),
+              style: const TextStyle(
                 color: AppColors.trinidadColor
             ),),),
           )
@@ -57,9 +60,12 @@ class AssignServantVisitView extends GetView<AssignServantVisitController> {
                   showDialog(
                       context: context,
                       builder: (context) =>  CustomDoubleAlert(
-                        title: 'You want to Assign \n${controller.servantList[index].name}?',
-                        leftButtonText: 'Yes',
-                        rightButtonText: 'No',
+                        title: '${controller.getAssignPerson()} \n${
+                            controller.lang =='en'?controller.servantList[index].name:
+                            controller.servantList[index].nameAr
+                        }?',
+                        leftButtonText: controller.getComfirmYes(),
+                        rightButtonText: controller.getComfirmNo(),
                         leftFunction: () {
                           Get.back(closeOverlays: true);
                           controller.onServantSelected(controller.servantList[index]);
@@ -72,7 +78,10 @@ class AssignServantVisitView extends GetView<AssignServantVisitController> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [Text(
-                      '${controller.servantList[index].name}',
+                      '${
+                          controller.lang =='en'?controller.servantList[index].name:
+                      controller.servantList[index].nameAr
+                      }',
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w400,

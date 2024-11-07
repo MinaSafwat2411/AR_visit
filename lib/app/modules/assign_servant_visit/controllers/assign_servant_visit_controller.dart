@@ -9,6 +9,7 @@ import '../../../core/firebase/GetVisitDetailsFirebase.dart';
 import '../../../core/models/visits/addvisitmodel.dart';
 import '../../../core/models/visits/visitsmodel.dart';
 import '../../../core/sharedchache/cache_helper.dart';
+import '../../../core/utils/app_string.dart';
 import '../../../routes/app_pages.dart';
 
 class AssignServantVisitController extends GetxController{
@@ -38,6 +39,22 @@ class AssignServantVisitController extends GetxController{
       note: ''
   ).obs;
   String lang=CacheHelper.getData(key: 'lang')??'en';
+
+  String getServant(){
+    return lang =='en'? AppStringsEn.servant : AppStringsAr.servant;
+  }
+  String getCancel(){
+    return lang =='en'? AppStringsEn.cancel : AppStringsAr.cancel;
+  }
+  String getComfirmYes(){
+    return lang =='en'? AppStringsEn.yes : AppStringsAr.yes;
+  }
+  String getComfirmNo(){
+    return lang =='en'? AppStringsEn.no : AppStringsAr.no;
+  }
+  String getAssignPerson(){
+    return lang =='en'? AppStringsEn.assignPerson : AppStringsAr.assignPerson;
+  }
 
 
   Future<void> getVisitDetails() async {
@@ -83,6 +100,7 @@ class AssignServantVisitController extends GetxController{
           servant: {
             "id":"",
             "name":"",
+            "nameAr":"",
             "phoneNumber":"",
             "isFather":servant.value.isFather,
           },
@@ -122,6 +140,7 @@ class AssignServantVisitController extends GetxController{
             "isFather":servant.value.isFather,
             "phoneNumber":servant.value.phone,
             "name":servant.value.name,
+            "nameAr":servant.value.nameAr,
           },
           assistant: visitData.value.assistant,
           status: visitData.value.status,
