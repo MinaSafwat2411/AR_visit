@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:intl/intl.dart';  // Import the intl package for custom date format
 import '../models/visits/visitsmodel.dart';
 
 class VisitsRetriever {
@@ -18,6 +18,7 @@ class VisitsRetriever {
       return null; // Return null in case of error
     }
   }
+
   static Future<Map<String, VisitModel>> retrieveVisits() async {
     final yesterday = DateTime.now().subtract(const Duration(days: 2));
     final start = DateTime(yesterday.year, yesterday.month, yesterday.day);
@@ -25,14 +26,34 @@ class VisitsRetriever {
     Query<Map<String, dynamic>> visits = FirebaseFirestore.instance.collection("Visit");
     QuerySnapshot querySnapshot = await visits.get();
 
+    // Extract and filter visit data
     Map<String, VisitModel> visitsData = {};
+    List<VisitModel> visitModels = [];
 
     for (QueryDocumentSnapshot doc in querySnapshot.docs) {
       VisitModel visitModel = VisitModel.fromFireStore(doc);
-      if(DateTime.parse(visitModel.visitDate).isAfter(start)){
+      if (DateTime.parse(visitModel.visitDate).isAfter(start)) {
         visitsData[doc.id] = visitModel;
+        visitModels.add(visitModel);
       }
     }
+
+    // Sort visits by date and then by time
+    visitModels.sort((a, b) {
+      // Parse the date and time for each visit using DateFormat
+      DateFormat dateFormat = DateFormat("yyyy-MM-dd h:mm a");  // The format is yyyy-MM-dd h:mm a
+
+      DateTime dateTimeA = dateFormat.parse("${a.visitDate} ${a.visitTimeRangeFrom}");
+      DateTime dateTimeB = dateFormat.parse("${b.visitDate} ${b.visitTimeRangeFrom}");
+
+      return dateTimeA.compareTo(dateTimeB);
+    });
+
+    // Rebuild visitsData to reflect the sorted order
+    visitsData = {
+      for (VisitModel visit in visitModels) visit.id: visit,
+    };
+
     return visitsData;
   }
 }
