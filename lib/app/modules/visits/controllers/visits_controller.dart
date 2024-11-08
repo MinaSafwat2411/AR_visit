@@ -11,7 +11,7 @@ import '../../../core/utils/app_string.dart';
 class VisitController extends GetxController {
   var visitData = <String, VisitModel>{}.obs;
   var visitsDates = <String>[].obs;
-  var tagsStatusList = [false ,true ,false, false, false, false].obs;
+  var tagsStatusList = [true ,false ,false, false, false, false].obs;
   var isLoading=RxBool(false);
   var groupedVisits = <DateTime, List<VisitModel>>{}.obs;
   var sortedDates = <DateTime>[].obs;
