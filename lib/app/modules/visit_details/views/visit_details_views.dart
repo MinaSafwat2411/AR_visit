@@ -3,8 +3,6 @@ import 'package:ar_visiting_app/app/modules/visit_details/controllers/visit_deta
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_string.dart';
@@ -15,27 +13,6 @@ import '../di/operation_type.dart';
 
 
 class VisitDetailsViews extends GetView<VisitDetailsControllers> {
-  Future<void> _launchPhoneDialer(String phoneNumber) async {
-    final Uri phoneUrl = Uri(scheme: 'tel', path: phoneNumber);
-    try {
-      await launch(phoneUrl.toString());
-    } catch (e) {
-      print('Could not launch phone dialer: $e');
-    }
-  }
-  Future<void> _launchGoogleLink(String googleLink) async {
-    final Uri phoneUrl = Uri(scheme :'https',path:googleLink);
-    try {
-      await launch(phoneUrl.toString());
-    } catch (e) {
-      print('Could not launch phone dialer: $e');
-    }
-  }
-  Future<bool> requestPhonePermission() async {
-    PermissionStatus status = await Permission.phone.request();
-    return status == PermissionStatus.granted;
-
-  }
   const VisitDetailsViews({super.key});
   @override
   Widget build(BuildContext context) {
@@ -174,9 +151,9 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                   ),
                   GestureDetector(
                     onTap: () async {
-                      if (await requestPhonePermission()) {
+                      if (await controller.requestPhonePermission()) {
                         // Launch the phone call
-                        _launchPhoneDialer( controller.visitData.value.assistant['phoneNumber']);
+                        controller.launchPhoneDialer( controller.visitData.value.assistant['phoneNumber']);
                       }
                     },
                     child: TestVisitDetails(
@@ -194,9 +171,9 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                   ),
                   GestureDetector(
                     onTap: () async {
-                      if (await requestPhonePermission()) {
+                      if (await controller.requestPhonePermission()) {
                       // Launch the phone call
-                      _launchPhoneDialer( controller.visitData.value.assistant['phoneNumber']);
+                        controller.launchPhoneDialer( controller.visitData.value.assistant['phoneNumber']);
                       }
                     },
                     child: TestVisitDetails(
@@ -230,9 +207,9 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                   ),
                   GestureDetector(
                     onTap: () async {
-                      if (await requestPhonePermission()) {
+                      if (await controller.requestPhonePermission()) {
                         // Launch the phone call
-                        _launchGoogleLink( controller.visitData.value.googleLink.substring(8));
+                        controller.launchGoogleLink( controller.visitData.value.googleLink.substring(8));
                       }
                     },
                     child: TestVisitDetails(

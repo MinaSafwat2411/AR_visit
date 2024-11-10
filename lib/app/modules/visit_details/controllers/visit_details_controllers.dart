@@ -1,6 +1,8 @@
 import 'package:ar_visiting_app/app/core/models/visits/visitsmodel.dart';
 import 'package:ar_visiting_app/app/routes/app_pages.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/firebase/AddVisitFirebase.dart';
 import '../../../core/firebase/GetVisitDetailsFirebase.dart';
@@ -144,6 +146,27 @@ class VisitDetailsControllers extends GetxController {
   }
   String getDoneComfim(){
     return lang =='en'? AppStringsEn.doneComfirm : AppStringsAr.doneComfirm;
+  }
+  Future<void> launchPhoneDialer(String phoneNumber) async {
+    final Uri phoneUrl = Uri(scheme: 'tel', path: phoneNumber);
+    try {
+      await launch(phoneUrl.toString());
+    } catch (e) {
+      print('Could not launch phone dialer: $e');
+    }
+  }
+  Future<void> launchGoogleLink(String googleLink) async {
+    final Uri phoneUrl = Uri(scheme :'https',path:googleLink);
+    try {
+      await launch(phoneUrl.toString());
+    } catch (e) {
+      print('Could not launch phone dialer: $e');
+    }
+  }
+  Future<bool> requestPhonePermission() async {
+    PermissionStatus status = await Permission.phone.request();
+    return status == PermissionStatus.granted;
+
   }
 
   void onClone(String id)async{
