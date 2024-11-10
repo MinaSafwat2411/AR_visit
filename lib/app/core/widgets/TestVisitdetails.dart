@@ -14,7 +14,7 @@ class TestVisitDetails extends StatelessWidget {
     return Row(
       children: [
         Text('${title!} : ',style: const TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
-        Text(value!,style: const TextStyle(fontSize: 20,fontWeight: FontWeight.w300),)
+        Expanded(child: Text(value!,style: const TextStyle(fontSize: 20,fontWeight: FontWeight.w300),overflow: TextOverflow.ellipsis,))
       ],
     );
   }

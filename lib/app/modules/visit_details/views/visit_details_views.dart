@@ -24,7 +24,7 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
     }
   }
   Future<void> _launchGoogleLink(String googleLink) async {
-    final Uri phoneUrl = Uri(scheme:'https' ,path:googleLink);
+    final Uri phoneUrl = Uri(scheme :'https',path:googleLink);
     try {
       await launch(phoneUrl.toString());
     } catch (e) {
@@ -232,7 +232,7 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                     onTap: () async {
                       if (await requestPhonePermission()) {
                         // Launch the phone call
-                        _launchGoogleLink( controller.visitData.value.googleLink);
+                        _launchGoogleLink( controller.visitData.value.googleLink.substring(8));
                       }
                     },
                     child: TestVisitDetails(
