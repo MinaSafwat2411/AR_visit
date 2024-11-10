@@ -37,7 +37,7 @@ class VisitsView extends GetView<VisitController> {
       ),
       appBar: AppBar(
         leading: IconButton(onPressed: (){
-          Get.offAllNamed(Routes.PROFILE);
+          Get.toNamed(Routes.PROFILE);
         }, icon:  const Image(image: AssetImage(AppStrings.avaRewase))),
         title:  Text(
           controller.getVisitTitle(),

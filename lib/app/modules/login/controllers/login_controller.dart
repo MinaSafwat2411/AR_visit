@@ -53,9 +53,9 @@ class LoginController extends GetxController {
           password: passwordTextController.text,
         );
         Get.snackbar("Login", "Logged in successfully!");
-        Get.offNamed(Routes.VISITS);
         CacheHelper.saveData(key: 'loginDone', value: true);
         CacheHelper.saveData(key: 'user', value: aridTextController.text);
+        Get.offNamed(Routes.VISITS);
       } else {
         Get.snackbar("Error", "Username not found");
       }

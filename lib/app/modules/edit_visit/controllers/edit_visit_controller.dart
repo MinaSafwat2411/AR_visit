@@ -302,7 +302,7 @@ class EditVisitController extends GetxController {
       Get.snackbar("Visits", "Visits add successfully");
       Get.offNamedUntil(
           Routes.VISIT_DETAILS,
-              (route) => route.settings.name == Routes.HOME,
+              (route) => route.settings.name == Routes.VISITS,
           arguments: id
       );
     }catch (e){

@@ -26,7 +26,7 @@ class ProfileViews extends GetView<ProfileControllers> {
         ),
         leading: IconButton(
           onPressed: () {
-            Get.offAllNamed(Routes.VISITS);
+            Get.back();
           },
           icon: const Icon(Icons.arrow_back),
         ),

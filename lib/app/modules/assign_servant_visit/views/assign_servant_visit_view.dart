@@ -23,11 +23,7 @@ class AssignServantVisitView extends GetView<AssignServantVisitController> {
         centerTitle: false,
         leading: IconButton(
           onPressed: () {
-            Get.offNamedUntil(
-                Routes.VISIT_DETAILS,
-                    (route) => route.settings.name == Routes.HOME,
-                arguments: controller.id
-            );
+            Get.back();
           },
           icon: const Icon(Icons.arrow_back),
         ),

@@ -36,7 +36,6 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                 initialValue: OperationType.NEW,
                 onSelected: (OperationType value) {
                   if (value == OperationType.EDIT) {
-                    Get.back(closeOverlays: true);
                     Get.toNamed(Routes.EDIT_VISIT,arguments: controller.id);
                   } else if (value == OperationType.CANCELED) {
                     showDialog(
@@ -93,7 +92,7 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
           ],
           leading: IconButton(
             onPressed: () {
-              Get.offAllNamed(Routes.VISITS);
+              Get.back();
             },
             icon: const Icon(Icons.arrow_back),
           ),

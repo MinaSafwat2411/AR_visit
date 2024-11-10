@@ -118,7 +118,7 @@ class AssignServantVisitController extends GetxController{
       Get.snackbar("Visits", "Visits has been Assigned");
       Get.offNamedUntil(
           Routes.VISIT_DETAILS,
-              (route) => route.settings.name == Routes.HOME,
+              (route) => route.settings.name == Routes.VISITS,
           arguments: id
       );
     }catch (e){
@@ -156,7 +156,7 @@ class AssignServantVisitController extends GetxController{
       Get.snackbar("Visits", "Visits has been Assigned");
       Get.offNamedUntil(
           Routes.VISIT_DETAILS,
-              (route) => route.settings.name == Routes.HOME,
+              (route) => route.settings.name == Routes.VISITS,
           arguments: id
       );
     }catch (e){

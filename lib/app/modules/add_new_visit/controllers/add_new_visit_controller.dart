@@ -275,7 +275,7 @@ class AddNewVisitController extends GetxController {
       );
       VisitSubmission.submitVisit(newVisit);
       Get.snackbar("Visits", "Visits add successfully");
-      Get.offAllNamed(Routes.VISITS);
+      Get.back();
     }catch (e){
       Get.snackbar("Error", e.toString());
     }finally{
