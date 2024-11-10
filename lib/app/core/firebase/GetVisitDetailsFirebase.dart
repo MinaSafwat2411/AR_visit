@@ -37,7 +37,7 @@ class VisitsRetriever {
           visitsData[doc.id] = visitModel;
           visitModels.add(visitModel);
         }
-      }else{
+      }else if(DateTime.parse(visitModel.visitDate).isBefore(start)){
         visitsData[doc.id] = visitModel;
         visitModels.add(visitModel);
       }
