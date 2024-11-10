@@ -3,6 +3,8 @@ import 'package:ar_visiting_app/app/modules/visit_details/controllers/visit_deta
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_string.dart';
@@ -13,6 +15,27 @@ import '../di/operation_type.dart';
 
 
 class VisitDetailsViews extends GetView<VisitDetailsControllers> {
+  Future<void> _launchPhoneDialer(String phoneNumber) async {
+    final Uri phoneUrl = Uri(scheme: 'tel', path: phoneNumber);
+    try {
+      await launch(phoneUrl.toString());
+    } catch (e) {
+      print('Could not launch phone dialer: $e');
+    }
+  }
+  Future<void> _launchGoogleLink(String googleLink) async {
+    final Uri phoneUrl = Uri(scheme:'https' ,path:googleLink);
+    try {
+      await launch(phoneUrl.toString());
+    } catch (e) {
+      print('Could not launch phone dialer: $e');
+    }
+  }
+  Future<bool> requestPhonePermission() async {
+    PermissionStatus status = await Permission.phone.request();
+    return status == PermissionStatus.granted;
+
+  }
   const VisitDetailsViews({super.key});
   @override
   Widget build(BuildContext context) {
@@ -149,9 +172,17 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                   const SizedBox(
                     height: 30,
                   ),
-                  TestVisitDetails(
-                      title: controller.getPatientPhoneNumber(),
-                      value: controller.visitData.value.patient['phoneNumber']),
+                  GestureDetector(
+                    onTap: () async {
+                      if (await requestPhonePermission()) {
+                        // Launch the phone call
+                        _launchPhoneDialer( controller.visitData.value.assistant['phoneNumber']);
+                      }
+                    },
+                    child: TestVisitDetails(
+                        title: controller.getPatientPhoneNumber(),
+                        value: controller.visitData.value.patient['phoneNumber']),
+                  ),
                   const SizedBox(
                     height: 30,
                   ),
@@ -161,10 +192,18 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                   const SizedBox(
                     height: 30,
                   ),
-                  TestVisitDetails(
-                      title: controller.getAssistantPhoneNumber(),
-                      value:
-                          controller.visitData.value.assistant['phoneNumber']),
+                  GestureDetector(
+                    onTap: () async {
+                      if (await requestPhonePermission()) {
+                      // Launch the phone call
+                      _launchPhoneDialer( controller.visitData.value.assistant['phoneNumber']);
+                      }
+                    },
+                    child: TestVisitDetails(
+                        title: controller.getAssistantPhoneNumber(),
+                        value:
+                            controller.visitData.value.assistant['phoneNumber']),
+                  ),
                   const SizedBox(
                     height: 30,
                   ),
@@ -189,9 +228,17 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                   const SizedBox(
                     height: 30,
                   ),
-                  TestVisitDetails(
-                      title: controller.getGoogleMapLink(),
-                      value: controller.visitData.value.googleLink),
+                  GestureDetector(
+                    onTap: () async {
+                      if (await requestPhonePermission()) {
+                        // Launch the phone call
+                        _launchGoogleLink( controller.visitData.value.googleLink);
+                      }
+                    },
+                    child: TestVisitDetails(
+                        title: controller.getGoogleMapLink(),
+                        value: controller.visitData.value.googleLink),
+                  ),
                   const SizedBox(
                     height: 30,
                   ),
