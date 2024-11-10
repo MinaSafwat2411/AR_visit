@@ -11,7 +11,7 @@ import '../../../core/utils/app_string.dart';
 import '../../../routes/app_pages.dart';
 
 
-class VisitController extends GetxController {
+class AllVisitController extends GetxController {
   var visitData = <String, VisitModel>{}.obs;
   var visitsDates = <String>[].obs;
   var tagsStatusList = [true ,false ,false, false, false, false].obs;
@@ -205,28 +205,10 @@ class VisitController extends GetxController {
   }
   Future<void> getVisitData() async {
     isLoading.value = true;
-    String selectedStatus = tags[tagsStatusList.indexOf(true)];
-
     try {
-      final visits = await VisitsRetriever.retrieveVisits(false);
+      final visits = await VisitsRetriever.retrieveVisits(true);
       visitData.value = visits;
-      if (selectedStatus == "All") {
-        visitData.value =Map<String, VisitModel>.from(visitData);
-      } else if (selectedStatus != "All" && selectedStatus != "Me"){
-        visitData.value= Map<String, VisitModel>.fromEntries(
-          visitData.entries.where((entry) {
-            final visitModel = entry.value;
-            return visitModel.status == selectedStatus;
-          }).map((entry) => MapEntry<String, VisitModel>(entry.key, entry.value)),
-        );
-      }else if(selectedStatus == "Me"){
-        visitData.value= Map<String, VisitModel>.fromEntries(
-          visitData.entries.where((entry) {
-            final visitModel = entry.value;
-            return visitModel.father['id'] == id.value || visitModel.servant['id'] == id.value;
-          }).map((entry) => MapEntry<String, VisitModel>(entry.key, entry.value)),
-        );
-    }
+      visitData.value =Map<String, VisitModel>.from(visitData);
       groupedVisits.value={};
       for(var item in  visitData.values) {
         DateTime visitDate = DateTime.parse(item.visitDate);

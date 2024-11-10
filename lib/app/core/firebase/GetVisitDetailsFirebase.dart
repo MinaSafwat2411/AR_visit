@@ -19,7 +19,7 @@ class VisitsRetriever {
     }
   }
 
-  static Future<Map<String, VisitModel>> retrieveVisits() async {
+  static Future<Map<String, VisitModel>> retrieveVisits(bool allVisits) async {
     final yesterday = DateTime.now().subtract(const Duration(days: 2));
     final start = DateTime(yesterday.year, yesterday.month, yesterday.day);
 
@@ -32,24 +32,25 @@ class VisitsRetriever {
 
     for (QueryDocumentSnapshot doc in querySnapshot.docs) {
       VisitModel visitModel = VisitModel.fromFireStore(doc);
-      if (DateTime.parse(visitModel.visitDate).isAfter(start)) {
+      if(!allVisits){
+        if (DateTime.parse(visitModel.visitDate).isAfter(start)) {
+          visitsData[doc.id] = visitModel;
+          visitModels.add(visitModel);
+        }
+      }else{
         visitsData[doc.id] = visitModel;
         visitModels.add(visitModel);
       }
     }
-
-    // Sort visits by date and then by time
     visitModels.sort((a, b) {
-      // Parse the date and time for each visit using DateFormat
-      DateFormat dateFormat = DateFormat("yyyy-MM-dd h:mm a");  // The format is yyyy-MM-dd h:mm a
 
+      DateFormat dateFormat = DateFormat("yyyy-MM-dd h:mm a");
       DateTime dateTimeA = dateFormat.parse("${a.visitDate} ${a.visitTimeRangeFrom}");
       DateTime dateTimeB = dateFormat.parse("${b.visitDate} ${b.visitTimeRangeFrom}");
 
       return dateTimeA.compareTo(dateTimeB);
     });
 
-    // Rebuild visitsData to reflect the sorted order
     visitsData = {
       for (VisitModel visit in visitModels) visit.id: visit,
     };

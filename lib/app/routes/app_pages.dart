@@ -1,3 +1,4 @@
+import 'package:ar_visiting_app/app/modules/all_visits/views/all_visits_view.dart';
 import 'package:ar_visiting_app/app/modules/assign_father_visit/bindings/assign_father_visit_binding.dart';
 import 'package:ar_visiting_app/app/modules/assign_father_visit/views/assign_father_visit_view.dart';
 import 'package:ar_visiting_app/app/modules/assign_servant_visit/views/assign_servant_visit_view.dart';
@@ -13,6 +14,7 @@ import 'package:get/get.dart';
 
 import '../modules/add_new_visit/bindings/add_new_visit_binding.dart';
 import '../modules/add_new_visit/views/add_new_visit_view.dart';
+import '../modules/all_visits/bindings/all_visits_binding.dart';
 import '../modules/assign_servant_visit/bindings/assign_servant_visit_binding.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
@@ -39,8 +41,13 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.VISITS,
-      page: () =>  VisitsView(),
+      page: () =>  const VisitsView(),
       binding: VisitsBinding(),
+    ),
+    GetPage(
+      name: _Paths.ALLVISITS,
+      page: () =>  const AllVisitsView(),
+      binding: AllVisitsBinding(),
     ),
     GetPage(
       name: _Paths.SPLASH,

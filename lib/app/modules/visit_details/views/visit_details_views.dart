@@ -92,7 +92,7 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
           ],
           leading: IconButton(
             onPressed: () {
-              Get.back();
+              Get.offAllNamed(Routes.VISITS);
             },
             icon: const Icon(Icons.arrow_back),
           ),
