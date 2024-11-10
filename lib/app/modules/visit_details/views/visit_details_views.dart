@@ -11,6 +11,7 @@ import '../../../core/widgets/custom_button.dart';
 import '../../../routes/app_pages.dart';
 import '../di/operation_type.dart';
 
+
 class VisitDetailsViews extends GetView<VisitDetailsControllers> {
   const VisitDetailsViews({super.key});
   @override
@@ -45,6 +46,17 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                           leftButtonText: controller.getComfirmYes(),
                           rightButtonText: controller.getComfirmNo(),
                           leftFunction: () => controller.onCanceled(),
+                          rightFunction: () => Get.back(closeOverlays: true),
+                        )
+                    );
+                  }else if(value==OperationType.CLONE){
+                    showDialog(
+                        context: context,
+                        builder: (context) =>  CustomDoubleAlert(
+                          title:  controller.getVisitCancelComfirm(),
+                          leftButtonText: controller.getComfirmYes(),
+                          rightButtonText: controller.getComfirmNo(),
+                          leftFunction: () => controller.onClone(controller.id),
                           rightFunction: () => Get.back(closeOverlays: true),
                         )
                     );
@@ -85,6 +97,22 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                               width: 15,
                             ),
                             Text(controller.getCancel()),
+                          ],
+                        ),
+                      ),
+                  const PopupMenuDivider(
+                    height: 1,
+                  ),
+                  PopupMenuItem<OperationType>(
+                        value: OperationType.CLONE,
+                        child: Row(
+                          children: [
+                            const Icon(Icons.copy,
+                            ),
+                            const SizedBox(
+                              width: 15,
+                            ),
+                            Text(controller.getClone()),
                           ],
                         ),
                       ),

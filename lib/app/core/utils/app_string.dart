@@ -32,6 +32,7 @@ class AppStringsEn extends AppStrings{
   static const String submit ='Submit';
   static const String edit ='Edit';
   static const String cancel ='Cancel';
+  static const String clone ='Copy';
   static const String arid ='ARID';
   static const String patientName ='Patient Name';
   static const String assistantName ='Assistant Name';
@@ -122,6 +123,7 @@ class AppStringsAr extends AppStrings{
   static const String to ='الي:';
   static const String yes ='نعم';
   static const String no ='لا';
+  static const String clone ='نسخ';
   static const String toValidate ='يجب اختيار وقت انتهاء الزيارة';
   static const String dateValidate ='لا يمكن أن يكون تاريخ الزيارة فارغًا';
   static const String googleMapsLink ='رابط عنوان المريض';

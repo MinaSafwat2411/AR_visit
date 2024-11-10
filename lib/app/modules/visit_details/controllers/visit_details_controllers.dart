@@ -49,6 +49,9 @@ class VisitDetailsControllers extends GetxController {
   String getCancel(){
     return lang =='en'? AppStringsEn.cancel : AppStringsAr.cancel;
   }
+  String getClone(){
+    return lang =='en'? AppStringsEn.clone : AppStringsAr.clone;
+  }
   String getPatientName(){
     return lang =='en'? AppStringsEn.patientName : AppStringsAr.patientName;
   }
@@ -143,7 +146,52 @@ class VisitDetailsControllers extends GetxController {
     return lang =='en'? AppStringsEn.doneComfirm : AppStringsAr.doneComfirm;
   }
 
-
+  void onClone(String id)async{
+    isLoading(true);
+    try{
+      VisitModel? visitDetails = await VisitsRetriever.retrieveVisitDetails(id);
+      visitData.value=visitDetails!;
+    }catch (e){
+      Get.snackbar("Error", e.toString());
+    }finally{
+      try{
+        Visit newVisit = Visit(
+            area: visitData.value.area,
+            servant: {
+              'id': '',
+              'isFather': false,
+              'name': '',
+              'nameAr': '',
+              'phoneNumber': ''
+            },
+            father: {
+              'id': '',
+              'isFather': true,
+              'name': '',
+              'nameAr': '',
+              'phoneNumber': ''
+            },
+            patient: visitData.value.patient,
+            assistant: visitData.value.assistant,
+            status: 'NEW',
+            address: visitData.value.address,
+            visitDate: visitData.value.visitDate,
+            visitTimeRangeFrom: visitData.value.visitTimeRangeFrom,
+            visitTimeRangeTo:visitData.value.visitTimeRangeTo,
+            numberOfPeople: visitData.value.numberOfPeople,
+            note: visitData.value.note,
+            googleLink: visitData.value.googleLink
+        );
+        id = await VisitSubmission.submitVisit(newVisit);
+        Get.snackbar("Visits", "Visits has been Done");
+      }catch(e){
+        Get.snackbar("Error", e.toString());
+      }finally{
+        isLoading.value=false;
+      }
+      Get.toNamed(Routes.EDIT_VISIT,arguments: id);
+    }
+  }
   @override
   void onInit() async{
     super.onInit();

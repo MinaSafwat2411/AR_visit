@@ -145,9 +145,21 @@ class AllVisitController extends GetxController {
       try{
         Visit visitData = Visit(
             area: visit.value.area,
-            father: visit.value.father,
+            servant: {
+              'id': '',
+              'isFather': false,
+              'name': '',
+              'nameAr': '',
+              'phoneNumber': ''
+            },
+            father: {
+              'id': '',
+              'isFather': true,
+              'name': '',
+              'nameAr': '',
+              'phoneNumber': ''
+            },
             patient: visit.value.patient,
-            servant: visit.value.servant,
             assistant: visit.value.assistant,
             status: 'New',
             address: visit.value.address,
@@ -158,7 +170,7 @@ class AllVisitController extends GetxController {
             note: visit.value.note,
             googleLink: visit.value.googleLink
         );
-        VisitSubmission.updateVisit(id,visitData);
+        id = await VisitSubmission.submitVisit(visitData);
         Get.snackbar("Visits", "Visits has been Done");
       }catch(e){
         Get.snackbar("Error", e.toString());
