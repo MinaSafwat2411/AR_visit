@@ -149,9 +149,6 @@ class VisitDetailsControllers extends GetxController {
     super.onInit();
     await getVisitDetails();
   }
-  void onMenuClicked(){
-    isDropdownOpen.value=!isDropdownOpen.value;
-  }
   // Fetch Visit Details from Firebase
   Future<void> getVisitDetails() async {
     isLoading.value = true;

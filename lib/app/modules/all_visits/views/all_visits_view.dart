@@ -1,16 +1,16 @@
 import 'package:ar_visiting_app/app/core/utils/app_string.dart';
-import 'package:ar_visiting_app/app/modules/visits/views/widgets/tag_item_widget.dart';
+import 'package:ar_visiting_app/app/modules/all_visits/views/widgets/all_visit_list.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../routes/app_pages.dart';
-import '../controllers/visits_controller.dart';
-import 'widgets/my_date_visit_list_widget.dart';
+import '../../visits/views/widgets/my_date_visit_list_widget.dart';
+import '../controllers/all_visits_controller.dart';
 
-class VisitsView extends GetView<VisitController> {
+class AllVisitsView extends GetView<AllVisitController> {
 
 
-  const VisitsView({super.key});
+  const AllVisitsView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,17 +36,10 @@ class VisitsView extends GetView<VisitController> {
         ),
       ),
       appBar: AppBar(
-        actions:  [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: IconButton(icon: const Icon(Icons.archive_outlined),onPressed: (){
-              Get.toNamed(Routes.ALLVISITS);
-            },),
-          ),
-        ],
         leading: IconButton(onPressed: (){
-          Get.toNamed(Routes.PROFILE);
-        }, icon:  const Image(image: AssetImage(AppStrings.avaRewase))),
+          Get.back();
+        }, icon: const Icon(Icons.arrow_back),
+        ),
         title:  Text(
           controller.getVisitTitle(),
           style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
@@ -58,26 +51,12 @@ class VisitsView extends GetView<VisitController> {
         physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
-            SizedBox(
-                height: 45,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) => Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                    child: TagItemWidget(
-                      visitController: controller,
-                      index: index,
-                      tag: controller.lang=='en'?controller.tags[index]:controller.tagsAr[index],
-                    ),
-                  ),
-                  itemCount: controller.tags.length,
-                )),
             Obx(() => Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ConditionalBuilder(
                     condition: !controller.isLoading.value,
                     builder: (context) {
-                      return  const MyDateVisitListWidget();
+                      return  const AllMyDateVisitListWidget();
                     },
                     fallback: (context) => const Center(
                       child: CircularProgressIndicator(
