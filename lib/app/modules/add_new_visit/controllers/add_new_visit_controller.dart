@@ -18,6 +18,7 @@ class AddNewVisitController extends GetxController {
   var areaNamesAr = <String>[].obs;
   var areaData =<Area>[].obs;
   var isLoading = false.obs;
+  var id =''.obs;
   String lang=CacheHelper.getData(key: 'lang')??'en';
   final formKey = GlobalKey<FormState>();
   var addressTypeList=['Hospital', 'Home', 'Dar'];
@@ -273,9 +274,13 @@ class AddNewVisitController extends GetxController {
         note: noteController.text,
         googleLink: googleLinkController.text
       );
-      VisitSubmission.submitVisit(newVisit);
+      id.value = await VisitSubmission.submitVisit(newVisit);
       Get.snackbar("Visits", "Visits add successfully");
-      Get.back();
+      Get.offNamedUntil(
+          Routes.VISIT_DETAILS,
+              (route) => route.settings.name == Routes.VISITS,
+          arguments: id
+      );
     }catch (e){
       Get.snackbar("Error", e.toString());
     }finally{
