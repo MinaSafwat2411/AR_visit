@@ -50,6 +50,7 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                       Get.back(closeOverlays: true);
                     },
                     leftFunction: () {
+                      Get.back(closeOverlays: true);
                       controller.addVisit();
                     },
                     rightButtonText: controller.getComfirmNo(),

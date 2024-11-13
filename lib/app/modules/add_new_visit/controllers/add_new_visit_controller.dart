@@ -279,7 +279,7 @@ class AddNewVisitController extends GetxController {
       Get.offNamedUntil(
           Routes.VISIT_DETAILS,
               (route) => route.settings.name == Routes.VISITS,
-          arguments: id
+          arguments: id.value
       );
     }catch (e){
       Get.snackbar("Error", e.toString());
