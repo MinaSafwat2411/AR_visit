@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:ar_visiting_app/app/core/utils/app_string.dart';
 import 'package:get/get.dart';
 import '../../../core/sharedchache/cache_helper.dart';
 import '../../../routes/app_pages.dart';

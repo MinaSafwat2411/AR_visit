@@ -5,7 +5,6 @@ import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 
 import '../../../core/utils/app_colors.dart';
-import '../../../core/utils/app_string.dart';
 
 class SplashViews extends GetView<SplashController> {
   const SplashViews({super.key});

@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/utils/app_colors.dart';
-import '../../../core/utils/app_string.dart';
 import '../../../core/widgets/TestVisitdetails.dart';
 import '../../../core/widgets/custom_button.dart';
 import '../../../routes/app_pages.dart';

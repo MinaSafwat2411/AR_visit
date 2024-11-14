@@ -8,7 +8,6 @@ import '../../../core/models/area/areamodel.dart';
 import '../../../core/models/visits/addvisitmodel.dart';
 import '../../../core/models/visits/visitsmodel.dart';
 import '../../../core/sharedchache/cache_helper.dart';
-import '../../../core/utils/app_string.dart';
 import '../../../routes/app_pages.dart';
 
 class EditVisitController extends GetxController {

@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/widgets/custom_alert.dart';
-import '../../../routes/app_pages.dart';
 
 class AssignFatherVisitView extends GetView<AssignFatherVisitController> {
   const AssignFatherVisitView({super.key});

@@ -1,4 +1,3 @@
-import 'package:ar_visiting_app/app/core/utils/app_string.dart';
 import 'package:ar_visiting_app/app/modules/visits/views/widgets/tag_item_widget.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';

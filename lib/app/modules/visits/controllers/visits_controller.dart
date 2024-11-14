@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 
 import '../../../core/firebase/GetVisitDetailsFirebase.dart';
 import '../../../core/models/visits/addvisitmodel.dart';
-import '../../../core/utils/app_string.dart';
 import '../../../routes/app_pages.dart';
 
 

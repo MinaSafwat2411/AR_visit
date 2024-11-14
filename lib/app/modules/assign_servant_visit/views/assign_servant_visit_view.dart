@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/widgets/custom_alert.dart';
-import '../../../routes/app_pages.dart';
 import '../controllers/assign_servant_visit_controller.dart';
 
 class AssignServantVisitView extends GetView<AssignServantVisitController> {

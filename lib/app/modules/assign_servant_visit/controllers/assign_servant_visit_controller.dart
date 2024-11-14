@@ -1,6 +1,4 @@
-import 'package:ar_visiting_app/app/core/firebase/GetFatherFirebase.dart';
 import 'package:ar_visiting_app/app/core/firebase/GetServantFirebase.dart';
-import 'package:ar_visiting_app/app/core/models/father/fathermodel.dart';
 import 'package:ar_visiting_app/app/core/models/servant/servantmodel.dart';
 import 'package:get/get.dart';
 
@@ -9,7 +7,6 @@ import '../../../core/firebase/GetVisitDetailsFirebase.dart';
 import '../../../core/models/visits/addvisitmodel.dart';
 import '../../../core/models/visits/visitsmodel.dart';
 import '../../../core/sharedchache/cache_helper.dart';
-import '../../../core/utils/app_string.dart';
 import '../../../routes/app_pages.dart';
 
 class AssignServantVisitController extends GetxController{

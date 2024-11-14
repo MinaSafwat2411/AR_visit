@@ -6,7 +6,6 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 import '../../../core/firebase/GetUserFirebase.dart';
 import '../../../core/sharedchache/cache_helper.dart';
-import '../../../core/utils/app_string.dart';
 import '../../../routes/app_pages.dart';
 
 class ProfileControllers extends GetxController {

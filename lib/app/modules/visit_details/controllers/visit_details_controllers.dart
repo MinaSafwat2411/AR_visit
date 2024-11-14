@@ -8,7 +8,6 @@ import '../../../core/firebase/AddVisitFirebase.dart';
 import '../../../core/firebase/GetVisitDetailsFirebase.dart';
 import '../../../core/models/visits/addvisitmodel.dart';
 import '../../../core/sharedchache/cache_helper.dart';
-import '../../../core/utils/app_string.dart';
 
 class VisitDetailsControllers extends GetxController {
   var isLoading = false.obs;
