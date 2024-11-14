@@ -15,7 +15,7 @@ class AssignServantVisitView extends GetView<AssignServantVisitController> {
     return Obx(() => Scaffold(
       appBar: AppBar(
         title:  Text(
-            controller.getServant(),
+            'servant'.tr,
             style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.w600,
@@ -34,7 +34,7 @@ class AssignServantVisitView extends GetView<AssignServantVisitController> {
             child: TextButton(onPressed: (){
               controller.onCanceledAssign();
             }, child:  Text(
-              controller.getCancel(),
+              'cancel'.tr,
               style: const TextStyle(
                 color: AppColors.trinidadColor
             ),),),
@@ -56,12 +56,12 @@ class AssignServantVisitView extends GetView<AssignServantVisitController> {
                   showDialog(
                       context: context,
                       builder: (context) =>  CustomDoubleAlert(
-                        title: '${controller.getAssignPerson()} \n${
+                        title: '${'assignPerson'.tr} \n${
                             controller.lang =='en'?controller.servantList[index].name:
                             controller.servantList[index].nameAr
                         }?',
-                        leftButtonText: controller.getComfirmYes(),
-                        rightButtonText: controller.getComfirmNo(),
+                        leftButtonText: 'yes'.tr,
+                        rightButtonText: 'no'.tr,
                         leftFunction: () {
                           Get.back(closeOverlays: true);
                           controller.onServantSelected(controller.servantList[index]);

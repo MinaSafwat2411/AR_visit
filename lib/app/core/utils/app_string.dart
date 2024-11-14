@@ -1,152 +1,165 @@
-class AppStrings{
-  static const String imageLogo= 'assets/Logo.png';
-  static const String avaRewase= 'assets/ava_rewase.png';
-  static const String edit= 'assets/edit.png';
-  static const String cancel= 'assets/cancel.png';
-  static const String account= 'assets/account.png';
-  static const String translate= 'assets/translate.png';
-  static const String settings= 'assets/settings.png';
-  static const String faq= 'assets/faq.png';
+abstract class AppStrings {
+  Map<String, String> get keys;
 }
 class AppStringsEn extends AppStrings{
-  static const String CopyRight = 'Take-out service program Mosa Al-Nabi family for technological and information services The Churches of the Virgin Mary and Bishop Bishoy The Virgin Mary and Bishop Royce At the Cathedral of Bishop Royce in Abbasiya Version 1.0 Copyright 2024';
-  static const String loginTitle ='AVA REWASE VISIT';
-  static const String passwordTitle ='Password';
-  static const String passwordValidate1 ='Please enter your password';
-  static const String passwordValidate2 ='Password must be at least 6 characters';
-  static const String userTitle ='E1C1FXXXXNRX';
-  static const String userValidate ='Please enter your ARID!';
-  static const String login ='Login';
-  static const String loginLoading ='Login';
-  static const String visitTitle ='Visit list';
-  static const String visitDetailsTitle ='Visit Details';
-  static const String yesterday ='Yesterday';
-  static const String today ='Today';
-  static const String tomorrow ='Tomorrow';
-  static const String noOfPeople ='No. of people';
-  static const String father ='Father';
-  static const String servant ='Servant';
-  static const String zone ='Zone';
-  static const String newVisitTitle ='New Visit';
-  static const String editVisitTitle ='Edit Visit';
-  static const String submit ='Submit';
-  static const String edit ='Edit';
-  static const String cancel ='Cancel';
-  static const String clone ='Copy';
-  static const String arid ='ARID';
-  static const String patientName ='Patient Name';
-  static const String assistantName ='Assistant Name';
-  static const String patientNameValidate ='Patient name can\'t be empty';
-  static const String assistantNameValidate ='assistant name must be entered';
-  static const String assistantPhoneNumberValidate1 ='assistant phone must be entered';
-  static const String assistantPhoneNumberValidate2 ='Phone must consist of 11 numbers';
-  static const String patientPhoneNumber ='Patient Phone';
-  static const String assistantPhoneNumber ='Assistant Phone';
-  static const String addressType ='Address Type';
-  static const String address ='Address';
-  static const String date ='Date';
-  static const String time ='Time';
-  static const String from ='From:';
-  static const String english ='English:';
-  static const String start ='Start';
-  static const String end ='End';
-  static const String fromValidate ='Start time of visit must be chosen';
-  static const String to ='To:';
-  static const String yes ='Yes';
-  static const String no ='No';
-  static const String notes ='Notes';
-  static const String assign ='Assign';
-  static const String done ='Done';
-  static const String profile ='Profile';
-  static const String account ='Account';
-  static const String fAQ ='FAQ';
-  static const String settings ='Settings';
-  static const String language ='Language';
-  static const String languageComfim ='choose your language';
-  static const String toValidate ='End time of visit must be chosen';
-  static const String dateValidate ='Date of visit must be chosen';
-  static const String googleMapsLink ='Location';
-  static const String addressValidate ='Patient\'s address must be entered';
-  static const String cancelComfirm ='You want to Cancel this Visit?';
-  static const String editComfirm ='You sure to submit edit?';
-  static const String newComfirm ='You sure to submit new visit?';
-  static const String assignComfirm ='Choose who You want to assign to?';
-  static const String doneComfirm ='This Visit is Done?';
-  static const String lang ='English';
-  static const String arabic ='Arabic';
-  static const String logout ='Logout';
-  static const String assignPerson ='You want to Assign';
-
+  @override
+  Map<String, String> get keys => {
+   'imageLogo': 'assets/Logo.png',
+   'avaRewaseIcon': 'assets/ava_rewase.png',
+   'editIcon': 'assets/edit.png',
+   'cancelIcon': 'assets/cancel.png',
+   'accountIcon': 'assets/account.png',
+   'translateIcon': 'assets/translate.png',
+   'settingsIcon': 'assets/settings.png',
+   'fAQIcon': 'assets/faq.png',
+   'copyRight' : 'Take-out service program Mosa Al-Nabi family for technological and information services The Churches of the Virgin Mary and Bishop Bishoy The Virgin Mary and Bishop Royce At the Cathedral of Bishop Royce in Abbasiya Version 1.0 Copyright 2024',
+   'loginTitle' :'AVA REWASE VISIT',
+   'passwordTitle' :'Password',
+   'passwordValidate1' :'Please enter your password',
+   'passwordValidate2' :'Password must be at least 6 characters',
+   'userTitle' :'E1C1FXXXXNRX',
+   'userValidate' :'Please enter your ARID!',
+   'login' :'Login',
+   'loginLoading' :'Login',
+   'visitTitle' :'Visit list',
+   'visitDetailsTitle' :'Visit Details',
+   'yesterday' :'Yesterday',
+   'today' :'Today',
+   'tomorrow' :'Tomorrow',
+   'noOfPeople' :'No. of people',
+   'father' :'Father',
+   'servant' :'Servant',
+   'zone' :'Zone',
+   'newVisitTitle' :'New Visit',
+   'editVisitTitle' :'Edit Visit',
+   'submit' :'Submit',
+   'edit' :'Edit',
+   'cancel' :'Cancel',
+   'clone' :'Copy',
+   'arid' :'ARID',
+   'patientName' :'Patient Name',
+   'assistantName' :'Assistant Name',
+   'patientNameValidate' :'Patient name can\'t be empty',
+   'assistantNameValidate' :'assistant name must be entered',
+   'assistantPhoneNumberValidate1' :'assistant phone must be entered',
+   'assistantPhoneNumberValidate2' :'Phone must consist of 11 numbers',
+   'patientPhoneNumber' :'Patient Phone',
+   'assistantPhoneNumber' :'Assistant Phone',
+   'addressType' :'Address Type',
+   'address' :'Address',
+   'date' :'Date',
+   'time' :'Time',
+   'from' :'From:',
+   'english' :'English',
+   'start' :'Start',
+   'end' :'End',
+   'fromValidate' :'Start time of visit must be chosen',
+   'to' :'To:',
+   'yes' :'Yes',
+   'no' :'No',
+   'notes' :'Notes',
+   'assign' :'Assign',
+   'done' :'Done',
+   'profile' :'Profile',
+   'account' :'Account',
+   'fAQ' :'FAQ',
+   'settings' :'Settings',
+   'language' :'Language',
+   'languageComfim' :'choose your language',
+   'toValidate' :'End time of visit must be chosen',
+   'dateValidate' :'Date of visit must be chosen',
+   'googleMapsLink' :'Location',
+   'addressValidate' :'Patient\'s address must be entered',
+   'cancelComfirm' :'You want to Cancel this Visit?',
+   'cloneComfirm' :'You want to Clone this Visit?',
+   'editComfirm' :'You sure to submit edit?',
+   'newComfirm' :'You sure to submit new visit?',
+   'assignComfirm' :'Choose who You want to assign to?',
+   'doneComfirm' :'This Visit is Done?',
+   'lang' :'English',
+   'arabic' :'Arabic',
+   'logout' :'Logout',
+   'assignPerson' :'You want to Assign'
+  };
 }
 class AppStringsAr extends AppStrings{
-  static const String CopyRight= 'برنامج خدمة التناول الخارجي أسرة موسى النبي للخدمات التكنولوجية والمعلوماتية كنيستا السيدة العذراء والأنبا بيشوي والسيدة العذراء والأنبا رويس بالكاتدرائية بالأنبا رويس بالعباسية إصدار ١.٠ Copyright 2024';
-  static const String loginTitle =' برنامج خدمة التناول الخارجي';
-  static const String passwordTitle ='ادخل كلمة السر';
-  static const String passwordValidate1 ='رجاء ادخال كلمه السر';
-  static const String passwordValidate2 ='يجب أن تتكون كلمة المرور من 6 أحرف على الأقل';
-  static const String userTitle ='ادخل رقم العضويه';
-  static const String arid ='رقم العضويه';
-  static const String userValidate ='رجاء ادخال رقم العضوية';
-  static const String login ='تسجيل الدخول';
-  static const String loginLoading ='تسجيل الدخول...';
-  static const String visitTitle ='قائمة الزيارة';
-  static const String visitDetailsTitle ='تفاصيل الزيارة';
-  static const String yesterday ='امس';
-  static const String today ='اليوم';
-  static const String tomorrow ='غدا';
-  static const String noOfPeople ='عدد الاشخاص';
-  static const String father ='الكاهن';
-  static const String servant ='الخادم';
-  static const String zone ='المنطقة';
-  static const String newVisitTitle ='زيارة جديدة';
-  static const String editVisitTitle ='تعديل زيارة';
-  static const String submit ='اضف';
-  static const String edit ='تعديل';
-  static const String cancel ='الغاء';
-  static const String patientName ='اسم المريض';
-  static const String assistantName ='اسم المرافق';
-  static const String patientNameValidate ='لا يمكن أن يكون اسم المريض فارغًا';
-  static const String assistantNameValidate ='لا يمكن أن يكون اسم المرافق فارغًا';
-  static const String patientPhoneNumber ='رقم هاتف المريض';
-  static const String assistantPhoneNumber ='رقم هاتف المرافق';
-  static const String assistantPhoneNumberValidate1 ='لا يمكن أن يكون هاتف المرافق فارغًا';
-  static const String assistantPhoneNumberValidate2 ='يجب أن يتكون الهاتف من 11 رقم';
-  static const String addressType ='نوع العنوان';
-  static const String address ='العنوان';
-  static const String profile ='الملف الشخصي';
-  static const String date ='تاريخ الزيارة';
-  static const String time ='وقت الزيارة';
-  static const String from ='من:';
-  static const String start ='يبدا';
-  static const String end ='ينتهي';
-  static const String fromValidate ='يجب اختيار وقت بدء الزيارة';
-  static const String to ='الي:';
-  static const String yes ='نعم';
-  static const String no ='لا';
-  static const String clone ='نسخ';
-  static const String toValidate ='يجب اختيار وقت انتهاء الزيارة';
-  static const String dateValidate ='لا يمكن أن يكون تاريخ الزيارة فارغًا';
-  static const String googleMapsLink ='رابط عنوان المريض';
-  static const String addressValidate ='لا يمكن أن يكون عنوان المريض فارغًا';
-  static const String notes ='ملحوظات';
-  static const String assign ='تعيين';
-  static const String done ='انتهت';
-  static const String cancelComfirm ='هل تريد إلغاء هذه الزيارة؟';
-  static const String editComfirm ='هل أنت متأكد من تقديم التعديل؟';
-  static const String newComfirm ='هل أنت متأكد من تقديم زيارة جديدة؟';
-  static const String assignComfirm ='اختر من تريد التعيين إليه؟';
-  static const String assignPerson ='هل تريد التعيين ';
-  static const String doneComfirm ='هل تمت هذه الزيارة؟';
-  static const String account ='حسابي';
-  static const String fAQ ='الاسئلة الشائعة';
-  static const String settings ='إعدادات';
-  static const String language ='اللغة';
-  static const String languageComfim ='اختر لغتك';
-  static const String lang ='العربيه';
-  static const String english ='إنجليزي';
-  static const String arabic ='عربي';
-  static const String logout ='تسجيل الخروج';
-
-
-
+  @override
+  Map<String, String> get keys => {
+   'imageLogo': 'assets/Logo.png',
+   'avaRewaseIcon': 'assets/ava_rewase.png',
+   'editIcon': 'assets/edit.png',
+   'cancelIcon': 'assets/cancel.png',
+   'accountIcon': 'assets/account.png',
+   'translateIcon': 'assets/translate.png',
+   'settingsIcon': 'assets/settings.png',
+   'fAQIcon': 'assets/faq.png',
+   'copyRight': 'برنامج خدمة التناول الخارجي أسرة موسى النبي للخدمات التكنولوجية والمعلوماتية كنيستا السيدة العذراء والأنبا بيشوي والسيدة العذراء والأنبا رويس بالكاتدرائية بالأنبا رويس بالعباسية إصدار ١.٠ Copyright 2024',
+   'loginTitle':' برنامج خدمة التناول الخارجي',
+   'passwordTitle':'ادخل كلمة السر',
+   'passwordValidate1':'رجاء ادخال كلمه السر',
+   'passwordValidate2':'يجب أن تتكون كلمة المرور من 6 أحرف على الأقل',
+   'userTitle':'ادخل رقم العضويه',
+   'arid':'رقم العضويه',
+   'userValidate':'رجاء ادخال رقم العضوية',
+   'login':'تسجيل الدخول',
+   'loginLoading':'تسجيل الدخول...',
+   'visitTitle':'قائمة الزيارة',
+   'visitDetailsTitle ':'تفاصيل الزيارة',
+   'yesterday':'امس',
+   'today':'اليوم',
+   'tomorrow':'غدا',
+   'noOfPeople':'عدد الاشخاص',
+   'father':'الكاهن',
+   'servant':'الخادم',
+   'zone':'المنطقة',
+   'newVisitTitle':'زيارة جديدة',
+   'editVisitTitle':'تعديل زيارة',
+   'submit':'اضف',
+   'edit':'تعديل',
+   'cancel':'الغاء',
+   'patientName':'اسم المريض',
+   'assistantName':'اسم المرافق',
+   'patientNameValidate':'لا يمكن أن يكون اسم المريض فارغًا',
+   'assistantNameValidate':'لا يمكن أن يكون اسم المرافق فارغًا',
+   'patientPhoneNumber':'رقم هاتف المريض',
+   'assistantPhoneNumber':'رقم هاتف المرافق',
+   'assistantPhoneNumberValidate1':'لا يمكن أن يكون هاتف المرافق فارغًا',
+   'assistantPhoneNumberValidate2':'يجب أن يتكون الهاتف من 11 رقم',
+   'addressType':'نوع العنوان',
+   'address':'العنوان',
+   'profile':'الملف الشخصي',
+   'date':'تاريخ الزيارة',
+   'time':'وقت الزيارة',
+   'from':'من:',
+   'start':'يبدا',
+   'end':'ينتهي',
+   'fromValidate ':'يجب اختيار وقت بدء الزيارة',
+   'to':'الي:',
+   'yes':'نعم',
+   'no':'لا',
+   'clone':'نسخ',
+   'toValidate':'يجب اختيار وقت انتهاء الزيارة',
+   'dateValidate':'لا يمكن أن يكون تاريخ الزيارة فارغًا',
+   'googleMapsLink':'رابط عنوان المريض',
+   'addressValidate':'لا يمكن أن يكون عنوان المريض فارغًا',
+   'notes':'ملحوظات',
+   'assign':'تعيين',
+   'done':'انتهت',
+   'cancelComfirm':'هل تريد إلغاء هذه الزيارة؟',
+   'cloneComfirm':'هل تريد نسخ هذه الزيارة؟',
+   'editComfirm':'هل أنت متأكد من تقديم التعديل؟',
+   'newComfirm':'هل أنت متأكد من تقديم زيارة جديدة؟',
+   'assignComfirm':'اختر من تريد التعيين إليه؟',
+   'assignPerson':'هل تريد التعيين ',
+   'doneComfirm':'هل تمت هذه الزيارة؟',
+   'account':'حسابي',
+   'fAQ':'الاسئلة الشائعة',
+   'settings':'إعدادات',
+   'language':'اللغة',
+   'languageComfim':'اختر لغتك',
+   'lang':'العربيه',
+   'english':'إنجليزي',
+   'arabic':'عربي',
+   'logout':'تسجيل الخروج',
+  };
 }

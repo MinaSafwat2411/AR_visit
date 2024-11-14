@@ -19,7 +19,7 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
     return Scaffold(
       appBar: AppBar(
         title:  Text(
-          controller.getNewVisitTitle(),
+          'newVisitTitle'.tr,
           textAlign: TextAlign.center,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
@@ -38,14 +38,14 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
         width: MediaQuery.of(context).size.width * 0.9,
         height: 58,
         child: CustomButton(
-          text: controller.getSubmit(),
+          text: 'submit'.tr,
           btnColor: AppColors.trinidadColor,
           onPressed: () {
             if (controller.formKey.currentState!.validate()) {
               showDialog(
                   context: context,
                   builder:(context) =>CustomDoubleAlert(
-                    title: controller.getNewVisitTitle(),
+                    title: 'newVisitTitle'.tr,
                     rightFunction: () {
                       Get.back(closeOverlays: true);
                     },
@@ -53,8 +53,8 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                       Get.back(closeOverlays: true);
                       controller.addVisit();
                     },
-                    rightButtonText: controller.getComfirmNo(),
-                    leftButtonText: controller.getComfirmYes(),
+                    rightButtonText: 'no'.tr,
+                    leftButtonText: 'yes'.tr,
                   ));
             }
           },
@@ -75,10 +75,10 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CustomTextFormField(
-                            label: controller.getPatientName(),
+                            label: 'patientName'.tr,
                             validator: (name) {
                               if (name == null || name.isEmpty) {
-                                return controller.getPatientNameValidate();
+                                return 'patientNameValidate'.tr;
                               }
                               return null;
                             },
@@ -113,7 +113,7 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                           ),
                           CustomTextFormField(
                             textController: controller.patientPhoneController,
-                            label: controller.getPatientPhoneNumber(),
+                            label: 'patientPhoneNumber'.tr,
                             validator: (phone) {
                               return null;
                             },
@@ -122,31 +122,31 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                             textController: controller.assistantNameController,
                             validator: (value) {
                               if(value ==null||value.isEmpty){
-                                return controller.getAssistantNameValidate();
+                                return 'assistantNameValidate'.tr;
                               }else {
                                 return null;
                               }
                             },
-                            label: controller.getAssistantName(),
+                            label: 'assistantName'.tr,
                           ),
                           CustomTextFormField(
                             textController: controller.numberOfPeopleController,
                             validator: (value) {
                               return null;
                             },
-                            label: controller.getNoOfPeople(),
+                            label: 'noOfPeople'.tr,
                           ),
                           CustomTextFormField(
-                            label: controller.getAssistantPhoneNumber(),
+                            label: 'assistantPhoneNumber'.tr,
                             textController: controller.assistantPhoneController,
                             validator: (assistantPhone) {
                               // Allow the field to be empty
                               if (assistantPhone == null ||
                                   assistantPhone.isEmpty) {
-                                return controller.getAssistantPhoneNumberValidate1();
+                                return 'assistantPhoneNumberValidate1'.tr;
                               }
                               if (assistantPhone.length != 11) {
-                                return controller.getAssistantPhoneNumberValidate2();
+                                return 'assistantPhoneNumberValidate2'.tr;
                               }
                               return null;
                             },
@@ -156,15 +156,15 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                               controller.lang =='en'? controller.addressType.value = value!
                                   :controller.addressTypeAr.value = value!;
                             },
-                            label: controller.getAddressType(),
+                            label: 'addressType'.tr,
                             items: controller.getAddressTypeList(),
                           ),
                           CustomTextFormField(
-                            label: controller.getAddress(),
+                            label: 'address'.tr,
                             textController: controller.patientAddressController,
                             validator: (address) {
                               if (address == null || address.isEmpty) {
-                                return controller.getAddressValidate();
+                                return 'addressValidate'.tr;
                               }
                               return null;
                             },
@@ -174,22 +174,22 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                               controller.lang =='en'? controller.areaName.value = value!
                                     :controller.areaNameAr.value = value!;
                             },
-                            label: controller.getZone(),
+                            label: 'zone'.tr,
                             items: controller.lang=='en'?controller.areaNames:controller.areaNamesAr,
                           ),
                           CustomTextFormField(
                             textController: controller.googleLinkController,
-                            label: controller.getGoogleMapLink(),
+                            label: 'googleMapsLink'.tr,
                             validator: (value) {
                               return null;
                             },
                           ),
                           CustomTextFormField(
-                            label: controller.getDate(),
+                            label: 'date'.tr,
                             textController: controller.dateController,
                             validator: (date) {
                               if (date == null || date.isEmpty) {
-                                return controller.getDateValidate();
+                                return 'dateValidate'.tr;
                               }
                               return null;
                             },
@@ -203,15 +203,15 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                  Text(
-                                  controller.getFrom(),
+                                  'from'.tr,
                                   style: const TextStyle(
                                       fontSize: 16, fontWeight: FontWeight.w500),
                                 ),
                                 CustomSmallTextField(
-                                  label: controller.getStart(),
+                                  label: 'start'.tr,
                                   validator: (start) {
                                     if (start == null || start.isEmpty) {
-                                      return controller.getFromValidate();
+                                      return 'fromValidate'.tr;
                                     }
                                     return null;
                                   },
@@ -221,7 +221,7 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                                   },
                                 ),
                                  Text(
-                                  controller.getTo(),
+                                  'to'.tr,
                                   style: const TextStyle(
                                       fontSize: 16, fontWeight: FontWeight.w500),
                                 ),
@@ -232,17 +232,17 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                                   textController: controller.toTimeController,
                                   validator: (end) {
                                     if (end == null || end.isEmpty) {
-                                      return controller.getToValidate();
+                                      return 'toValidate'.tr;
                                     }
                                     return null;
                                   },
-                                  label: controller.getEnd(),
+                                  label: 'end'.tr,
                                 ),
                               ],
                             ),
                           ),
                           CustomBigTextField(
-                              label: controller.getNotes(),
+                              label: 'notes'.tr,
                               controller: controller.noteController
                           ),
                           const SizedBox(

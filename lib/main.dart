@@ -1,3 +1,4 @@
+import 'package:ar_visiting_app/app/core/utils/app_string.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +18,13 @@ void main() async {
   );
   runApp(MyApp());
 }
+class MyTranslations extends Translations {
+  @override
+  Map<String, Map<String, String>> get keys => {
+    'en': AppStringsEn().keys,
+    'ar': AppStringsAr().keys,
+  };
+}
 
 class MyApp extends StatelessWidget {
    MyApp({
@@ -26,10 +34,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      translations: MyTranslations(),
       debugShowCheckedModeBanner: false,
       locale:  Locale(lang),
-      textDirection: lang=='en' ? TextDirection.ltr:TextDirection.rtl,
-      title: "Application",
+      textDirection: lang =='en' ? TextDirection.ltr:TextDirection.rtl,
+      title: "AR Visit",
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
     );

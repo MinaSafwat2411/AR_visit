@@ -39,22 +39,6 @@ class AssignFatherVisitController extends GetxController{
       note: ''
   ).obs;
   String lang=CacheHelper.getData(key: 'lang')??'en';
-  String getFather(){
-    return lang =='en'? AppStringsEn.father : AppStringsAr.father;
-  }
-  String getCancel(){
-    return lang =='en'? AppStringsEn.cancel : AppStringsAr.cancel;
-  }
-  String getComfirmYes(){
-    return lang =='en'? AppStringsEn.yes : AppStringsAr.yes;
-  }
-  String getComfirmNo(){
-    return lang =='en'? AppStringsEn.no : AppStringsAr.no;
-  }
-  String getAssignPerson(){
-    return lang =='en'? AppStringsEn.assignPerson : AppStringsAr.assignPerson;
-  }
-
 
   Future<void> getVisitDetails() async {
     isLoading.value = true;

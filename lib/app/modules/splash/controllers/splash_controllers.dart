@@ -8,19 +8,14 @@ class SplashController extends GetxController {
   bool loginDone=CacheHelper.getData(key: 'loginDone') ?? false;
   String lang=CacheHelper.getData(key: 'lang') ?? 'en';
 
-
   @override
   void onInit()async {
     super.onInit();
     onNavigate();
   }
 
-  String getCopyRight(){
-    return lang =='en'? AppStringsEn.CopyRight : AppStringsAr.CopyRight;
-  }
-
   void onNavigate(){
-    Timer(const Duration(seconds: 2), () {
+    Timer(const Duration(seconds:4), () {
       if(loginDone) {
         Get.offNamed(Routes.VISITS);
       }else{

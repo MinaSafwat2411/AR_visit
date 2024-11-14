@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../../../core/models/visits/visitsmodel.dart';
+import '../../../../core/widgets/custom_alert.dart';
 
 class VisitCardItemWidget extends GetView<VisitController> {
   const VisitCardItemWidget({
@@ -26,7 +27,16 @@ class VisitCardItemWidget extends GetView<VisitController> {
           SlidableAction(
             borderRadius: const BorderRadius.only(topLeft: Radius.circular(20.0), bottomLeft: Radius.circular(20.0)),
             onPressed: (context) {
-              controller.onClone(visitData.id);
+              showDialog(
+                  context: context,
+                  builder: (context) =>  CustomDoubleAlert(
+                    title:  'cloneComfirm'.tr,
+                    leftButtonText: 'yes'.tr,
+                    rightButtonText: 'no'.tr,
+                    leftFunction: () => controller.onClone(visitData.id),
+                    rightFunction: () => Get.back(closeOverlays: true),
+                  )
+              );
             },
             backgroundColor: AppColors.softAmber,
             foregroundColor: Colors.black,
@@ -36,7 +46,16 @@ class VisitCardItemWidget extends GetView<VisitController> {
           ),
           SlidableAction(
             onPressed: (context) {
-              controller.onDone(visitData.id);
+              showDialog(
+                  context: context,
+                  builder: (context) =>  CustomDoubleAlert(
+                    title: 'doneComfirm'.tr,
+                    leftButtonText: 'yes'.tr,
+                    rightButtonText: 'no'.tr,
+                    leftFunction: () => controller.onDone(visitData.id),
+                    rightFunction: () => Get.back(closeOverlays: true),
+                  )
+              );
             },
             padding: const EdgeInsets.all(8.0),
             backgroundColor: AppColors.softAmber,
@@ -46,7 +65,16 @@ class VisitCardItemWidget extends GetView<VisitController> {
           ),
           SlidableAction(
             onPressed: (context) {
-              controller.onCanceled(visitData.id);
+              showDialog(
+                  context: context,
+                  builder: (context) =>  CustomDoubleAlert(
+                    title:  'cancelComfirm'.tr,
+                    leftButtonText: 'yes'.tr,
+                    rightButtonText: 'no'.tr,
+                    leftFunction: () => controller.onCanceled(visitData.id),
+                    rightFunction: () => Get.back(closeOverlays: true),
+                  )
+              );
             },
             borderRadius: const BorderRadius.only(topRight: Radius.circular(20.0), bottomRight: Radius.circular(20.0)),
             backgroundColor: AppColors.softAmber,
@@ -80,11 +108,11 @@ class VisitCardItemWidget extends GetView<VisitController> {
                       style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                     ),
                     Text(
-                      '${controller.getNoOfPeople()} : ${visitData.numberOfPeople}',
+                      '${'noOfPeople'.tr} : ${visitData.numberOfPeople}',
                       style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                     ),
                     Text(
-                      '${controller.getFather()}: ${controller.lang == 'en' ? visitData.father['name'] : visitData.father['nameAr']}',
+                      '${'father'.tr}: ${controller.lang == 'en' ? visitData.father['name'] : visitData.father['nameAr']}',
                       style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                     ),
                   ],
@@ -110,11 +138,11 @@ class VisitCardItemWidget extends GetView<VisitController> {
                       ),
                     ),
                     Text(
-                      '${controller.getZone()}: ${controller.lang == 'en' ? visitData.area['name'] : visitData.area['nameAr']}',
+                      '${'zone'.tr}: ${controller.lang == 'en' ? visitData.area['name'] : visitData.area['nameAr']}',
                       style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                     ),
                     Text(
-                      '${controller.getServant()}: ${controller.lang == 'en' ? visitData.servant['name'] : visitData.servant['nameAr']}',
+                      '${'servant'.tr}: ${controller.lang == 'en' ? visitData.servant['name'] : visitData.servant['nameAr']}',
                       style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                     ),
                   ],

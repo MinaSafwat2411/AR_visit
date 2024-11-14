@@ -38,27 +38,11 @@ class VisitController extends GetxController {
       googleLink: '',
       note: ''
   ).obs;
+
   void getUserId(){
     id.value=CacheHelper.getData(key: 'user');
   }
-  String getYesterday(){
-    return lang =='en'? AppStringsEn.yesterday : AppStringsAr.yesterday;
-  }
-  String getToday(){
-    return lang =='en'? AppStringsEn.today : AppStringsAr.today;
-  }
-  String getTomorrow(){
-    return lang =='en'? AppStringsEn.tomorrow : AppStringsAr.tomorrow;
-  }
-  String getVisitTitle(){
-    return lang =='en'? AppStringsEn.visitTitle : AppStringsAr.visitTitle;
-  }
-  String getNoOfPeople(){
-    return lang =='en'? AppStringsEn.noOfPeople : AppStringsAr.noOfPeople;
-  }
-  String getFather(){
-    return lang =='en'? AppStringsEn.father : AppStringsAr.father;
-  }
+
 
   String getStatus(String status){
     if(lang =='en'){
@@ -77,12 +61,7 @@ class VisitController extends GetxController {
       return status;
     }
   }
-  String getZone(){
-    return lang =='en'? AppStringsEn.zone : AppStringsAr.zone;
-  }
-  String getServant(){
-    return lang =='en'? AppStringsEn.servant : AppStringsAr.servant;
-  }
+
 
 
   @override
@@ -181,6 +160,7 @@ class VisitController extends GetxController {
       getVisitData();
     }
   }
+
   void onDone(String id)async{
     isLoading(true);
     try{

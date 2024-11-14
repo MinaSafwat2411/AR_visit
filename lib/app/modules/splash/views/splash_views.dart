@@ -1,5 +1,6 @@
 import 'package:ar_visiting_app/app/modules/splash/controllers/splash_controllers.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 
@@ -23,14 +24,14 @@ class SplashViews extends GetView<SplashController> {
                   const Spacer(),
                   Column(
                     children: [
-                      const Image(image: AssetImage(AppStrings.imageLogo),
+                      Image(image: AssetImage('imageLogo'.tr),
                         height: 130,
                         width: 130,),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 44,left: 40,right: 40,top: 230),
                         child: Text(
                             textAlign: TextAlign.center,
-                            controller.getCopyRight(),
+                            'copyRight'.tr,
                             style: const TextStyle(
                               fontSize: 12,
                               color: AppColors.boulder,

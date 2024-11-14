@@ -19,7 +19,7 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
     return Obx(() => Scaffold(
         appBar: AppBar(
           title:  Text(
-            controller.getVisitDetailsTitle(),
+            'visitDetailsTitle'.tr,
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontWeight: FontWeight.bold,
@@ -42,9 +42,9 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                     showDialog(
                         context: context,
                         builder: (context) =>  CustomDoubleAlert(
-                          title:  controller.getVisitCancelComfirm(),
-                          leftButtonText: controller.getComfirmYes(),
-                          rightButtonText: controller.getComfirmNo(),
+                          title:  'cancelComfirm'.tr,
+                          leftButtonText: 'yes'.tr,
+                          rightButtonText: 'no'.tr,
                           leftFunction: () => controller.onCanceled(),
                           rightFunction: () => Get.back(closeOverlays: true),
                         )
@@ -53,9 +53,9 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                     showDialog(
                         context: context,
                         builder: (context) =>  CustomDoubleAlert(
-                          title:  controller.getVisitCancelComfirm(),
-                          leftButtonText: controller.getComfirmYes(),
-                          rightButtonText: controller.getComfirmNo(),
+                          title:  'cloneComfirm'.tr,
+                          leftButtonText: 'yes'.tr,
+                          rightButtonText: 'no'.tr,
                           leftFunction: () => controller.onClone(controller.id),
                           rightFunction: () => Get.back(closeOverlays: true),
                         )
@@ -69,15 +69,15 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                         value: OperationType.EDIT,
                         child: Row(
                           children: [
-                            const Image(
-                              image: AssetImage(AppStrings.edit),
+                            Image(
+                              image: AssetImage('editIcon'.tr),
                               width: 25,
                               height: 25,
                             ),
                             const SizedBox(
                               width: 15,
                             ),
-                            Text(controller.getEdit()),
+                            Text('edit'.tr),
                           ],
                         ),
                       ),
@@ -88,15 +88,15 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                         value: OperationType.CANCELED,
                         child: Row(
                           children: [
-                            const Image(
-                              image: AssetImage(AppStrings.cancel),
+                            Image(
+                              image: AssetImage('cancelIcon'.tr),
                               width: 25,
                               height: 25,
                             ),
                             const SizedBox(
                               width: 15,
                             ),
-                            Text(controller.getCancel()),
+                            Text('cancel'.tr),
                           ],
                         ),
                       ),
@@ -112,7 +112,7 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                             const SizedBox(
                               width: 15,
                             ),
-                            Text(controller.getClone()),
+                            Text('clone'.tr),
                           ],
                         ),
                       ),
@@ -136,14 +136,14 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                     height: 45,
                   ),
                   TestVisitDetails(
-                    title: controller.getPatientName(),
+                    title: 'patientName'.tr,
                     value: controller.visitData.value.patient['name'],
                   ),
                   const SizedBox(
                     height: 30,
                   ),
                   TestVisitDetails(
-                      title: controller.getPatientArid(),
+                      title: 'arid'.tr,
                       value:
                           "E1C1F${controller.visitData.value.patient['PatientFamilyId']}NR${controller.visitData.value.patient['PatientIDNumber']}"),
                   const SizedBox(
@@ -157,14 +157,14 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                       }
                     },
                     child: TestVisitDetails(
-                        title: controller.getPatientPhoneNumber(),
+                        title: 'patientPhoneNumber'.tr,
                         value: controller.visitData.value.patient['phoneNumber']),
                   ),
                   const SizedBox(
                     height: 30,
                   ),
                   TestVisitDetails(
-                      title: controller.getAssistantName(),
+                      title: 'assistantName'.tr,
                       value: controller.visitData.value.assistant['name']),
                   const SizedBox(
                     height: 30,
@@ -177,7 +177,7 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                       }
                     },
                     child: TestVisitDetails(
-                        title: controller.getAssistantPhoneNumber(),
+                        title: 'assistantPhoneNumber'.tr,
                         value:
                             controller.visitData.value.assistant['phoneNumber']),
                   ),
@@ -185,13 +185,13 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                     height: 30,
                   ),
                   TestVisitDetails(
-                      title: controller.getAddress(),
+                      title: 'address'.tr,
                       value: controller.visitData.value.address['address']),
                   const SizedBox(
                     height: 30,
                   ),
                   TestVisitDetails(
-                      title: controller.getAddressType(),
+                      title: 'addressType'.tr,
                       value: controller.lang=='en'?controller.visitData.value.address['addressType']:
                       controller.visitData.value.address['addressTypeAr']
                   ),
@@ -199,7 +199,7 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                     height: 30,
                   ),
                   TestVisitDetails(
-                      title: controller.getZone(),
+                      title: 'zone'.tr,
                       value: controller.lang=='en'? controller.visitData.value.area['name']:
                       controller.visitData.value.area['nameAr']),
                   const SizedBox(
@@ -213,20 +213,20 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                       }
                     },
                     child: TestVisitDetails(
-                        title: controller.getGoogleMapLink(),
+                        title: 'googleMapsLink'.tr,
                         value: controller.visitData.value.googleLink),
                   ),
                   const SizedBox(
                     height: 30,
                   ),
                   TestVisitDetails(
-                      title: controller.getNoOfPeople(),
+                      title: 'noOfPeople'.tr,
                       value: controller.visitData.value.numberOfPeople),
                   const SizedBox(
                     height: 30,
                   ),
                   TestVisitDetails(
-                      title: controller.getDate(),
+                      title: 'date'.tr,
                       value: controller.visitData.value.visitDate
                           .substring(5)
                   ),
@@ -234,27 +234,27 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                     height: 30,
                   ),
                   TestVisitDetails(
-                    title: controller.getTimeSting(),
+                    title: 'time'.tr,
                     value: controller.visitTime.value,
                   ),
                   const SizedBox(
                     height: 30,
                   ),
                   TestVisitDetails(
-                      title: controller.getFather(),
+                      title: 'father'.tr,
                       value: controller.visitData.value.father['name']),
                   const SizedBox(
                     height: 30,
                   ),
                   TestVisitDetails(
-                      title: controller.getServant(),
+                      title: 'servant'.tr,
                       value: controller.visitData.value.servant['name']
                   ),
                   const SizedBox(
                     height: 30,
                   ),
                   TestVisitDetails(
-                      title: controller.getNotes(), value: controller.visitData.value.note),
+                      title: 'notes'.tr, value: controller.visitData.value.note),
                   const SizedBox(
                     height: 30,
                   ),
@@ -263,15 +263,15 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                     width: MediaQuery.of(context).size.width * 0.9,
                     height: 58,
                     child: CustomButton(
-                      text: controller.getAssign(),
+                      text: 'assign'.tr,
                       btnColor: AppColors.chartreuseYellow,
                       onPressed: () {
                         showDialog(
                             context: context,
                             builder: (context) =>  CustomDoubleAlert(
-                              title: controller.getAssignComfim(),
-                              leftButtonText: controller.getFather(),
-                              rightButtonText: controller.getServant(),
+                              title: 'assignComfirm'.tr,
+                              leftButtonText: 'father'.tr,
+                              rightButtonText: 'servant'.tr,
                               leftFunction: () {
                                 Get.back(closeOverlays: true);
                                 Get.toNamed(Routes.ASSIN_Father_VISIT,arguments: controller.id);
@@ -292,15 +292,15 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                     width: MediaQuery.of(context).size.width * 0.9,
                     height: 58,
                     child: CustomButton(
-                      text: controller.getDone(),
+                      text: 'done'.tr,
                       btnColor: AppColors.green,
                       onPressed: () {
                         showDialog(
                             context: context,
                             builder: (context) =>  CustomDoubleAlert(
-                              title: controller.getDoneComfim(),
-                              leftButtonText: controller.getComfirmYes(),
-                              rightButtonText: controller.getComfirmNo(),
+                              title: 'doneComfirm'.tr,
+                              leftButtonText: 'yes'.tr,
+                              rightButtonText: 'no'.tr,
                               leftFunction: () => controller.onDone(),
                               rightFunction: () => Get.back(closeOverlays: true),
                             )

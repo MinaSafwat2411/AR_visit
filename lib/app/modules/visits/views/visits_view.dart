@@ -46,9 +46,9 @@ class VisitsView extends GetView<VisitController> {
         ],
         leading: IconButton(onPressed: (){
           Get.toNamed(Routes.PROFILE);
-        }, icon:  const Image(image: AssetImage(AppStrings.avaRewase))),
+        }, icon:  Image(image: AssetImage('avaRewaseIcon'.tr))),
         title:  Text(
-          controller.getVisitTitle(),
+          'visitTitle'.tr,
           style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
         ),
         centerTitle: true,

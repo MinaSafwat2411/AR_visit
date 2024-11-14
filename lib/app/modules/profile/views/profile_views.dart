@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/utils/app_colors.dart';
-import '../../../core/utils/app_string.dart';
 import '../../../routes/app_pages.dart';
 
 class ProfileViews extends GetView<ProfileControllers> {
@@ -16,7 +15,7 @@ class ProfileViews extends GetView<ProfileControllers> {
     return Obx(() => Scaffold(
       appBar: AppBar(
         title:  Text(
-          controller.getProfile(),
+          'profile'.tr,
           textAlign: TextAlign.center,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
@@ -44,8 +43,8 @@ class ProfileViews extends GetView<ProfileControllers> {
                  Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Image(
-                        image: AssetImage(AppStrings.avaRewase),
+                    Image(
+                        image: AssetImage('avaRewaseIcon'.tr),
                       width: 80,
                       height: 80,
                     ),
@@ -74,19 +73,19 @@ class ProfileViews extends GetView<ProfileControllers> {
                   ],
                 ),
                 const SizedBox(height: 50,),
-                CustomProfileCard(title: controller.getAccount(),image: AppStrings.account,),
+                CustomProfileCard(title: 'account'.tr,image: 'accountIcon'.tr,),
                 const SizedBox(height: 25,),
-                CustomProfileCard(title: controller.getLanguage(),image: AppStrings.translate,),
+                CustomProfileCard(title: 'language'.tr,image:'translateIcon'.tr,),
                 const SizedBox(height: 25,),
-                CustomProfileCard(title: controller.getSettings(),image: AppStrings.settings,),
+                CustomProfileCard(title: 'settings'.tr,image: 'settingsIcon'.tr,),
                 const SizedBox(height: 25,),
-                CustomProfileCard(title: controller.getFQA(),image: AppStrings.faq,),
+                CustomProfileCard(title: 'fAQ'.tr,image: 'fAQIcon'.tr,),
                 const SizedBox(height: 25,),
                 Padding(
                   padding:  const EdgeInsets.all(8.0),
                   child: TextButton(onPressed: (){
                     controller.logout();
-                  }, child:  Text(controller.getLogout(),style: const TextStyle(
+                  }, child:  Text('logout'.tr,style: const TextStyle(
                       color: AppColors.trinidadColor
                   ),),),
                 )

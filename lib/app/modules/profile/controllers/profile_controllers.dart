@@ -12,45 +12,16 @@ import '../../../routes/app_pages.dart';
 class ProfileControllers extends GetxController {
 
   var id=''.obs;
-  String lang=CacheHelper.getData(key: 'lang')??'en';
   Rx<bool> isLoading = false.obs;
   var name =''.obs;
+  var lang = CacheHelper.getData(key: 'lang') ?? 'en';
+  var textDirection = TextDirection.ltr.obs;
   var user=Users(
     id: '',
     name: '',
     nameAr: ''
   ).obs;
 
-  String getProfile(){
-    return  lang == 'en' ? AppStringsEn.profile:AppStringsAr.profile;
-  }
-  String getAccount(){
-    return  lang == 'en' ? AppStringsEn.account:AppStringsAr.account;
-  }
-  String getLanguage(){
-    return  lang == 'en' ? AppStringsEn.language:AppStringsAr.language;
-  }
-  String getLanguageComfim(){
-    return  lang == 'en' ? AppStringsEn.languageComfim:AppStringsAr.languageComfim;
-  }
-  String getLang(){
-    return  lang == 'en' ? AppStringsEn.lang:AppStringsAr.lang;
-  }
-  String getEnglish(){
-    return  lang == 'en' ? AppStringsEn.english:AppStringsAr.english;
-  }
-  String getArabic(){
-    return  lang == 'en' ? AppStringsEn.arabic:AppStringsAr.arabic;
-  }
-  String getFQA(){
-    return  lang == 'en' ? AppStringsEn.fAQ:AppStringsAr.fAQ;
-  }
-  String getLogout(){
-    return  lang == 'en' ? AppStringsEn.logout:AppStringsAr.logout;
-  }
-  String getSettings(){
-    return  lang == 'en' ? AppStringsEn.settings:AppStringsAr.settings;
-  }
   @override
   void onInit()async {
     getUserId();
@@ -61,18 +32,13 @@ class ProfileControllers extends GetxController {
   void getUserId(){
     id.value=CacheHelper.getData(key: 'user');
   }
-  void changeToArabic(){
-    CacheHelper.saveData(key: 'lang',value: 'ar');
-    Get.offAllNamed(Routes.PROFILE);
+  void changeLanguage(String languageCode) {
+    lang = languageCode;
+    CacheHelper.saveData(key: 'lang',value: languageCode);
+    var locale = Locale(languageCode);
+    Get.updateLocale(locale);
     runApp(MyApp());
   }
-  void changeToEnglish(){
-    CacheHelper.saveData(key: 'lang',value: 'en');
-    Get.offAllNamed(Routes.PROFILE);
-    runApp(MyApp());
-  }
-
-
 
   Future<void> getUserData() async {
     isLoading.value = true;

@@ -36,19 +36,19 @@ class CustomProfileCard extends GetView<ProfileControllers> {
       title == 'Language' ||title == 'اللغة'? GestureDetector(
         onTap: (){
           showDialog(context: context, builder: (context) =>  CustomDoubleAlert(
-            title: controller.getLanguageComfim(),
-            leftButtonText: controller.getEnglish(),
-            rightButtonText: controller.getArabic(),
+            title: 'languageComfim'.tr,
+            leftButtonText: 'english'.tr,
+            rightButtonText: 'arabic'.tr,
             leftFunction: (){
-              controller.changeToEnglish();
+              controller.changeLanguage('en');
             },
             rightFunction: (){
-              controller.changeToArabic();
+              controller.changeLanguage('ar');
             },
           ));
         },
         child: Text(
-            controller.getLang(),
+            'lang'.tr,
             style: const TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w400,

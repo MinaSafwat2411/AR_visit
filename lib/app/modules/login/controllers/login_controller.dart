@@ -16,32 +16,7 @@ class LoginController extends GetxController {
   var isLoading = false.obs;
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  String lang=CacheHelper.getData(key: 'lang')??'en';
 
-  String getLoginTitle(){
-    return lang == 'en' ? AppStringsEn.loginTitle:AppStringsAr.loginTitle;
-  }
-  String getPasswordTitle(){
-    return  lang == 'en' ? AppStringsEn.passwordTitle:AppStringsAr.passwordTitle;
-  }
-  String getUserTitle(){
-    return  lang == 'en' ? AppStringsEn.userTitle:AppStringsAr.userTitle;
-  }
-  String getUserValidate(){
-    return  lang == 'en' ? AppStringsEn.userValidate:AppStringsAr.userValidate;
-  }
-  String getPasswordValidate1(){
-    return  lang == 'en' ? AppStringsEn.passwordValidate1:AppStringsAr.passwordValidate1;
-  }
-  String getPasswordValidate2(){
-    return  lang == 'en' ? AppStringsEn.passwordValidate2:AppStringsAr.passwordValidate2;
-  }
-  String getButtonTitle(){
-    return  lang == 'en' ? AppStringsEn.login:AppStringsAr.login;
-  }
-  String getButtonTitleLoading(){
-    return  lang == 'en' ? AppStringsEn.loginLoading:AppStringsAr.loginLoading;
-  }
   void login() async {
     isLoading(true);
     try {

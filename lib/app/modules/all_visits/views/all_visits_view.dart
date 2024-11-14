@@ -41,7 +41,7 @@ class AllVisitsView extends GetView<AllVisitController> {
         }, icon: const Icon(Icons.arrow_back),
         ),
         title:  Text(
-          controller.getVisitTitle(),
+          'visitTitle'.tr,
           style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
         ),
         centerTitle: true,

@@ -15,7 +15,7 @@ class AssignFatherVisitView extends GetView<AssignFatherVisitController> {
     return Obx(() => Scaffold(
       appBar: AppBar(
         title: Text(
-            controller.getFather(),
+            'father'.tr,
             style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.w600,
@@ -33,7 +33,7 @@ class AssignFatherVisitView extends GetView<AssignFatherVisitController> {
             child: TextButton(onPressed: (){
               controller.onCanceledAssign();
             }, child: Text(
-              controller.getCancel(),
+              'cancel'.tr,
               style: const TextStyle(
               color: AppColors.trinidadColor
             ),),),
@@ -55,11 +55,11 @@ class AssignFatherVisitView extends GetView<AssignFatherVisitController> {
                   showDialog(
                       context: context,
                       builder: (context) =>  CustomDoubleAlert(
-                        title: '${controller.getAssignPerson()} \n${
+                        title: '${'assignPerson'.tr} \n${
                             controller.lang =='en'?controller.fatherList[index].name:
                         controller.fatherList[index].nameAr}?',
-                        leftButtonText: controller.getComfirmYes(),
-                        rightButtonText: controller.getComfirmNo(),
+                        leftButtonText: 'yes'.tr,
+                        rightButtonText: 'no'.tr,
                         leftFunction: () {
                           Get.back(closeOverlays: true);
                           controller.onFatherSelected(controller.fatherList[index]);
