@@ -25,7 +25,8 @@ class VisitCardItemWidget extends GetView<VisitController> {
         extentRatio: 0.6,
         children: [
           SlidableAction(
-            borderRadius: const BorderRadius.only(topLeft: Radius.circular(20.0), bottomLeft: Radius.circular(20.0)),
+            borderRadius:  controller.lang=='en'? const BorderRadius.only(topLeft: Radius.circular(20.0), bottomLeft: Radius.circular(20.0))
+                :const BorderRadius.only(topRight: Radius.circular(20.0), bottomRight: Radius.circular(20.0)),
             onPressed: (context) {
               showDialog(
                   context: context,
@@ -76,7 +77,8 @@ class VisitCardItemWidget extends GetView<VisitController> {
                   )
               );
             },
-            borderRadius: const BorderRadius.only(topRight: Radius.circular(20.0), bottomRight: Radius.circular(20.0)),
+            borderRadius: controller.lang=='en'? const BorderRadius.only(topRight: Radius.circular(20.0), bottomRight: Radius.circular(20.0))
+                :const BorderRadius.only(topLeft: Radius.circular(20.0), bottomLeft: Radius.circular(20.0)),
             backgroundColor: AppColors.softAmber,
             foregroundColor: Colors.black,
             icon: Icons.cancel_outlined,
