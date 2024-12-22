@@ -1,11 +1,14 @@
 import 'package:ar_visiting_app/app/core/models/users/users.dart';
+import 'package:ar_visiting_app/app/core/services/dio_helper.dart';
+import 'package:ar_visiting_app/app/core/utils/backend_endpoint.dart';
 import 'package:ar_visiting_app/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 import '../../../core/firebase/GetUserFirebase.dart';
-import '../../../core/sharedchache/cache_helper.dart';
+import '../../../core/services/cache_helper.dart';
+import '../../../core/services/secure_cache_helper.dart';
 import '../../../routes/app_pages.dart';
 
 class ProfileControllers extends GetxController {
@@ -15,6 +18,7 @@ class ProfileControllers extends GetxController {
   var name =''.obs;
   var lang = CacheHelper.getData(key: 'lang') ?? 'en';
   var textDirection = TextDirection.ltr.obs;
+  var token = ''.obs;
   var user=Users(
     id: '',
     name: '',
@@ -23,6 +27,7 @@ class ProfileControllers extends GetxController {
 
   @override
   void onInit()async {
+    token.value=(await SecureCacheHelper.getData(key: 'token'))!;
     getUserId();
     await getUserData();
     super.onInit();
@@ -57,9 +62,14 @@ class ProfileControllers extends GetxController {
   }
 
 
-  void logout(){
-    CacheHelper.removeData(key: 'user');
-    CacheHelper.removeData(key: 'loginDone');
-    Get.offAllNamed(Routes.LOGIN);
+  void logout()async{
+    try{
+      await DioHelper.logout(url: BackendEndpoint.logout,token:  token.value,);
+      Get.snackbar('Logout', 'logout successfully');
+      SecureCacheHelper.removeData(key: 'token');
+      Get.offAllNamed(Routes.LOGIN);
+    }catch(e){
+      Get.snackbar('Error', 'check your connection');
+    }
   }
 }

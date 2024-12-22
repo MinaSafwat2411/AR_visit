@@ -7,7 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../core/firebase/AddVisitFirebase.dart';
 import '../../../core/firebase/GetVisitDetailsFirebase.dart';
 import '../../../core/models/visits/addvisitmodel.dart';
-import '../../../core/sharedchache/cache_helper.dart';
+import '../../../core/services/cache_helper.dart';
 
 class VisitDetailsControllers extends GetxController {
   var isLoading = false.obs;

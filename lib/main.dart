@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'app/core/firbaseoptions/firebase_options.dart';
-import 'app/core/sharedchache/cache_helper.dart';
+import 'app/core/services/cache_helper.dart';
 import 'app/routes/app_pages.dart';
 
 void main() async {

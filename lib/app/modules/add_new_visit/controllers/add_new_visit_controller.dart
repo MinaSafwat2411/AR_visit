@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import '../../../core/firebase/AddVisitFirebase.dart';
 import '../../../core/firebase/GetAreaFirebase.dart';
 import '../../../core/models/visits/addvisitmodel.dart';
-import '../../../core/sharedchache/cache_helper.dart';
+import '../../../core/services/cache_helper.dart';
 import '../../../routes/app_pages.dart';
 
 class AddNewVisitController extends GetxController {

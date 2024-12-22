@@ -1,7 +1,8 @@
 class BackendEndpoint 
 {
- static const addUserData = 'users';
- static const getUsersData = 'users';
- static const getProducts = 'products';
- static const isUserExists = 'users';
+ static const api ='/api';
+ static const auth = '$api/auth';
+ static const login = '$auth/login';
+ static const logout = '$auth/logout';
+ 
 }

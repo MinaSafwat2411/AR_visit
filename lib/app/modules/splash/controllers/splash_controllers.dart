@@ -1,21 +1,24 @@
 import 'dart:async';
+import 'package:ar_visiting_app/app/core/services/secure_cache_helper.dart';
 import 'package:get/get.dart';
-import '../../../core/sharedchache/cache_helper.dart';
+import '../../../core/services/cache_helper.dart';
 import '../../../routes/app_pages.dart';
 
 class SplashController extends GetxController {
-  bool loginDone=CacheHelper.getData(key: 'loginDone') ?? false;
-  String lang=CacheHelper.getData(key: 'lang') ?? 'en';
+  var token=''.obs;
+  var lang=''.obs;
 
   @override
   void onInit()async {
+    token.value=await SecureCacheHelper.getData(key: 'token') ?? '';
+    lang.value=await SecureCacheHelper.getData(key: 'lang') ?? 'en';
     super.onInit();
     onNavigate();
   }
 
   void onNavigate(){
     Timer(const Duration(seconds:4), () {
-      if(loginDone) {
+      if(token.isNotEmpty) {
         Get.offNamed(Routes.VISITS);
       }else{
         Get.offNamed(Routes.LOGIN);

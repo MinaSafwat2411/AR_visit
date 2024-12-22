@@ -7,7 +7,7 @@ import '../../../core/firebase/GetVisitDetailsFirebase.dart';
 import '../../../core/models/area/areamodel.dart';
 import '../../../core/models/visits/addvisitmodel.dart';
 import '../../../core/models/visits/visitsmodel.dart';
-import '../../../core/sharedchache/cache_helper.dart';
+import '../../../core/services/cache_helper.dart';
 import '../../../routes/app_pages.dart';
 
 class EditVisitController extends GetxController {
