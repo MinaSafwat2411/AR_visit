@@ -131,185 +131,185 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
               scrollDirection: Axis.vertical,
               child: Column(
                 children: [
-                  const SizedBox(
-                    height: 45,
-                  ),
-                  TestVisitDetails(
-                    title: 'patientName'.tr,
-                    value: controller.visitData.value.patient['name'],
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  TestVisitDetails(
-                      title: 'arid'.tr,
-                      value:
-                          "E1C1F${controller.visitData.value.patient['PatientFamilyId']}NR${controller.visitData.value.patient['PatientIDNumber']}"),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  GestureDetector(
-                    onTap: () async {
-                      if (await controller.requestPhonePermission()) {
-                        // Launch the phone call
-                        controller.launchPhoneDialer( controller.visitData.value.assistant['phoneNumber']);
-                      }
-                    },
-                    child: TestVisitDetails(
-                        title: 'patientPhoneNumber'.tr,
-                        value: controller.visitData.value.patient['phoneNumber']),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  TestVisitDetails(
-                      title: 'assistantName'.tr,
-                      value: controller.visitData.value.assistant['name']),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  GestureDetector(
-                    onTap: () async {
-                      if (await controller.requestPhonePermission()) {
-                      // Launch the phone call
-                        controller.launchPhoneDialer( controller.visitData.value.assistant['phoneNumber']);
-                      }
-                    },
-                    child: TestVisitDetails(
-                        title: 'assistantPhoneNumber'.tr,
-                        value:
-                            controller.visitData.value.assistant['phoneNumber']),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  TestVisitDetails(
-                      title: 'address'.tr,
-                      value: controller.visitData.value.address['address']),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  TestVisitDetails(
-                      title: 'addressType'.tr,
-                      value: controller.lang=='en'?controller.visitData.value.address['addressType']:
-                      controller.visitData.value.address['addressTypeAr']
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  TestVisitDetails(
-                      title: 'zone'.tr,
-                      value: controller.lang=='en'? controller.visitData.value.area['name']:
-                      controller.visitData.value.area['nameAr']),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  GestureDetector(
-                    onTap: () async {
-                      if (await controller.requestPhonePermission()) {
-                        // Launch the phone call
-                        controller.launchGoogleLink( controller.visitData.value.googleLink.substring(8));
-                      }
-                    },
-                    child: TestVisitDetails(
-                        title: 'googleMapsLink'.tr,
-                        value: controller.visitData.value.googleLink),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  TestVisitDetails(
-                      title: 'noOfPeople'.tr,
-                      value: controller.visitData.value.numberOfPeople),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  TestVisitDetails(
-                      title: 'date'.tr,
-                      value: controller.visitData.value.visitDate
-                          .substring(5)
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  TestVisitDetails(
-                    title: 'time'.tr,
-                    value: controller.visitTime.value,
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  TestVisitDetails(
-                      title: 'father'.tr,
-                      value: controller.visitData.value.father['name']),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  TestVisitDetails(
-                      title: 'servant'.tr,
-                      value: controller.visitData.value.servant['name']
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  TestVisitDetails(
-                      title: 'notes'.tr, value: controller.visitData.value.note),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                      controller.visitData.value.status=="Assigned"||
-                      controller.visitData.value.status=="NEW" ? SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    height: 58,
-                    child: CustomButton(
-                      text: 'assign'.tr,
-                      btnColor: AppColors.chartreuseYellow,
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (context) =>  CustomDoubleAlert(
-                              title: 'assignComfirm'.tr,
-                              leftButtonText: 'father'.tr,
-                              rightButtonText: 'servant'.tr,
-                              leftFunction: () {
-                                Get.back(closeOverlays: true);
-                                Get.toNamed(Routes.ASSIN_Father_VISIT,arguments: controller.id);
-                              },
-                              rightFunction: () {
-                                Get.back(closeOverlays: true);
-                                Get.toNamed(Routes.ASSIN_SERVANT_VISIT,arguments: controller.id);
-                              },
-                            )
-                        );
-                      },
-                    ),
-                  ) : const SizedBox(height: 0,),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  controller.visitData.value.status=="Assigned" ? SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    height: 58,
-                    child: CustomButton(
-                      text: 'done'.tr,
-                      btnColor: AppColors.green,
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (context) =>  CustomDoubleAlert(
-                              title: 'doneComfirm'.tr,
-                              leftButtonText: 'yes'.tr,
-                              rightButtonText: 'no'.tr,
-                              leftFunction: () => controller.onDone(),
-                              rightFunction: () => Get.back(closeOverlays: true),
-                            )
-                        );
-                      },
-                    ),
-                  ): const SizedBox(height: 0,),
-                  const SizedBox(
-                    height: 12,
-                  ),
+                  // const SizedBox(
+                  //   height: 45,
+                  // ),
+                  // TestVisitDetails(
+                  //   title: 'patientName'.tr,
+                  //   value: controller.visitData.value.patient['name'],
+                  // ),
+                  // const SizedBox(
+                  //   height: 30,
+                  // ),
+                  // TestVisitDetails(
+                  //     title: 'arid'.tr,
+                  //     value:
+                  //         "E1C1F${controller.visitData.value.patient['PatientFamilyId']}NR${controller.visitData.value.patient['PatientIDNumber']}"),
+                  // const SizedBox(
+                  //   height: 30,
+                  // ),
+                  // GestureDetector(
+                  //   onTap: () async {
+                  //     if (await controller.requestPhonePermission()) {
+                  //       // Launch the phone call
+                  //       controller.launchPhoneDialer( controller.visitData.value.assistant['phoneNumber']);
+                  //     }
+                  //   },
+                  //   child: TestVisitDetails(
+                  //       title: 'patientPhoneNumber'.tr,
+                  //       value: controller.visitData.value.patient['phoneNumber']),
+                  // ),
+                  // const SizedBox(
+                  //   height: 30,
+                  // ),
+                  // TestVisitDetails(
+                  //     title: 'assistantName'.tr,
+                  //     value: controller.visitData.value.assistant['name']),
+                  // const SizedBox(
+                  //   height: 30,
+                  // ),
+                  // GestureDetector(
+                  //   onTap: () async {
+                  //     if (await controller.requestPhonePermission()) {
+                  //     // Launch the phone call
+                  //       controller.launchPhoneDialer( controller.visitData.value.assistant['phoneNumber']);
+                  //     }
+                  //   },
+                  //   child: TestVisitDetails(
+                  //       title: 'assistantPhoneNumber'.tr,
+                  //       value:
+                  //           controller.visitData.value.assistant['phoneNumber']),
+                  // ),
+                  // const SizedBox(
+                  //   height: 30,
+                  // ),
+                  // TestVisitDetails(
+                  //     title: 'address'.tr,
+                  //     value: controller.visitData.value.address['address']),
+                  // const SizedBox(
+                  //   height: 30,
+                  // ),
+                  // TestVisitDetails(
+                  //     title: 'addressType'.tr,
+                  //     value: controller.lang=='en'?controller.visitData.value.address['addressType']:
+                  //     controller.visitData.value.address['addressTypeAr']
+                  // ),
+                  // const SizedBox(
+                  //   height: 30,
+                  // ),
+                  // TestVisitDetails(
+                  //     title: 'zone'.tr,
+                  //     value: controller.lang=='en'? controller.visitData.value.area['name']:
+                  //     controller.visitData.value.area['nameAr']),
+                  // const SizedBox(
+                  //   height: 30,
+                  // ),
+                  // GestureDetector(
+                  //   onTap: () async {
+                  //     if (await controller.requestPhonePermission()) {
+                  //       // Launch the phone call
+                  //       controller.launchGoogleLink( controller.visitData.value.googleLink.substring(8));
+                  //     }
+                  //   },
+                  //   child: TestVisitDetails(
+                  //       title: 'googleMapsLink'.tr,
+                  //       value: controller.visitData.value.googleLink),
+                  // ),
+                  // const SizedBox(
+                  //   height: 30,
+                  // ),
+                  // TestVisitDetails(
+                  //     title: 'noOfPeople'.tr,
+                  //     value: controller.visitData.value.numberOfPeople),
+                  // const SizedBox(
+                  //   height: 30,
+                  // ),
+                  // TestVisitDetails(
+                  //     title: 'date'.tr,
+                  //     value: controller.visitData.value.visitDate
+                  //         .substring(5)
+                  // ),
+                  // const SizedBox(
+                  //   height: 30,
+                  // ),
+                  // TestVisitDetails(
+                  //   title: 'time'.tr,
+                  //   value: controller.visitTime.value,
+                  // ),
+                  // const SizedBox(
+                  //   height: 30,
+                  // ),
+                  // TestVisitDetails(
+                  //     title: 'father'.tr,
+                  //     value: controller.visitData.value.father['name']),
+                  // const SizedBox(
+                  //   height: 30,
+                  // ),
+                  // TestVisitDetails(
+                  //     title: 'servant'.tr,
+                  //     value: controller.visitData.value.servant['name']
+                  // ),
+                  // const SizedBox(
+                  //   height: 30,
+                  // ),
+                  // TestVisitDetails(
+                  //     title: 'notes'.tr, value: controller.visitData.value.note),
+                  // const SizedBox(
+                  //   height: 30,
+                  // ),
+                  //     controller.visitData.value.status=="Assigned"||
+                  //     controller.visitData.value.status=="NEW" ? SizedBox(
+                  //   width: MediaQuery.of(context).size.width * 0.9,
+                  //   height: 58,
+                  //   child: CustomButton(
+                  //     text: 'assign'.tr,
+                  //     btnColor: AppColors.chartreuseYellow,
+                  //     onPressed: () {
+                  //       showDialog(
+                  //           context: context,
+                  //           builder: (context) =>  CustomDoubleAlert(
+                  //             title: 'assignComfirm'.tr,
+                  //             leftButtonText: 'father'.tr,
+                  //             rightButtonText: 'servant'.tr,
+                  //             leftFunction: () {
+                  //               Get.back(closeOverlays: true);
+                  //               Get.toNamed(Routes.ASSIN_Father_VISIT,arguments: controller.id);
+                  //             },
+                  //             rightFunction: () {
+                  //               Get.back(closeOverlays: true);
+                  //               Get.toNamed(Routes.ASSIN_SERVANT_VISIT,arguments: controller.id);
+                  //             },
+                  //           )
+                  //       );
+                  //     },
+                  //   ),
+                  // ) : const SizedBox(height: 0,),
+                  // const SizedBox(
+                  //   height: 12,
+                  // ),
+                  // controller.visitData.value.status=="Assigned" ? SizedBox(
+                  //   width: MediaQuery.of(context).size.width * 0.9,
+                  //   height: 58,
+                  //   child: CustomButton(
+                  //     text: 'done'.tr,
+                  //     btnColor: AppColors.green,
+                  //     onPressed: () {
+                  //       showDialog(
+                  //           context: context,
+                  //           builder: (context) =>  CustomDoubleAlert(
+                  //             title: 'doneComfirm'.tr,
+                  //             leftButtonText: 'yes'.tr,
+                  //             rightButtonText: 'no'.tr,
+                  //             leftFunction: () => controller.onDone(),
+                  //             rightFunction: () => Get.back(closeOverlays: true),
+                  //           )
+                  //       );
+                  //     },
+                  //   ),
+                  // ): const SizedBox(height: 0,),
+                  // const SizedBox(
+                  //   height: 12,
+                  // ),
                 ],
               ),
             ),

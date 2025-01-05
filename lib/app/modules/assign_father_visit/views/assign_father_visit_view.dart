@@ -27,16 +27,16 @@ class AssignFatherVisitView extends GetView<AssignFatherVisitController> {
           icon: const Icon(Icons.arrow_back),
         ),
         actions: [
-          controller.visitData.value.status=="Assigned"? Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextButton(onPressed: (){
-              controller.onCanceledAssign();
-            }, child: Text(
-              'cancel'.tr,
-              style: const TextStyle(
-              color: AppColors.trinidadColor
-            ),),),
-          ):const SizedBox(height: 0,)
+          // controller.visitData.value.status=="Assigned"? Padding(
+          //   padding: const EdgeInsets.all(8.0),
+          //   child: TextButton(onPressed: (){
+          //     controller.onCanceledAssign();
+          //   }, child: Text(
+          //     'cancel'.tr,
+          //     style: const TextStyle(
+          //     color: AppColors.trinidadColor
+          //   ),),),
+          // ):const SizedBox(height: 0,)
         ],
       ),
       body: ConditionalBuilder(

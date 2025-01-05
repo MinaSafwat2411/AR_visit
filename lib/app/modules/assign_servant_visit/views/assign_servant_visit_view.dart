@@ -27,17 +27,17 @@ class AssignServantVisitView extends GetView<AssignServantVisitController> {
           icon: const Icon(Icons.arrow_back),
         ),
         actions: [
-          controller.visitData.value.servant['id']==""? const SizedBox(height: 0,):
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextButton(onPressed: (){
-              controller.onCanceledAssign();
-            }, child:  Text(
-              'cancel'.tr,
-              style: const TextStyle(
-                color: AppColors.trinidadColor
-            ),),),
-          )
+          // controller.visitData.value.servant['id']==""? const SizedBox(height: 0,):
+          // Padding(
+          //   padding: const EdgeInsets.all(8.0),
+          //   child: TextButton(onPressed: (){
+          //     controller.onCanceledAssign();
+          //   }, child:  Text(
+          //     'cancel'.tr,
+          //     style: const TextStyle(
+          //       color: AppColors.trinidadColor
+          //   ),),),
+          // )
         ],
       ),
       body: ConditionalBuilder(

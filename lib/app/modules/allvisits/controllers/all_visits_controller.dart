@@ -14,7 +14,7 @@ import '../../../core/services/secure_cache_helper.dart';
 import '../../../routes/app_pages.dart';
 
 
-class VisitController extends GetxController {
+class ALLVisitController extends GetxController {
   var visitsDates = <String>[].obs;
   var tagsStatusList = [true ,false ,false, false, false, false].obs;
   var isLoading=RxBool(false);

@@ -76,7 +76,7 @@ class VisitsView extends GetView<VisitController> {
                   child: ConditionalBuilder(
                     condition: !controller.isLoading.value,
                     builder: (context) {
-                      return  const MyDateVisitListWidget();
+                      return  MyDateVisitListWidget(visits: controller.visits);
                     },
                     fallback: (context) => const Center(
                       child: CircularProgressIndicator(

@@ -1,9 +1,11 @@
 import 'package:dio/dio.dart';
 
+import '../utils/backend_endpoint.dart';
+
 class DioHelper {
   static final Dio dio = Dio(
     BaseOptions(
-      baseUrl: 'http://192.168.4.36:8000',
+      baseUrl: BackendEndpoint.baseUrl,
       receiveDataWhenStatusError: true,
     ),
   );
@@ -16,7 +18,7 @@ class DioHelper {
   }) async {
     dio.options.headers = {
       'lang': lang,
-      'Authorization': token ?? '',
+      'Authorization': "Bearer $token",
       'Content-Type': 'application/json',
     };
 
@@ -35,7 +37,7 @@ class DioHelper {
   }) async {
     dio.options.headers = {
       'lang': lang,
-      'Authorization': token ?? '',
+      'Authorization':"Bearer $token",
       'Accept': 'application/json',
     };
 
@@ -43,21 +45,6 @@ class DioHelper {
       url,
       queryParameters: query,
       data: data,
-    );
-  }
-  static Future<Response> logout({
-    required String url,
-    String lang = 'en',
-    String? token,
-  }) async {
-    dio.options.headers = {
-      'lang': lang,
-      'Authorization': "Bearer $token" ?? '',
-      'Accept': 'application/json',
-    };
-
-    return await dio.post(
-      url,
     );
   }
 

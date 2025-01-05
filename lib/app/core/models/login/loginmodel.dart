@@ -2,10 +2,7 @@ class LoginModel {
   int? e1C1F;
   int? nR;
   String? password;
-  String? token;
-  User? user;
-
-  LoginModel({this.e1C1F, this.nR, this.password, this.token, this.user});
+  LoginModel({this.e1C1F, this.nR, this.password});
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -15,7 +12,15 @@ class LoginModel {
     return data;
   }
 
-  LoginModel.fromJson(Map<String, dynamic> json) {
+}
+
+class UserModel {
+  String? token;
+  User? user;
+
+  UserModel({this.token, this.user});
+
+  UserModel.fromJson(Map<String, dynamic> json) {
     token = json['token'];
     user = json['user'] != null ? new User.fromJson(json['user']) : null;
   }
@@ -33,13 +38,13 @@ class User {
 
   User(
       {this.id,
-      this.name,
-      this.email,
-      this.type,
-      this.status,
-      this.phone,
-      this.e1C1F,
-      this.nR});
+        this.name,
+        this.email,
+        this.type,
+        this.status,
+        this.phone,
+        this.e1C1F,
+        this.nR});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -50,23 +55,6 @@ class User {
     phone = json['phone'];
     e1C1F = json['E1C1F'];
     nR = json['NR'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['email'] = this.email;
-    if (this.type != null) {
-      data['type'] = this.type!.toJson();
-    }
-    if (this.status != null) {
-      data['status'] = this.status!.toJson();
-    }
-    data['phone'] = this.phone;
-    data['E1C1F'] = this.e1C1F;
-    data['NR'] = this.nR;
-    return data;
   }
 }
 

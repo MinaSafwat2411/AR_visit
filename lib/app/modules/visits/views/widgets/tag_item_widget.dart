@@ -24,7 +24,7 @@ class TagItemWidget extends StatelessWidget {
           visitController.tagsStatusList[i] = false;
         }
         visitController.tagsStatusList[index] = true;
-        visitController.getVisitData();
+        visitController.getVisitsData();
       },
       child: Card(
         elevation: 0,

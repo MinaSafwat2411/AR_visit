@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/services/secure_cache_helper.dart';
+import '../../../core/services/secure_cache_helper.dart';
 import '../../../core/utils/backend_endpoint.dart';
 import '../../../routes/app_pages.dart';
 
@@ -23,7 +24,7 @@ class LoginController extends GetxController {
   var nR = ''.obs;
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  LoginModel login= LoginModel();
+  var login= LoginModel().obs;
 
 
   void getArid(){
@@ -38,7 +39,7 @@ class LoginController extends GetxController {
     getArid();
     isLoading(true);
     try {
-      login =LoginModel(
+      login.value =LoginModel(
         nR: int.parse(nR.value),
         e1C1F: int.parse(id.value),
         password: passwordTextController.text
@@ -47,15 +48,15 @@ class LoginController extends GetxController {
         url: BackendEndpoint.login,
         data: login.toJson(),
       );
-
-      final apiResponse = ApiResponse<LoginModel>.fromJson(
+      var apiResponse = ApiResponse<UserModel>.fromJson(
         response.data,
-            (data) => LoginModel.fromJson(data),
+            (json) => UserModel.fromJson(json as Map<String, dynamic>),
       );
       SecureCacheHelper.saveData(key: 'token', value: apiResponse.data!.token);
-      Get.snackbar("Login", apiResponse.message);
+      Get.snackbar("Login", apiResponse.message ?? "");
       Get.offNamed(Routes.VISITS);
     } catch (e) {
+      print(e.toString());
       Get.snackbar("Error", 'Invalid Credentials');
     } finally {
       isLoading(false);

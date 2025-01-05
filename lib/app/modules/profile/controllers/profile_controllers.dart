@@ -64,7 +64,7 @@ class ProfileControllers extends GetxController {
 
   void logout()async{
     try{
-      await DioHelper.logout(url: BackendEndpoint.logout,token:  token.value,);
+      await DioHelper.postData(url: BackendEndpoint.logout,token:  token.value,);
       Get.snackbar('Logout', 'logout successfully');
       SecureCacheHelper.removeData(key: 'token');
       Get.offAllNamed(Routes.LOGIN);

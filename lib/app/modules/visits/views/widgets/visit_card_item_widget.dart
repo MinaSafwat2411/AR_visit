@@ -5,21 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-import '../../../../core/models/visits/visitsmodel.dart';
+import '../../../../core/models/visits/visitmodel.dart';
 import '../../../../core/widgets/custom_alert.dart';
 
 class VisitCardItemWidget extends GetView<VisitController> {
   const VisitCardItemWidget({
     super.key,
-    required this.visitData,
+    required this.visit
   });
-
-  final VisitModel visitData;
-
+  final VisitModel visit;
   @override
   Widget build(BuildContext context) {
     return Slidable(
-      key: ValueKey(visitData.id),
+      key: ValueKey(visit.id),
       endActionPane: ActionPane(
         motion: const ScrollMotion(),
         extentRatio: 0.6,
@@ -34,7 +32,7 @@ class VisitCardItemWidget extends GetView<VisitController> {
                     title:  'cloneComfirm'.tr,
                     leftButtonText: 'yes'.tr,
                     rightButtonText: 'no'.tr,
-                    leftFunction: () => controller.onClone(visitData.id),
+                    leftFunction: () => controller.onClone(visit.id),
                     rightFunction: () => Get.back(closeOverlays: true),
                   )
               );
@@ -53,7 +51,7 @@ class VisitCardItemWidget extends GetView<VisitController> {
                     title: 'doneComfirm'.tr,
                     leftButtonText: 'yes'.tr,
                     rightButtonText: 'no'.tr,
-                    leftFunction: () => controller.onDone(visitData.id),
+                    leftFunction: () => controller.onDone(visit.id),
                     rightFunction: () => Get.back(closeOverlays: true),
                   )
               );
@@ -72,7 +70,7 @@ class VisitCardItemWidget extends GetView<VisitController> {
                     title:  'cancelComfirm'.tr,
                     leftButtonText: 'yes'.tr,
                     rightButtonText: 'no'.tr,
-                    leftFunction: () => controller.onCanceled(visitData.id),
+                    leftFunction: () => controller.onCanceled(visit.id),
                     rightFunction: () => Get.back(closeOverlays: true),
                   )
               );
@@ -90,7 +88,7 @@ class VisitCardItemWidget extends GetView<VisitController> {
       ),
       child: GestureDetector(
         onTap: () {
-          Get.toNamed(Routes.VISIT_DETAILS, arguments: visitData.id);
+          Get.toNamed(Routes.VISIT_DETAILS, arguments: visit.id);
         },
         child: Card(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
@@ -106,20 +104,20 @@ class VisitCardItemWidget extends GetView<VisitController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      visitData.patient['name'], // Accessing patient name
+                      visit.attendant, // Accessing patient name
                       style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                     ),
                     Text(
-                      '${'noOfPeople'.tr} : ${visitData.numberOfPeople}',
+                      '${'noOfPeople'.tr} : ${visit.patientNums}',
                       style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                     ),
                     Text(
-                      '${'father'.tr}: ${controller.lang == 'en' ? visitData.father['name'] : visitData.father['nameAr']}',
+                      '${'father'.tr}: ${ visit.fatherName}',
                       style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                     ),
                   ],
                 ),
-                visitData.servant['name'] == "" ? const SizedBox(width: 10) : const Spacer(),
+                const SizedBox(width: 10,),
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,11 +125,11 @@ class VisitCardItemWidget extends GetView<VisitController> {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 4.0),
                       child: Text(
-                        controller.getStatus(visitData.status),
+                        controller.getStatus(visit.status.name),
                         style: TextStyle(
-                          color: visitData.status == "Canceled"
+                          color: visit.status == "Canceled"
                               ? AppColors.redColor
-                              : visitData.status == "Assigned"
+                              : visit.status == "Assigned"
                               ? AppColors.cornflowerBlue
                               : AppColors.japaneseLaurelColor,
                           fontSize: 15,
@@ -140,11 +138,11 @@ class VisitCardItemWidget extends GetView<VisitController> {
                       ),
                     ),
                     Text(
-                      '${'zone'.tr}: ${controller.lang == 'en' ? visitData.area['name'] : visitData.area['nameAr']}',
+                      '${'zone'.tr}: ${visit.areaName}',
                       style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                     ),
                     Text(
-                      '${'servant'.tr}: ${controller.lang == 'en' ? visitData.servant['name'] : visitData.servant['nameAr']}',
+                      '${'servant'.tr}: ${ visit.servantName}',
                       style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                     ),
                   ],

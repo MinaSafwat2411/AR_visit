@@ -1,29 +1,27 @@
+import 'package:ar_visiting_app/app/core/models/visits/VisitsModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import '../../../../core/models/visits/visitsmodel.dart';
 import '../../controllers/visits_controller.dart';
 import 'visit_card_item_widget.dart';
 class MyDateVisitListWidget extends GetView<VisitController> {
   const MyDateVisitListWidget({
     super.key,
+    required this.visits
   });
+  final List<DayVisits> visits;
 
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      itemBuilder: (context, index) {
-        DateTime date = controller.sortedDates[index];
-        List<VisitModel> visitsForDate = controller.groupedVisits[date]!;
+      itemBuilder: (context, visitsIndex) {
         return Column(
           children: [
-            Row(
+             Row(
               children: [
                 const SizedBox(width: 10),
-                Text(
-                  date.day == DateTime.now().day-1 ? 'yesterday'.tr :date.day == DateTime.now().day ? 'today'.tr : date.day == DateTime.now().day + 1 ? 'tomorrow'.tr : DateFormat('MMM-d',controller.lang).format(date),
+                Text(controller.formatDate(visits[visitsIndex].day),
                   style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
                 ),
               ],
@@ -32,16 +30,16 @@ class MyDateVisitListWidget extends GetView<VisitController> {
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemBuilder: (context, visitIndex) {
-                return VisitCardItemWidget(visitData: visitsForDate[visitIndex],);  // Pass the VisitModel object
+                return  VisitCardItemWidget(visit: visits[visitsIndex].visits[visitIndex],);  // Pass the VisitModel object
               },
               separatorBuilder: (context, index) => const SizedBox(height: 10),
-              itemCount: visitsForDate.length,
+              itemCount: visits[visitsIndex].visits.length,
             )
           ],
         );
       },
       separatorBuilder: (context, index) => const SizedBox(height: 5),
-      itemCount: controller.sortedDates.length,
+      itemCount: visits.length,
     );
   }
 }
