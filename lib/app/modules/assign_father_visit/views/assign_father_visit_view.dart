@@ -1,10 +1,10 @@
 import 'package:ar_visiting_app/app/core/utils/app_colors.dart';
+import 'package:ar_visiting_app/app/core/widgets/custom_alert.dart';
 import 'package:ar_visiting_app/app/modules/assign_father_visit/controllers/assign_father_visit_controller.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../core/widgets/custom_alert.dart';
 
 class AssignFatherVisitView extends GetView<AssignFatherVisitController> {
   const AssignFatherVisitView({super.key});
@@ -26,6 +26,7 @@ class AssignFatherVisitView extends GetView<AssignFatherVisitController> {
           },
           icon: const Icon(Icons.arrow_back),
         ),
+        // ignore: prefer_const_literals_to_create_immutables
         actions: [
           // controller.visitData.value.status=="Assigned"? Padding(
           //   padding: const EdgeInsets.all(8.0),
@@ -54,14 +55,12 @@ class AssignFatherVisitView extends GetView<AssignFatherVisitController> {
                   showDialog(
                       context: context,
                       builder: (context) =>  CustomDoubleAlert(
-                        title: '${'assignPerson'.tr} \n${
-                            controller.lang =='en'?controller.fatherList[index].name:
-                        controller.fatherList[index].nameAr}?',
+                        title: '${'assignPerson'.tr} \n${controller.fatherNames[index]}',
                         leftButtonText: 'yes'.tr,
                         rightButtonText: 'no'.tr,
                         leftFunction: () {
                           Get.back(closeOverlays: true);
-                          controller.onFatherSelected(controller.fatherList[index]);
+                          controller.onFatherSelected(index);
                         },
                         rightFunction: () => Get.back(closeOverlays: true),
                       )
@@ -71,9 +70,7 @@ class AssignFatherVisitView extends GetView<AssignFatherVisitController> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [Text(
-                      '${
-                          controller.lang =='en'?controller.fatherList[index].name:
-                      controller.fatherList[index].nameAr}',
+                      controller.fatherNames[index],
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w400,
@@ -83,7 +80,7 @@ class AssignFatherVisitView extends GetView<AssignFatherVisitController> {
               ),
             ),
             separatorBuilder: (context, index) => const Divider(color: AppColors.black,),
-            itemCount: controller.fatherList.length) ,
+            itemCount: controller.fatherNames.length) ,
       )
     )
     );

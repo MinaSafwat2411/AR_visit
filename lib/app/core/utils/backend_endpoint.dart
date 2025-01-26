@@ -1,11 +1,21 @@
-class BackendEndpoint 
-{
- static const baseUrl ='http://192.168.7.105:8000';
- static const api ='/api';
- static const auth = '$api/auth';
- static const login = '$auth/login';
- static const logout = '$auth/logout';
- static const visits = '$api/visits';
- static const cancelled = '$visits/cancelled';
- static const archive = '$visits/archives';
+class BackendEndpoint {
+  static const baseUrl = 'http://41.130.162.205:5500';
+  static const api = '/api';
+  static const auth = '$api/auth';
+  static const login = '$auth/login';
+  static const logout = '$auth/logout';
+  static const visits = '$api/visits';
+  static const inprogress = '$visits/inprogress';
+  static const cancel = '$visits/cancel';
+  static const delay = '$visits/delay';
+  static const done = '$visits/done';
+  static const archive = '$visits/archives';
+  static const areas = '$api/areas';
+  static const settings = '$api/settings';
+  static const enums = '$settings/enums';
+  static const users = '$api/users';
+  static const dropDown = '$users/dropdown';
+  static const profile = '$users/profile';
+  static const servent ='$visits/servant';
+  static const father ='$visits/father';
 }

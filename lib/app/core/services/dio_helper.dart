@@ -17,7 +17,7 @@ class DioHelper {
     String? token,
   }) async {
     dio.options.headers = {
-      'lang': lang,
+      'Accept-Language': lang,
       'Authorization': "Bearer $token",
       'Content-Type': 'application/json',
     };
@@ -36,10 +36,9 @@ class DioHelper {
     String? token,
   }) async {
     dio.options.headers = {
-      'lang': lang,
-      'Authorization':"Bearer $token",
-      'Accept': 'application/json',
-    };
+      'Accept-Language': lang,
+      'Authorization': "Bearer $token",
+      'Content-Type': 'application/json',    };
 
     return await dio.post(
       url,
@@ -56,8 +55,8 @@ class DioHelper {
     String? token,
   }) async {
     dio.options.headers = {
-      'lang': lang,
-      'Authorization': token ?? '',
+      'Accept-Language': lang,
+      'Authorization': "Bearer $token",
       'Content-Type': 'application/json',    };
 
     return dio.put(

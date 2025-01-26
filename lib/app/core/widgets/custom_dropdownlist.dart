@@ -3,31 +3,34 @@ import 'package:flutter/material.dart';
 import '../utils/app_colors.dart';
 
 class CustomDropDownList extends StatelessWidget {
-   CustomDropDownList({
+   const CustomDropDownList({
     super.key,
     this.items,
     this.label,
-    this.value,
+    this.curruntValue,
     required this.onChangeValue
   });
 
   final List<String>? items;
   final ValueChanged<String?> onChangeValue;
   final String? label;
-  final String? value;
+  final String? curruntValue;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 45,
+      height: 55,
       child: DropdownButtonFormField<String>(
-        value: value,
+        value: curruntValue,
+        onSaved: onChangeValue,
         items: items?.map((String value) {
           return DropdownMenuItem<String>(
             value: value,
             child: Text(value),
           );
         }).toList(),
+        borderRadius: BorderRadius.circular(20),
+        menuMaxHeight: 300,
         onChanged: onChangeValue ,
         decoration: InputDecoration(
           labelText: label,

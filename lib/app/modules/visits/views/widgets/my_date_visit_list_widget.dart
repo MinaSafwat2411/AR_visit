@@ -12,7 +12,7 @@ class MyDateVisitListWidget extends GetView<VisitController> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
+    return Obx(() => ListView.separated(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, visitsIndex) {
@@ -40,6 +40,7 @@ class MyDateVisitListWidget extends GetView<VisitController> {
       },
       separatorBuilder: (context, index) => const SizedBox(height: 5),
       itemCount: visits.length,
+    )
     );
   }
 }

@@ -19,23 +19,9 @@ class CustomProfileCard extends GetView<ProfileControllers> {
 
   @override
   Widget build(BuildContext context) {
-    return  Row(children: [
-      Padding(
-        padding: const EdgeInsets.all(6.0),
-        child: Image(image: AssetImage(image!),width: 20,height: 20,),
-      ),
-      const SizedBox(width: 17,),
-      Text(
-          title!,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-          )
-      ),
-      const Spacer(),
-      title == 'Language' ||title == 'اللغة'? GestureDetector(
-        onTap: (){
-          showDialog(context: context, builder: (context) =>  CustomDoubleAlert(
+    return  GestureDetector(
+      onTap: () {
+                  showDialog(context: context, builder: (context) =>  CustomDoubleAlert(
             title: 'languageComfim'.tr,
             leftButtonText: 'english'.tr,
             rightButtonText: 'arabic'.tr,
@@ -46,16 +32,30 @@ class CustomProfileCard extends GetView<ProfileControllers> {
               controller.changeLanguage('ar');
             },
           ));
-        },
-        child: Text(
+      },
+      child: Row(children: [
+        Padding(
+          padding: const EdgeInsets.all(6.0),
+          child: Image(image: AssetImage(image!),width: 20,height: 20,),
+        ),
+        const SizedBox(width: 17,),
+        Text(
+            title!,
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+            )
+        ),
+        const Spacer(),
+        title == 'Language' ||title == 'اللغة'? Text(
             'lang'.tr,
             style: const TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w400,
             )
-        ),
-      ):const SizedBox(),
-      const Icon(Icons.arrow_forward_ios,size: 20,color: AppColors.doveGray,),
-    ],);
+        ):const SizedBox(),
+        const Icon(Icons.arrow_forward_ios,size: 20,color: AppColors.doveGray,),
+      ],),
+    );
   }
 }

@@ -1,19 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
-class Area{
-  Area({
-    this.area,
-    this.areaAr,
+class AreaModel{
+  AreaModel({
+    this.id,
+    this.name,
 });
-  final String? area;
-  final String? areaAr;
-
-  factory Area.fromFireStore(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
-
-    return Area(
-      area: data['name'] ?? "",
-      areaAr: data['nameAr'] ?? "",
+  final int? id;
+  final String? name;
+  factory AreaModel.fromJson(Map<String, dynamic> json) {
+    return AreaModel(
+      id: json['id'],
+      name: json['name'],
     );
   }
 }

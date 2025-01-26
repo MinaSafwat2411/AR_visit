@@ -1,70 +1,44 @@
-import 'package:ar_visiting_app/app/core/firebase/GetFatherFirebase.dart';
-import 'package:ar_visiting_app/app/core/models/father/fathermodel.dart';
+
+import 'package:ar_visiting_app/app/core/controller/main_controller.dart';
+import 'package:ar_visiting_app/app/core/models/login/loginmodel.dart';
+import 'package:ar_visiting_app/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 
 import '../../../core/services/cache_helper.dart';
 
 
 class AssignFatherVisitController extends GetxController{
-  var isLoading = false.obs;
-  String id =Get.arguments;
-  var father =Father(
-    name: "",
-    isFather: true,
-    id: "",
-    phone: ""
-  ).obs;
-  var fatherList=<Father>[].obs;
+
+var isLoading = false.obs;
+  int visitId =Get.arguments;
+  var father = <User>[].obs;
+  var fatherNames =<String>[].obs;
+  var fatherId =<int>[].obs;
   String lang=CacheHelper.getData(key: 'lang')??'en';
+  var mainController =MainController();
 
-  Future<void> getVisitDetails() async {
+
+
+  Future<void> getFatherNames() async {
     isLoading.value = true;
-    try {
-    } catch (e) {
-      Get.snackbar("Error", "Failed to retrieve visit details: $e");
-    } finally {
-      isLoading.value = false;
+    father.value = (await mainController.getUserList(1))!;
+
+    for (var father in father) {
+      fatherNames.add(father.name!);
+      fatherId.add(father.id!);
     }
-  }
-  Future<void> getFathersNames() async {
-    isLoading.value = true;
-    try {
-      fatherList.value = await GetFatherFirebase.retrieveFather();
-    }catch(e){
-      Get.snackbar("Error", "Failed to retrieve fathers details");
-    }finally{
-      isLoading.value=false;
-    }
+    isLoading.value = false;
   }
 
-  onFatherSelected(Father father){
-    this.father.value =father;
-    onAssign();
-  }
-  onCanceledAssign(){
+  onFatherSelected(int index)async{
     isLoading(true);
-    try{
-    }catch (e){
-      Get.snackbar("Error", e.toString());
-    }finally{
-      isLoading(false);
-    }
+    await mainController.assignFather(visitId, fatherId[index]);
+    isLoading(false);
+    Get.offNamedUntil(Routes.VISITS,(route) => false,);
   }
   @override
   void onInit() async{
-    await getVisitDetails();
-    await getFathersNames();
+    await getFatherNames();
     super.onInit();
-  }
-
-  void onAssign(){
-    isLoading(true);
-    try{
-
-    }catch (e){
-      Get.snackbar("Error", e.toString());
-    }finally{
-      isLoading(false);
-    }
   }
 }

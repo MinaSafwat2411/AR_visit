@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../utils/app_colors.dart';
 
+// ignore: must_be_immutable
 class CustomTextFormField extends StatelessWidget {
   CustomTextFormField(
       {super.key,
@@ -19,7 +20,7 @@ class CustomTextFormField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: SizedBox(
-        height: 45,
+        height: 50,
         child: TextFormField(
           controller: textController,
           decoration: InputDecoration(

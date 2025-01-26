@@ -26,19 +26,6 @@ class AssignServantVisitView extends GetView<AssignServantVisitController> {
           },
           icon: const Icon(Icons.arrow_back),
         ),
-        actions: [
-          // controller.visitData.value.servant['id']==""? const SizedBox(height: 0,):
-          // Padding(
-          //   padding: const EdgeInsets.all(8.0),
-          //   child: TextButton(onPressed: (){
-          //     controller.onCanceledAssign();
-          //   }, child:  Text(
-          //     'cancel'.tr,
-          //     style: const TextStyle(
-          //       color: AppColors.trinidadColor
-          //   ),),),
-          // )
-        ],
       ),
       body: ConditionalBuilder(
         condition: !controller.isLoading.value,
@@ -55,15 +42,12 @@ class AssignServantVisitView extends GetView<AssignServantVisitController> {
                   showDialog(
                       context: context,
                       builder: (context) =>  CustomDoubleAlert(
-                        title: '${'assignPerson'.tr} \n${
-                            controller.lang =='en'?controller.servantList[index].name:
-                            controller.servantList[index].nameAr
-                        }?',
+                        title: '${'assignPerson'.tr} \n${controller.servantNames[index]}?',
                         leftButtonText: 'yes'.tr,
                         rightButtonText: 'no'.tr,
                         leftFunction: () {
                           Get.back(closeOverlays: true);
-                          controller.onServantSelected(controller.servantList[index]);
+                          controller.onServantSelected(index);
                         },
                         rightFunction: () => Get.back(closeOverlays: true),
                       )
@@ -73,10 +57,7 @@ class AssignServantVisitView extends GetView<AssignServantVisitController> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [Text(
-                      '${
-                          controller.lang =='en'?controller.servantList[index].name:
-                      controller.servantList[index].nameAr
-                      }',
+                      controller.servantNames[index],
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w400,
@@ -86,7 +67,7 @@ class AssignServantVisitView extends GetView<AssignServantVisitController> {
               ),
             ),
             separatorBuilder: (context, index) => const Divider(color: AppColors.black,),
-            itemCount: controller.servantList.length) ,
+            itemCount: controller.servantNames.length) ,
       )
     )
     );

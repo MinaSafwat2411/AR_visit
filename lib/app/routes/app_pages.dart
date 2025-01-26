@@ -11,7 +11,6 @@ import 'package:ar_visiting_app/app/modules/splash/views/splash_views.dart';
 import 'package:ar_visiting_app/app/modules/visit_details/blinding/visit_details_blinding.dart';
 import 'package:ar_visiting_app/app/modules/visit_details/views/visit_details_views.dart';
 import 'package:get/get.dart';
-
 import '../modules/add_new_visit/bindings/add_new_visit_binding.dart';
 import '../modules/add_new_visit/views/add_new_visit_view.dart';
 import '../modules/allvisits/views/all_visits_view.dart';
@@ -78,6 +77,6 @@ class AppPages {
       name: _Paths.ALLVISITS,
       page: () => const ALLVisitsViews(),
       binding: ALLVisitsBinding(),
-    )
+    ),
   ];
 }

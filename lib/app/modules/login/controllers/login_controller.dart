@@ -1,15 +1,13 @@
 
 import 'package:ar_visiting_app/app/core/models/api_response/api_response.dart';
+import 'package:ar_visiting_app/app/core/models/enums/enums.dart';
 import 'package:ar_visiting_app/app/core/models/login/loginmodel.dart';
-import 'package:ar_visiting_app/app/core/services/cache_helper.dart';
 import 'package:ar_visiting_app/app/core/services/dio_helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../core/services/secure_cache_helper.dart';
 import '../../../core/services/secure_cache_helper.dart';
 import '../../../core/utils/backend_endpoint.dart';
 import '../../../routes/app_pages.dart';
@@ -53,10 +51,15 @@ class LoginController extends GetxController {
             (json) => UserModel.fromJson(json as Map<String, dynamic>),
       );
       SecureCacheHelper.saveData(key: 'token', value: apiResponse.data!.token);
+      SecureCacheHelper.saveData(key: 'user', value: apiResponse.data!.user?.id.toString());
+      var responseEnums = await DioHelper.getData(
+            url: BackendEndpoint.enums, token: apiResponse.data!.token);
+        var apiResponseEnums = ApiResponse<EnumsModel>.fromJson(responseEnums.data,
+            (json) => EnumsModel.fromJson(json as Map<String, dynamic>));
+        SecureCacheHelper.saveEnumsToStorage(apiResponseEnums.data!);
       Get.snackbar("Login", apiResponse.message ?? "");
       Get.offNamed(Routes.VISITS);
     } catch (e) {
-      print(e.toString());
       Get.snackbar("Error", 'Invalid Credentials');
     } finally {
       isLoading(false);

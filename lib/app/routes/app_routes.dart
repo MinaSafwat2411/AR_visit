@@ -13,6 +13,7 @@ abstract class Routes {
   static const ASSIN_Father_VISIT = _Paths.ASSIN_Father_VISIT;
   static const ASSIN_SERVANT_VISIT = _Paths.ASSIN_SERVANT_VISIT;
   static const PROFILE = _Paths.PROFILE;
+  static const HOME = _Paths.HOME;
 }
 
 abstract class _Paths {
@@ -27,4 +28,5 @@ abstract class _Paths {
   static const ASSIN_Father_VISIT = '/assign-father-visit';
   static const ASSIN_SERVANT_VISIT = '/assign-servant-visit';
   static const PROFILE = '/profile';
+  static const HOME = '/home';
 }

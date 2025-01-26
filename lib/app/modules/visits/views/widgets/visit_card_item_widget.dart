@@ -32,7 +32,7 @@ class VisitCardItemWidget extends GetView<VisitController> {
                     title:  'cloneComfirm'.tr,
                     leftButtonText: 'yes'.tr,
                     rightButtonText: 'no'.tr,
-                    leftFunction: () => controller.onClone(visit.id),
+                    leftFunction: () => controller.onClone(visit),
                     rightFunction: () => Get.back(closeOverlays: true),
                   )
               );
@@ -41,7 +41,7 @@ class VisitCardItemWidget extends GetView<VisitController> {
             foregroundColor: Colors.black,
             icon: Icons.copy,
             padding: const EdgeInsets.all(8.0),
-            label: 'Clone',
+            label: 'clone'.tr,
           ),
           SlidableAction(
             onPressed: (context) {
@@ -51,7 +51,7 @@ class VisitCardItemWidget extends GetView<VisitController> {
                     title: 'doneComfirm'.tr,
                     leftButtonText: 'yes'.tr,
                     rightButtonText: 'no'.tr,
-                    leftFunction: () => controller.onDone(visit.id),
+                    leftFunction: () => controller.onDone(visit.id!,visit.status!.value),
                     rightFunction: () => Get.back(closeOverlays: true),
                   )
               );
@@ -60,7 +60,7 @@ class VisitCardItemWidget extends GetView<VisitController> {
             backgroundColor: AppColors.softAmber,
             foregroundColor: Colors.black,  // Use a contrasting color
             icon: Icons.check_circle_outline,
-            label: 'Done',
+            label: 'done'.tr,
           ),
           SlidableAction(
             onPressed: (context) {
@@ -70,7 +70,7 @@ class VisitCardItemWidget extends GetView<VisitController> {
                     title:  'cancelComfirm'.tr,
                     leftButtonText: 'yes'.tr,
                     rightButtonText: 'no'.tr,
-                    leftFunction: () => controller.onCanceled(visit.id),
+                    leftFunction: () => controller.onCanceled(visit.id!),
                     rightFunction: () => Get.back(closeOverlays: true),
                   )
               );
@@ -81,7 +81,7 @@ class VisitCardItemWidget extends GetView<VisitController> {
             foregroundColor: Colors.black,
             icon: Icons.cancel_outlined,
             padding: const EdgeInsets.all(8.0),
-            label: 'Cancel',
+            label: 'cancel'.tr,
           ),
 
         ],
@@ -104,7 +104,7 @@ class VisitCardItemWidget extends GetView<VisitController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      visit.attendant, // Accessing patient name
+                      visit.userName!, 
                       style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                     ),
                     Text(
@@ -125,13 +125,9 @@ class VisitCardItemWidget extends GetView<VisitController> {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 4.0),
                       child: Text(
-                        controller.getStatus(visit.status.name),
+                        visit.status!.name,
                         style: TextStyle(
-                          color: visit.status == "Canceled"
-                              ? AppColors.redColor
-                              : visit.status == "Assigned"
-                              ? AppColors.cornflowerBlue
-                              : AppColors.japaneseLaurelColor,
+                          color: controller.statusColor(visit.status!.value),
                           fontSize: 15,
                           fontWeight: FontWeight.w500,
                         ),

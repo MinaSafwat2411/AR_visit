@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 
 import '../utils/app_colors.dart';
@@ -20,7 +22,7 @@ class CustomSmallTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return  SizedBox(
       width: MediaQuery.of(context).size.width * 0.3,
-      height: 45,
+      height: 50,
       child: TextFormField(
           controller: textController,
           decoration: InputDecoration(

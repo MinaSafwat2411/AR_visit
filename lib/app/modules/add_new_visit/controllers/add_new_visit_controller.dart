@@ -1,46 +1,46 @@
+import 'package:ar_visiting_app/app/core/controller/main_controller.dart';
 import 'package:ar_visiting_app/app/core/models/area/areamodel.dart';
+import 'package:ar_visiting_app/app/core/models/login/loginmodel.dart';
+import 'package:ar_visiting_app/app/core/models/visits/visitmodel.dart';
+import 'package:ar_visiting_app/app/core/services/secure_cache_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../../../core/firebase/AddVisitFirebase.dart';
-import '../../../core/firebase/GetAreaFirebase.dart';
-import '../../../core/models/visits/addvisitmodel.dart';
 import '../../../core/services/cache_helper.dart';
 import '../../../routes/app_pages.dart';
 
 class AddNewVisitController extends GetxController {
   var addressType = ''.obs;
-  var addressTypeAr = ''.obs;
+  var userType = ''.obs;
   var areaName = ''.obs;
-  var areaNameAr = ''.obs;
   var areaNames = <String>[].obs;
-  var areaNamesAr = <String>[].obs;
-  var areaData =<Area>[].obs;
+  var userNames = <String>[].obs;
+  var areaId = <int>[].obs;
+  var userId = <int>[].obs;
+  var areaData =<AreaModel>[].obs;
+  var userData =<User>[].obs;
   var isLoading = false.obs;
   var id =''.obs;
-  String lang=CacheHelper.getData(key: 'lang')??'en';
+  var lang=''.obs;
   final formKey = GlobalKey<FormState>();
-  var addressTypeList=['Hospital', 'Home', 'Dar'];
-  var addressTypeListAr=['مستشفى', 'منزل', 'دار'];
+  var addressTypeList=<String>[].obs;
+  var token = ''.obs;
+  var newVisit = VisitModel().obs;
+  var mainController = MainController();
+
 
   TextEditingController dateController = TextEditingController();
   TextEditingController fromTimeController = TextEditingController();
   TextEditingController toTimeController = TextEditingController();
   TextEditingController numberOfPeopleController = TextEditingController();
-  TextEditingController patientNameController = TextEditingController();
-  TextEditingController patientLocationController = TextEditingController();
   TextEditingController patientAddressController = TextEditingController();
   TextEditingController assistantNameController = TextEditingController();
-  TextEditingController patientPhoneController = TextEditingController();
   TextEditingController assistantPhoneController = TextEditingController();
   TextEditingController patientFamIDController = TextEditingController();
   TextEditingController patientIDNumberController = TextEditingController();
   TextEditingController noteController = TextEditingController();
   TextEditingController googleLinkController = TextEditingController();
+  
 
-  List<String> getAddressTypeList(){
-    return lang =='en'? addressTypeList: addressTypeListAr;
-  }
 
   Future<void> selectDate(BuildContext context) async {
     DateTime? datePicked = await showDatePicker(
@@ -61,31 +61,14 @@ class AddNewVisitController extends GetxController {
               child: child!);
         });
     if (datePicked != null) {
-      // setState(() {
-      dateController.text = datePicked.toString().split(" ")[0];
-      // });
+      dateController.text = "${datePicked.year}-${datePicked.month.toString().padLeft(2, '0')}-${datePicked.day.toString().padLeft(2, '0')}";
     }
   }
-  void getAreaData(){
-    int? index;
-    if(areaName.value==''){
-      index=areaNamesAr.value.indexOf(areaNameAr.value);
-      areaName.value = areaNames[index];
-    }else if(areaNameAr.value ==''){
-      index=areaNames.value.indexOf(areaName.value);
-      areaNameAr.value = areaNamesAr[index];
-    }
-  }
-  void getTypeAddress(){
-    int? index;
-    if(addressType.value==''){
-      index=addressTypeListAr.indexOf(addressTypeAr.value);
-      print(index);
-      addressType.value = addressTypeList[index];
-    }else if(addressTypeAr.value ==''){
-      index=addressTypeList.indexOf(addressType.value);
-      print(index);
-      addressTypeAr.value = addressTypeListAr[index];
+    void getAddressType(){
+    if(lang.value=='en'){
+      addressTypeList.value=['Home','Hospital', 'Dar','others'];
+    }else{
+      addressTypeList.value=['منزل','مستشفى', 'دار','اخري'];
     }
   }
   Future<void> selectedFromTime(BuildContext context) async {
@@ -105,14 +88,15 @@ class AddNewVisitController extends GetxController {
               ),
               child: child!);
         });
-    if (fromTimePicked != null) {
-        fromTimeController.text = fromTimePicked.format(context).toString();
+    if (fromTimePicked != null && Get.isRegistered<AddNewVisitController>() && Get.context != null) {
+      fromTimeController.text = fromTimePicked.format(Get.context!).toString();
     }
   }
 
-  Future<void> selectedToTime(BuildContext context) async {
+  Future<void> selectedToTime() async {
+    if (!Get.isRegistered<AddNewVisitController>() || Get.context == null) return;
     TimeOfDay? toTimePicked = await showTimePicker(
-        context: context,
+        context: Get.context!,
         initialTime: TimeOfDay.now(),
         initialEntryMode: TimePickerEntryMode.dial,
         builder: (context, child) {
@@ -120,84 +104,61 @@ class AddNewVisitController extends GetxController {
               data: Theme.of(context).copyWith(
                 colorScheme: const ColorScheme.light(
                   primary: Color.fromARGB(
-                      255, 239, 84, 0), //header and selced day background color
+                      255, 239, 84, 0), //header and selected day background color
                   onPrimary: Colors.white, // titles and
-                  onSurface: Colors.black, // Month days , years
+                  onSurface: Colors.black, // Month days, years
                 ),
               ),
               child: child!);
         });
     if (toTimePicked != null) {
-        toTimeController.text = toTimePicked.format(context).toString();
+      toTimeController.text = toTimePicked.format(Get.context!).toString();
     }
   }
 
-  Future<void> getAreasNames() async {
+
+  Future<void> getData() async {
     isLoading.value = true;
     try {
-      areaData.value = await GetAreaFirebase.retrieveArea();
-      areaNames.value = areaData.map((area) => area.area!).toList();
-      areaNamesAr.value = areaData.map((area) => area.areaAr!).toList();
+      var userData = await mainController.getUserData();
+      var areaData = await mainController.getAreaData();
+        areaData?.forEach((element) {
+        areaNames.add(element.name!);
+        areaId.add(element.id!);
+      });
+      userData?.forEach((element) {
+        userNames.add(element.name!);
+        userId.add(element.id!);
+      });
     }catch(e){
       Get.snackbar("Error", "Failed to retrieve area details");
-    }finally{
-      isLoading.value=false;
     }
   }
 
   void addVisit() async{
     isLoading(true);
     try{
-      getAreaData();
-      getTypeAddress();
-      Visit newVisit = Visit(
-        area: {
-          'name': areaName.value,
-          'nameAr': areaNameAr.value
-        },
-        father: {
-          'id': '',
-          'isFather': true,
-          'name': '',
-          'nameAr': '',
-          'phoneNumber': ''
-        },
-        patient: {
-          'name': patientNameController.text,
-          'phoneNumber': patientPhoneController.text,
-          'PatientFamilyId': patientFamIDController.text,
-          'PatientIDNumber': patientIDNumberController.text,
-        },
-        servant: {
-          'id': '',
-          'isFather': false,
-          'name': '',
-          'nameAr': '',
-          'phoneNumber': ''
-        },
-         assistant: {
-            'name': assistantNameController.text,
-            'phoneNumber':assistantPhoneController.text
-          },
-        status: 'NEW',
-        address: {
-          'address':patientAddressController.text,
-          'addressType':addressType.value,
-          'addressTypeAr':addressTypeAr.value,
-        },
-        visitDate: dateController.text,
-        visitTimeRangeFrom: fromTimeController.text,
-        visitTimeRangeTo: toTimeController.text,
-        numberOfPeople: numberOfPeopleController.text,
+      newVisit.value = VisitModel(
+        date: dateController.text,
+        from: fromTimeController.text,
+        to: toTimeController.text,
+        patientNums: int.parse(numberOfPeopleController.text),
+        address: patientAddressController.text,
+        attendant: assistantNameController.text,
+        attendantPhone: assistantPhoneController.text,
+        E1C1F: int.parse(patientFamIDController.text),
+        NR: int.parse(patientIDNumberController.text),
         note: noteController.text,
-        googleLink: googleLinkController.text
+        addressUrl: googleLinkController.text,
+        area_id: areaId[areaNames.indexOf(areaName.value)],
+        addressType: addressTypeList.indexOf(addressType.value)+1,
+        userId: userId[userNames.indexOf(userType.value)+1]
       );
-      id.value = await VisitSubmission.submitVisit(newVisit);
-      Get.snackbar("Visits", "Visits add successfully");
+      mainController.addVisit(newVisit.value);
+      Get.snackbar("Visits", "Visit add successfully");
       Get.offNamedUntil(
-          Routes.VISIT_DETAILS,
-              (route) => route.settings.name == Routes.VISITS,
-          arguments: id.value
+          Routes.VISITS,
+              (route) => route.settings.name == Routes.VISITS
       );
     }catch (e){
       Get.snackbar("Error", e.toString());
@@ -208,7 +169,10 @@ class AddNewVisitController extends GetxController {
 
   @override
   void onInit() async{
-    await getAreasNames();
+    token.value=(await SecureCacheHelper.getData(key: 'token'))!;
+    lang.value=(await CacheHelper.getData(key: 'lang'))!;
+    getAddressType();
+    getData();
     super.onInit();
   }
 }

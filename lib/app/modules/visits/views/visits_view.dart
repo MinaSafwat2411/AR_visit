@@ -1,3 +1,4 @@
+import 'package:ar_visiting_app/app/core/utils/app_colors.dart';
 import 'package:ar_visiting_app/app/modules/visits/views/widgets/tag_item_widget.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
@@ -7,12 +8,11 @@ import '../controllers/visits_controller.dart';
 import 'widgets/my_date_visit_list_widget.dart';
 
 class VisitsView extends GetView<VisitController> {
-
-
   const VisitsView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.white,
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(8.0),
         child: SizedBox(
@@ -35,55 +35,234 @@ class VisitsView extends GetView<VisitController> {
         ),
       ),
       appBar: AppBar(
-        actions:  [
+        backgroundColor: AppColors.white,
+        actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: IconButton(icon: const Icon(Icons.archive_outlined),onPressed: (){
-              Get.toNamed(Routes.ALLVISITS);
-            },),
+            child: IconButton(
+              icon: const Icon(Icons.archive_outlined),
+              onPressed: () {
+                Get.toNamed(Routes.ALLVISITS);
+              },
+            ),
           ),
         ],
-        leading: IconButton(onPressed: (){
-          Get.toNamed(Routes.PROFILE);
-        }, icon:  Image(image: AssetImage('avaRewaseIcon'.tr))),
-        title:  Text(
+        leading: IconButton(
+            onPressed: () {
+              Get.toNamed(Routes.PROFILE);
+            },
+            icon: Image(image: AssetImage('avaRewaseIcon'.tr))),
+        title: Text(
           'visitTitle'.tr,
           style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        physics: const BouncingScrollPhysics(),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Column(
           children: [
-            SizedBox(
-                height: 45,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) => Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                    child: TagItemWidget(
-                      visitController: controller,
-                      index: index,
-                      tag: controller.lang=='en'?controller.tags[index]:controller.tagsAr[index],
-                    ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0,right: 8.0,left: 8.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          controller.getMyVisits();
+                        },
+                        child: Obx(
+                          () => Column(
+                            children: [
+                              Text(
+                                'me'.tr,
+                                style: TextStyle(
+                                    color: controller.me.value
+                                        ? AppColors.trinidadColor
+                                        : AppColors.gray,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                    color: controller.me.value
+                                        ? AppColors.trinidadColor
+                                        : AppColors.white,
+                                    borderRadius: BorderRadius.circular(10)),
+                                height: 5,
+                                width:
+                                    (MediaQuery.of(context).size.width / 2) - 30,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      GestureDetector(
+                          onTap: () {
+                            controller.getAllVisits();
+                          },
+                          child: Obx(
+                            () => Column(
+                              children: [
+                                Text(
+                                  'All'.tr,
+                                  style: TextStyle(
+                                      color: controller.me.value
+                                          ? AppColors.gray
+                                          : AppColors.trinidadColor,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      color: controller.me.value
+                                          ? AppColors.white
+                                          : AppColors.trinidadColor,
+                                      borderRadius: BorderRadius.circular(10)),
+                                  height: 5,
+                                  width: (MediaQuery.of(context).size.width / 2) -
+                                      30,
+                                ),
+                              ],
+                            ),
+                          ))
+                    ],
                   ),
-                  itemCount: controller.tags.length,
-                )),
-            Obx(() => Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ConditionalBuilder(
-                    condition: !controller.isLoading.value,
-                    builder: (context) {
-                      return  MyDateVisitListWidget(visits: controller.visits);
-                    },
-                    fallback: (context) => const Center(
-                      child: CircularProgressIndicator(
-                          color: Colors.red), // Trinidad color
-                    ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: RefreshIndicator(
+                color: AppColors.trinidadColor,
+                displacement: 50,
+                onRefresh: ()async{
+                  controller.getVisitsData();
+                },
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: AppColors.waferColor,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 50,
+                                child: TextFormField(
+                                  style: const TextStyle(
+                                    color: AppColors.gray,
+                                    decoration: TextDecoration.none
+                                  ),
+                                  onTap: () {
+                                  controller.onSearchClicked();
+                                  },
+                                  cursorColor: AppColors.white,
+                                  controller: controller.searchController,
+                                  onChanged: (value) {
+                                  controller.search();
+                                  },
+                                  textAlignVertical: TextAlignVertical.center,
+                                  decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: AppColors.waferColor, // Set background color
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                      color: AppColors.waferColor),
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                      color: AppColors.waferColor),
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                  focusColor: AppColors.waferColor,
+                                  hintText: 'search'.tr,
+                                  prefixIcon: const Icon(Icons.search,color: AppColors.trinidadColor,),
+                                  ),
+                                ),
+                              ),
+                              Obx(() => Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                child: ConditionalBuilder(
+                                    condition: !controller.me.value && controller.onSearch.value,
+                                    fallback: (context) => const SizedBox(),
+                                    builder: (context) {
+                                      return SizedBox(
+                                          height: 45,
+                                          child: ListView.builder(
+                                            scrollDirection: Axis.horizontal,
+                                            itemBuilder: (context, index) =>
+                                                TagItemWidget(
+                                              index: index,
+                                            ),
+                                            itemCount: 3,
+                                          ));
+                                    }),
+                              )),
+                              Obx(() => Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                child: ConditionalBuilder(
+                                    condition: !controller.me.value && controller.onSearch.value,
+                                    fallback: (context) => const SizedBox(),
+                                    builder: (context) {
+                                      return SizedBox(
+                                          height: 45,
+                                          child: ListView.builder(
+                                            scrollDirection: Axis.horizontal,
+                                            itemBuilder: (context, index) =>
+                                                TagItemWidget(
+                                              index: index+3,
+                                            ),
+                                            itemCount: 3,
+                                          ));
+                                    }),
+                              )),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Obx(() => Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: ConditionalBuilder(
+                              condition: !controller.isLoading.value,
+                              builder: (context) {
+                                if (controller.visits.isEmpty) {
+                                  return Center(
+                                    child: Text('noVisits'.tr),
+                                  );
+                                } else {
+                                  return MyDateVisitListWidget(
+                                      visits: controller.searchResults);
+                                }
+                              },
+                              fallback: (context) => const Center(
+                                child: CircularProgressIndicator(
+                                    color: Colors.red), // Trinidad color
+                              ),
+                            ),
+                          )),
+                    ],
                   ),
-                )),
+                ),
+              ),
+            ),
           ],
         ),
       ),

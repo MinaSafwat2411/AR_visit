@@ -37,33 +37,35 @@ class ProfileViews extends GetView<ProfileControllers> {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const SizedBox(height: 40),
+                const SizedBox(height: 20),
                  Row(
+                  mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image(
                         image: AssetImage('avaRewaseIcon'.tr),
-                      width: 80,
-                      height: 80,
+                      width: 100,
+                      height: 100,
                     ),
                     const SizedBox(width: 24,),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          controller.name.value,
+                          controller.user.value.name??'',
                             style: const TextStyle(
-                              fontSize: 18,
+                              fontSize: 24,
                               fontWeight: FontWeight.w600,
                               color:AppColors.mirage
                             )
                         ),
                         Text(
-                            controller.user.value.id!,
+                            'E1C1F${controller.user.value.e1C1F}NR${controller.user.value.nR}',
                             style: const TextStyle(
-                              fontSize: 12,
+                              fontSize: 18,
                               fontWeight: FontWeight.w400,
                               color:AppColors.doveGray
                             )

@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:ar_visiting_app/app/core/models/visits/visitmodel.dart';
 
 class DayVisits {

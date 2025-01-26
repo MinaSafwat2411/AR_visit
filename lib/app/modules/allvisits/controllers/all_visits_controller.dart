@@ -4,14 +4,11 @@ import 'package:ar_visiting_app/app/core/models/visits/VisitsModel.dart';
 import 'package:ar_visiting_app/app/core/services/cache_helper.dart';
 import 'package:ar_visiting_app/app/core/services/dio_helper.dart';
 import 'package:ar_visiting_app/app/core/utils/backend_endpoint.dart';
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../../core/models/api_response/api_response.dart';
-import '../../../core/models/visits/visitmodel.dart';
 import '../../../core/services/secure_cache_helper.dart';
-import '../../../routes/app_pages.dart';
 
 
 class ALLVisitController extends GetxController {
@@ -53,16 +50,10 @@ class ALLVisitController extends GetxController {
     super.onInit();
     token.value=(await SecureCacheHelper.getData(key: 'token'))!;
     await getVisitsData();
-    // _startRefreshTimer();
   }
 
 
 
-  void _startRefreshTimer() {
-    Timer.periodic(const Duration(seconds: 30), (timer) {
-      getVisitsData();
-    });
-  }
   void onCanceled(int id)async{
   }
   void onClone(int id)async{
@@ -82,11 +73,9 @@ class ALLVisitController extends GetxController {
     try {
       visits.value=[];
       final  response = await DioHelper.getData(
-        query: {
-          if(condition.value!='')'condition':condition.value
-        },
-        url: condition.value == 'cancelled'? BackendEndpoint.cancelled :BackendEndpoint.visits,
+        url: BackendEndpoint.archive,
         token: token.value,
+        lang: lang,
       );
       final apiResponse = ApiResponse<List<DayVisits>>.fromJson(
         response.data,

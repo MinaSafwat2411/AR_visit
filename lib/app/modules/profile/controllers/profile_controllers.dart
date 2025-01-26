@@ -1,74 +1,65 @@
-import 'package:ar_visiting_app/app/core/models/users/users.dart';
+import 'package:ar_visiting_app/app/core/models/api_response/api_response.dart';
+import 'package:ar_visiting_app/app/core/models/login/loginmodel.dart';
 import 'package:ar_visiting_app/app/core/services/dio_helper.dart';
 import 'package:ar_visiting_app/app/core/utils/backend_endpoint.dart';
 import 'package:ar_visiting_app/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
-import '../../../core/firebase/GetUserFirebase.dart';
 import '../../../core/services/cache_helper.dart';
 import '../../../core/services/secure_cache_helper.dart';
 import '../../../routes/app_pages.dart';
 
 class ProfileControllers extends GetxController {
-
-  var id=''.obs;
   Rx<bool> isLoading = false.obs;
-  var name =''.obs;
-  var lang = CacheHelper.getData(key: 'lang') ?? 'en';
+  var lang = ''.obs;
   var textDirection = TextDirection.ltr.obs;
   var token = ''.obs;
-  var user=Users(
-    id: '',
-    name: '',
-    nameAr: ''
-  ).obs;
+  var user = User().obs;
+  var id =RxInt(-1);
 
   @override
-  void onInit()async {
-    token.value=(await SecureCacheHelper.getData(key: 'token'))!;
-    getUserId();
-    await getUserData();
+  void onInit() async {
+    token.value = (await SecureCacheHelper.getData(key: 'token'))!;
+    lang.value = (await CacheHelper.getData(key: 'lang'))!;
+    id.value= int.parse((await SecureCacheHelper.getData(key: 'user'))!);
+    getUserData();
     super.onInit();
   }
 
-  void getUserId(){
-    id.value=CacheHelper.getData(key: 'user');
-  }
   void changeLanguage(String languageCode) {
-    lang = languageCode;
-    CacheHelper.saveData(key: 'lang',value: languageCode);
+    lang.value = languageCode;
+    CacheHelper.saveData(key: 'lang', value: languageCode);
     var locale = Locale(languageCode);
     Get.updateLocale(locale);
     runApp(MyApp());
   }
 
-  Future<void> getUserData() async {
-    isLoading.value = true;
+  void getUserData() async {
     try {
-      Users? retrievedUser = await GetUserData.retrieveUserData(id.value);
-      if (retrievedUser != null) {
-        user.value = retrievedUser;
-
-        lang =='en'? name.value=user.value.name!: name.value=user.value.nameAr!;
-      } else {
-      }
+      isLoading(true);
+      var response = await DioHelper.getData(
+          url: '${BackendEndpoint.users}/${id.value.toString()}', lang: lang.value, token: token.value);
+      var apiResponse = ApiResponse<User>.fromJson(
+          response.data, (json) => User.fromJson(json as Map<String, dynamic>));
+      user.value = apiResponse.data!;
     } catch (e) {
-      Get.snackbar('Error', 'can\'t fetch data' );
+      Get.snackbar('Error', 'check your connection');
     } finally {
-      isLoading.value = false;
+      isLoading(false);
     }
   }
 
-
-  void logout()async{
-    try{
-      await DioHelper.postData(url: BackendEndpoint.logout,token:  token.value,);
+  void logout() async {
+    try {
+      await DioHelper.postData(
+        url: BackendEndpoint.logout,
+        token: token.value,
+      );
       Get.snackbar('Logout', 'logout successfully');
       SecureCacheHelper.removeData(key: 'token');
       Get.offAllNamed(Routes.LOGIN);
-    }catch(e){
+    } catch (e) {
       Get.snackbar('Error', 'check your connection');
     }
   }

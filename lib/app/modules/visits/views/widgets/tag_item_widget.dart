@@ -4,40 +4,33 @@ import 'package:get/get.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../controllers/visits_controller.dart';
 
-class TagItemWidget extends StatelessWidget {
+class TagItemWidget extends GetView<VisitController> {
   const TagItemWidget({
     super.key,
     required this.index,
-    required this.tag,
-    required this.visitController,
   });
 
-  final String tag;
   final int index;
-  final VisitController visitController;
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => GestureDetector(
+    return Obx(()=> GestureDetector(
       onTap: () {
-        for (int i = 0; i < visitController.tagsStatusList.length; i++) {
-          visitController.tagsStatusList[i] = false;
-        }
-        visitController.tagsStatusList[index] = true;
-        visitController.getVisitsData();
+        controller.onTagsChanged(index);
       },
       child: Card(
-        elevation: 0,
-        color: visitController.tagsStatusList[index] ?  AppColors.trinidadColor :  AppColors.quillGrayColor,
+        elevation: 2,
+        color: controller.tags[index].isSelected.value ?  AppColors.trinidadColor :  AppColors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
           child: Text(
-            tag,
-            style: TextStyle(color: visitController.tagsStatusList[index] ? AppColors.quillGrayColor : AppColors.trinidadColor),
+            controller.lang== 'en'? controller.tags[index].name:controller.tags[index].nameAr,
+            style: TextStyle(color: controller.tags[index].isSelected.value ? AppColors.white : AppColors.trinidadColor),
           ),
         ),
+      )
       ),
-    ));
+    );
   }
 }

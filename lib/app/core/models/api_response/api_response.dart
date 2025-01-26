@@ -1,4 +1,3 @@
-import '../additional_data/additional_data_model.dart';
 
 class ApiResponse<T> {
   final String status;
