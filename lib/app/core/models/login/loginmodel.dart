@@ -35,15 +35,21 @@ class User {
   String? phone;
   String? e1C1F;
   String? nR;
+  String? nameAr;
+  int? statusValue;
+  int? typeValue;
 
   User(
       {this.id,
         this.name,
         this.email,
         this.type,
+        this.nameAr,
         this.status,
         this.phone,
         this.e1C1F,
+        this.statusValue,
+        this.typeValue,
         this.nR});
 
   User.fromJson(Map<String, dynamic> json) {
@@ -67,7 +73,22 @@ class User {
       'NR': nR,
     };
   }
+  Map<String,dynamic> toJson(){
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name_en']= name;
+    data['name_ar']=nameAr;
+    data['E1C1F']=int.parse(e1C1F!);
+    data['NR']=int.parse(nR!);
+    data['email']=email;
+    data['phone']=phone;
+    data['type']=typeValue;
+    data['status']=statusValue;
+
+    return data;
+  }
 }
+
+
 
 class Type {
   int? value;

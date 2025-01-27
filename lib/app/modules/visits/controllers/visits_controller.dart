@@ -14,6 +14,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../../core/models/api_response/api_response.dart';
+import '../../../core/models/login/loginmodel.dart';
 import '../../../core/services/secure_cache_helper.dart';
 
 class VisitController extends GetxController {
@@ -27,7 +28,14 @@ class VisitController extends GetxController {
   var tags = <TagsModel>[].obs;
   var visits = <DayVisits>[].obs;
   var searchResults = <DayVisits>[].obs;
+  var patient =User().obs;
   TextEditingController searchController = TextEditingController();
+  TextEditingController name=TextEditingController();
+  TextEditingController nameAr=TextEditingController();
+  TextEditingController email=TextEditingController();
+  TextEditingController familyId=TextEditingController();
+  TextEditingController familyNumber=TextEditingController();
+  TextEditingController phone=TextEditingController();
 
   @override
   void onInit() {
@@ -56,6 +64,23 @@ class VisitController extends GetxController {
   Future<void> _loadTokenAndVisits() async {
     token.value = (await SecureCacheHelper.getData(key: 'token'))!;
     await getVisitsData();
+  }
+
+  void addPatient()async{
+    isLoading(true);
+    await mainController.addPatient(
+      User(
+        statusValue: 2,
+        typeValue: 3,
+        e1C1F: familyId.text,
+        nR: familyNumber.text,
+        email: email.text,
+        phone: phone.text,
+        name: name.text,
+        nameAr: nameAr.text
+      )
+    );
+    isLoading(false);
   }
 
   void search() {

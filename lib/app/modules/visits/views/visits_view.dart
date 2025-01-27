@@ -1,4 +1,6 @@
 import 'package:ar_visiting_app/app/core/utils/app_colors.dart';
+import 'package:ar_visiting_app/app/core/widgets/custom_alert.dart';
+import 'package:ar_visiting_app/app/core/widgets/custom_textformfield.dart';
 import 'package:ar_visiting_app/app/modules/visits/views/widgets/tag_item_widget.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +25,48 @@ class VisitsView extends GetView<VisitController> {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(70)),
             elevation: 5,
             onPressed: () {
-              Get.toNamed(Routes.ADD_NEW_VISIT);
+              showDialog(context: context, builder: (context) => CustomDoubleAlert(
+                title: 'patientCreated'.tr,
+                leftButtonText: 'yes'.tr,
+                leftFunction: () {
+                  Get.back(closeOverlays: true);
+                  Get.toNamed(Routes.ADD_NEW_VISIT);
+                },
+                rightButtonText: 'no'.tr,
+                rightFunction: () {
+                  Get.back(closeOverlays: true);
+                  showDialog(context: context, builder: (context) => AlertDialog(
+                    title: Text('add patient'.tr),
+                    content: SingleChildScrollView(
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.6),
+                        child: Form(
+                          child: Column(
+                            children: [
+                              CustomTextFormField(textController: controller.name, label: 'name'.tr, validator: (value) {},),
+                              CustomTextFormField(textController: controller.nameAr, label: 'nameAr'.tr, validator: (value) {},),
+                              CustomTextFormField(textController: controller.familyId, label: 'E1C1F'.tr, validator: (value) {},),
+                              CustomTextFormField(textController: controller.familyNumber, label: 'NR'.tr, validator: (value) {},),
+                              CustomTextFormField(textController: controller.email, label: 'email'.tr, validator: (value) {},),
+                              CustomTextFormField(textController: controller.phone, label: 'phone'.tr, validator: (value) {},)
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                        style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll(AppColors.trinidadColor)),
+                          onPressed: () {
+                          controller.addPatient();
+                          Get.back(closeOverlays: true);
+                      }, child: Text('add'.tr,style: const TextStyle(color: AppColors.white),))
+                    ],
+                  ));
+
+                },
+              ),);
+
             },
             backgroundColor: Colors.red, // Trinidad color
             child: const Icon(

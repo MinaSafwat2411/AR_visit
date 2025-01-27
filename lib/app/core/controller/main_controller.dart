@@ -32,6 +32,16 @@ class MainController extends GetxController {
     return newDate;
   }
 
+  Future<void> addPatient(User patient)async{
+    token.value = (await SecureCacheHelper.getData(key: 'token'))!;
+    lang.value = (await CacheHelper.getData(key: 'lang'));
+    try{
+      await DioHelper.postData(url: BackendEndpoint.users,token: token.value,lang: lang.value, data: patient.toJson());
+    }catch(e){
+      Get.snackbar('Error', 'couldn\'t add patient' );
+    }
+  }
+
   Future<List<User>?> getUserData() async {
     token.value = (await SecureCacheHelper.getData(key: 'token'))!;
     lang.value = (await CacheHelper.getData(key: 'lang'));

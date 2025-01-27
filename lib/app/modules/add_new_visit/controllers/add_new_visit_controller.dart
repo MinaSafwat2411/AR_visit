@@ -132,6 +132,8 @@ class AddNewVisitController extends GetxController {
       });
     }catch(e){
       Get.snackbar("Error", "Failed to retrieve area details");
+    }finally{
+      isLoading(false);
     }
   }
 
