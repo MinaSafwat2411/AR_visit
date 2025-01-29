@@ -136,8 +136,8 @@ class VisitDetailsControllers extends GetxController {
   void onClone(int id) async {}
   @override
   void onInit() async {
-    token.value = (await SecureCacheHelper.getData(key: 'token'))!;
-    lang.value = (await CacheHelper.getData(key: 'lang'))!;
+    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
+    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
     getFatherNames();
     getVisitData();
     super.onInit();
