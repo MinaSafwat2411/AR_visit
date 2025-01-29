@@ -262,6 +262,8 @@ class HomeController extends GetxController {
   @override
   void onInit() async {
     isLoading(true);
+    title.value = ['My Visits','archives','reports','profile',];
+    fetchTags();
     token.value = (await SecureCacheHelper.getData(key: 'token'))!;
     lang.value = (await CacheHelper.getData(key: 'lang'));
     order.value =(CacheHelper.getIntList(key: 'order'))?? [];
@@ -271,8 +273,7 @@ class HomeController extends GetxController {
       const Center(child: Text('Coming Soon'),),
       const ProfileScreen()
     ];
-    title.value = ['My Visits','archives','reports','profile',];
-    fetchTags();
+    currentScreen.value =0;
     getVisitsData();
     getArchivesData();
     getProfile();

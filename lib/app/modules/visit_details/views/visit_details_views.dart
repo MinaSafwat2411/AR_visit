@@ -1,7 +1,9 @@
 import 'package:ar_visiting_app/app/core/widgets/TestVisitdetails.dart';
 import 'package:ar_visiting_app/app/core/widgets/custom_alert.dart';
+import 'package:ar_visiting_app/app/core/widgets/custom_bottom_sheet.dart';
 import 'package:ar_visiting_app/app/core/widgets/custom_button.dart';
 import 'package:ar_visiting_app/app/modules/visit_details/controllers/visit_details_controllers.dart';
+import 'package:ar_visiting_app/app/modules/visit_details/di/bottom_sheet_type.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -62,17 +64,17 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                               rightFunction: () =>
                                   Get.back(closeOverlays: true),
                             ));
-                  }else if(value ==OperationType.DELAYED){
-                     showDialog(
-                          context: context,
-                          builder: (context) => CustomDoubleAlert(
-                                title: 'deylayComfirm'.tr,
-                                leftButtonText: 'yes'.tr,
-                                rightButtonText: 'no'.tr,
-                                leftFunction: () => controller.onDelay(),
-                                rightFunction: () =>
-                                    Get.back(closeOverlays: true),
-                              ));
+                  } else if (value == OperationType.DELAYED) {
+                    showDialog(
+                        context: context,
+                        builder: (context) => CustomDoubleAlert(
+                              title: 'deylayComfirm'.tr,
+                              leftButtonText: 'yes'.tr,
+                              rightButtonText: 'no'.tr,
+                              leftFunction: () => controller.onDelay(),
+                              rightFunction: () =>
+                                  Get.back(closeOverlays: true),
+                            ));
                   }
                 },
                 position: PopupMenuPosition.under,
@@ -134,15 +136,16 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                         height: 1,
                       ),
                       PopupMenuItem<OperationType>(
-                        value: OperationType.DELAYED,
-                        child: Row(
-                          children: [
-                            const Icon(Icons.watch_off_outlined),
-                            const SizedBox(width: 15,),
-                            Text('deylayed'.tr)
-                          ],
-                        )
-                        )
+                          value: OperationType.DELAYED,
+                          child: Row(
+                            children: [
+                              const Icon(Icons.watch_off_outlined),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              Text('deylayed'.tr)
+                            ],
+                          ))
                     ])
           ],
           leading: IconButton(
@@ -276,7 +279,8 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                                   },
                                   child: Text(
                                     controller.visit.value.attendantPhone ?? '',
-                                    style: const TextStyle(color: AppColors.gray),
+                                    style:
+                                        const TextStyle(color: AppColors.gray),
                                   ),
                                 ),
                               ],
@@ -458,8 +462,7 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                                 ),
                                 Text(
                                   controller.visit.value.patientNums.toString(),
-                                  style:
-                                      const TextStyle(color: AppColors.gray),
+                                  style: const TextStyle(color: AppColors.gray),
                                 ),
                               ],
                             ),
@@ -509,7 +512,8 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                                   style: TextStyle(fontSize: 18),
                                 ),
                                 Text(
-                                  controller.visit.value.fatherName ?? 'No Father',
+                                  controller.visit.value.fatherName ??
+                                      'No Father',
                                   style: const TextStyle(color: AppColors.gray),
                                 ),
                                 const Divider(
@@ -520,9 +524,9 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                                   style: TextStyle(fontSize: 18),
                                 ),
                                 Text(
-                                  controller.visit.value.servantName??'No Servant',
-                                  style:
-                                      const TextStyle(color: AppColors.gray),
+                                  controller.visit.value.servantName ??
+                                      'No Servant',
+                                  style: const TextStyle(color: AppColors.gray),
                                 ),
                               ],
                             ),
@@ -584,7 +588,11 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                                 ),
                                 Text(
                                   controller.visit.value.status?.name ?? '',
-                                  style:  TextStyle(color: controller.statusColor(controller.visit.value.status?.value??-1),fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                      color: controller.statusColor(controller
+                                              .visit.value.status?.value ??
+                                          -1),
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ],
                             ),
@@ -611,100 +619,114 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                   ),
                 ),
                 Obx(() => ConditionalBuilder(
-                  condition: controller.visit.value.status?.value ==1,
-                  fallback: (context) => const SizedBox(),
-                  builder: (context) {
-                    return SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      height: 58,
-                      child: CustomButton(
-                        text: 'assign'.tr,
-                        btnColor: AppColors.trinidadColor,
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (context) => CustomDoubleAlert(
-                                    title: 'assignComfirm'.tr,
-                                    leftButtonText: 'father'.tr,
-                                    rightButtonText: 'servant'.tr,
-                                    leftFunction: () {
-                                      Get.back(closeOverlays: true);
-                                      Get.toNamed(Routes.ASSIN_Father_VISIT,
-                                          arguments: controller.visitId);
-                                    },
-                                    rightFunction: () {
-                                      Get.back(closeOverlays: true);
-                                      Get.toNamed(Routes.ASSIN_SERVANT_VISIT,
-                                          arguments: controller.visitId)!;
-                                    },
-                                  ));
-                        },
-                      ),
-                    );
-                  }
-                )
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
-                Obx(() =>ConditionalBuilder(
-                  condition: controller.visit.value.status?.value ==2,
-                  fallback: (context) => const SizedBox(),
-                  builder: (context) {
-                    return SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      height: 58,
-                      child: CustomButton(
-                        text: 'done'.tr,
-                        btnColor: AppColors.green,
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (context) => CustomDoubleAlert(
-                                    title: 'doneComfirm'.tr,
-                                    leftButtonText: 'yes'.tr,
-                                    rightButtonText: 'no'.tr,
-                                    leftFunction: () => controller.onDone(),
-                                    rightFunction: () =>
-                                        Get.back(closeOverlays: true),
-                                  ));
-                        },
-                      ),
-                    );
-                  }
-                )
-                ),
+                    condition: controller.visit.value.status?.value == 1,
+                    fallback: (context) => const SizedBox(),
+                    builder: (context) {
+                      return SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: 58,
+                        child: CustomButton(
+                          text: 'assign'.tr,
+                          btnColor: AppColors.trinidadColor,
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) => CustomDoubleAlert(
+                                      title: 'assignComfirm'.tr,
+                                      leftButtonText: 'father'.tr,
+                                      rightButtonText: 'servant'.tr,
+                                      leftFunction: () {
+                                        Get.back(closeOverlays: true);
+                                        showModalBottomSheet<void>(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return CustomBottomSheet(
+                                              title: 'Select Father', 
+                                              items: controller.fatherNames,
+                                              bottomSheetType: BottomSheetType.FATHER,
+                                              );
+                                          },
+                                        );
+                                      },
+                                      rightFunction: () {
+                                        Get.back(closeOverlays: true);
+                                          showModalBottomSheet<void>(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return CustomBottomSheet(
+                                              title: 'Select Servant', 
+                                              items: controller.servantNames,
+                                              bottomSheetType: BottomSheetType.SERVANT,
+                                              );
+                                          },
+                                        );
+                                      },
+                                    ));
+                          },
+                        ),
+                      );
+                    })),
                 const SizedBox(
                   height: 12,
                 ),
                 Obx(() => ConditionalBuilder(
-                  fallback: (context) => const SizedBox(),
-                  condition: controller.visit.value.fatherName!=null&&controller.visit.value.status?.value==1,
-                  builder: (context) {
-                    return SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      height: 58,
-                      child: CustomButton(
-                        text: 'inprogress'.tr,
-                        btnColor: AppColors.blue,
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (context) => CustomDoubleAlert(
-                                    title: 'inprogressComfirm'.tr,
-                                    leftButtonText: 'yes'.tr,
-                                    rightButtonText: 'no'.tr,
-                                    leftFunction: () => controller.onInprogress(),
-                                    rightFunction: () =>
-                                        Get.back(closeOverlays: true),
-                                  ));
-                        },
-                      ),
-                    );
-                  }
-                )
+                    condition: controller.visit.value.status?.value == 2,
+                    fallback: (context) => const SizedBox(),
+                    builder: (context) {
+                      return SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: 58,
+                        child: CustomButton(
+                          text: 'done'.tr,
+                          btnColor: AppColors.green,
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) => CustomDoubleAlert(
+                                      title: 'doneComfirm'.tr,
+                                      leftButtonText: 'yes'.tr,
+                                      rightButtonText: 'no'.tr,
+                                      leftFunction: () => controller.onDone(),
+                                      rightFunction: () =>
+                                          Get.back(closeOverlays: true),
+                                    ));
+                          },
+                        ),
+                      );
+                    })),
+                const SizedBox(
+                  height: 12,
                 ),
-                const SizedBox(height: 12,)
+                Obx(() => ConditionalBuilder(
+                    fallback: (context) => const SizedBox(),
+                    condition: controller.visit.value.fatherName != null &&
+                        controller.visit.value.status?.value == 1,
+                    builder: (context) {
+                      return SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: 58,
+                        child: CustomButton(
+                          text: 'inprogress'.tr,
+                          btnColor: AppColors.blue,
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) => CustomDoubleAlert(
+                                      title: 'inprogressComfirm'.tr,
+                                      leftButtonText: 'yes'.tr,
+                                      rightButtonText: 'no'.tr,
+                                      leftFunction: () =>
+                                          controller.onInprogress(),
+                                      rightFunction: () =>
+                                          Get.back(closeOverlays: true),
+                                    ));
+                          },
+                        ),
+                      );
+                    })),
+                const SizedBox(
+                  height: 12,
+                ),
               ],
             ),
           ),

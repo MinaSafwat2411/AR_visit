@@ -1,9 +1,11 @@
 import 'package:ar_visiting_app/app/core/controller/main_controller.dart';
 import 'package:ar_visiting_app/app/core/models/api_response/api_response.dart';
+import 'package:ar_visiting_app/app/core/models/login/loginmodel.dart';
 import 'package:ar_visiting_app/app/core/services/dio_helper.dart';
 import 'package:ar_visiting_app/app/core/services/secure_cache_helper.dart';
 import 'package:ar_visiting_app/app/core/utils/app_colors.dart';
 import 'package:ar_visiting_app/app/core/utils/backend_endpoint.dart';
+import 'package:ar_visiting_app/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -22,6 +24,32 @@ class VisitDetailsControllers extends GetxController {
   var lang = ''.obs;
   var mainController = MainController();
   var bottomSheetIsOpened =RxBool(false);
+  var father = <User>[].obs;
+  var fatherNames =<String>[].obs;
+  var fatherId =<int>[].obs;
+  var servant = <User>[].obs;
+  var servantNames =<String>[].obs;
+  var servantId =<int>[].obs;
+
+
+
+
+  Future<void> getServantNames() async {
+    isLoading.value = true;
+    servant.value = (await mainController.getUserList(2))!;
+    for (var servant in servant) {
+      servantNames.add(servant.name!);
+      servantId.add(servant.id!);
+    }
+    isLoading.value = false;
+  }
+
+  onServantSelected(int index)async{
+    isLoading(true);
+    await mainController.assignServent(visitId, servantId[index]);
+    isLoading(false);
+    getVisitData();
+    }
 
   Future<void> launchPhoneDialer(String phoneNumber) async {
     final Uri phoneUrl = Uri(scheme: 'tel', path: phoneNumber);
@@ -85,11 +113,32 @@ class VisitDetailsControllers extends GetxController {
     return s;
   }
 
+
+
+
+  Future<void> getFatherNames() async {
+    isLoading.value = true;
+    father.value = (await mainController.getUserList(1));
+    for (var father in father) {
+      fatherNames.add(father.name!);
+      fatherId.add(father.id!);
+    }
+    isLoading.value = false;
+  }
+
+  onFatherSelected(int index)async{
+    isLoading(true);
+    await mainController.assignFather(visitId, fatherId[index]);
+    isLoading(false);
+  getVisitData();  
+}
+
   void onClone(int id) async {}
   @override
   void onInit() async {
     token.value = (await SecureCacheHelper.getData(key: 'token'))!;
     lang.value = (await CacheHelper.getData(key: 'lang'))!;
+    getFatherNames();
     getVisitData();
     super.onInit();
   }

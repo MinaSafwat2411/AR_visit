@@ -1,0 +1,3 @@
+enum BottomSheetType{
+  FATHER,SERVANT
+}

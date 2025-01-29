@@ -65,8 +65,7 @@ class HomeView extends GetView<HomeController> {
             )
           ],
           backgroundColor: AppColors.white,
-          title:
-              Obx(() => Text(controller.title[controller.currentScreen.value])),
+          title:Obx(() => Text(controller.title[controller.currentScreen.value].toString())),
         ),
         backgroundColor: AppColors.white,
         resizeToAvoidBottomInset: false,
