@@ -716,7 +716,7 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                                       leftButtonText: 'yes'.tr,
                                       rightButtonText: 'no'.tr,
                                       leftFunction: () =>
-                                          controller.onInprogress(),
+                                          controller.onInProgress(),
                                       rightFunction: () =>
                                           Get.back(closeOverlays: true),
                                     ));

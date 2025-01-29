@@ -1,11 +1,7 @@
 import 'package:ar_visiting_app/app/core/controller/main_controller.dart';
-import 'package:ar_visiting_app/app/core/models/api_response/api_response.dart';
 import 'package:ar_visiting_app/app/core/models/login/loginmodel.dart';
-import 'package:ar_visiting_app/app/core/services/dio_helper.dart';
 import 'package:ar_visiting_app/app/core/services/secure_cache_helper.dart';
 import 'package:ar_visiting_app/app/core/utils/app_colors.dart';
-import 'package:ar_visiting_app/app/core/utils/backend_endpoint.dart';
-import 'package:ar_visiting_app/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -36,7 +32,7 @@ class VisitDetailsControllers extends GetxController {
 
   Future<void> getServantNames() async {
     isLoading.value = true;
-    servant.value = (await mainController.getUserList(2))!;
+    servant.value = (await mainController.getUserList(2));
     for (var servant in servant) {
       servantNames.add(servant.name!);
       servantId.add(servant.id!);
@@ -140,6 +136,7 @@ class VisitDetailsControllers extends GetxController {
     token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
     lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
     getFatherNames();
+    getServantNames();
     getVisitData();
     super.onInit();
   }
@@ -162,7 +159,7 @@ class VisitDetailsControllers extends GetxController {
     isLoading(false);
   }
 
-  void onInprogress() async {
+  void onInProgress() async {
     Get.back(closeOverlays: true);
     isLoading(true);
     await mainController.onInProgress(visitId);
