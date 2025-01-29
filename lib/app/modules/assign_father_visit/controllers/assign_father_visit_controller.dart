@@ -21,7 +21,7 @@ var isLoading = false.obs;
 
   Future<void> getFatherNames() async {
     isLoading.value = true;
-    father.value = (await mainController.getUserList(1))!;
+    father.value = (await mainController.getUserList(1));
 
     for (var father in father) {
       fatherNames.add(father.name!);
