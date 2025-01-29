@@ -34,8 +34,8 @@ class MainController extends GetxController {
     return newDate;
   }
   Future<VisitModel> getVisitData(int id)async{
-    token.value = (await SecureCacheHelper.getData(key: 'token'))!;
-    lang.value = (await CacheHelper.getData(key: 'lang'));
+    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
+    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
     try {
       final response = await DioHelper.getData(
           url: '${BackendEndpoint.visits}/${id.toString()}',
@@ -51,8 +51,8 @@ class MainController extends GetxController {
   }
 
   Future<void> addPatient(User patient)async{
-    token.value = (await SecureCacheHelper.getData(key: 'token'))!;
-    lang.value = (await CacheHelper.getData(key: 'lang'));
+    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
+    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
     try{
       await DioHelper.postData(url: BackendEndpoint.users,token: token.value,lang: lang.value, data: patient.toJson());
     }catch(e){
@@ -61,8 +61,8 @@ class MainController extends GetxController {
   }
 
   Future<List<User>> getUserData() async {
-    token.value = (await SecureCacheHelper.getData(key: 'token'))!;
-    lang.value = (await CacheHelper.getData(key: 'lang'));
+    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
+    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
     try {
       var responseUsers = await DioHelper.getData(
           url: BackendEndpoint.dropDown, lang: lang.value, token: token.value);
@@ -81,8 +81,8 @@ class MainController extends GetxController {
   }
 
   Future<List<AreaModel>> getAreaData() async {
-    token.value = (await SecureCacheHelper.getData(key: 'token'))!;
-    lang.value = (await CacheHelper.getData(key: 'lang'));
+    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
+    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
     try {
       var responseArea = await DioHelper.getData(
           url: BackendEndpoint.areas, lang: lang.value, token: token.value);
@@ -102,8 +102,8 @@ class MainController extends GetxController {
   }
 
   Future<void> editVisit(VisitModel visit, int id) async {
-    token.value = (await SecureCacheHelper.getData(key: 'token'))!;
-    lang.value = (await CacheHelper.getData(key: 'lang'));
+    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
+    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
     try {
       await DioHelper.putData(
           url: '${BackendEndpoint.visits}/${id.toString()}',
@@ -118,8 +118,8 @@ class MainController extends GetxController {
     }
   }
     void logout() async {
-    token.value = (await SecureCacheHelper.getData(key: 'token')) ?? '';
-    lang.value = (await CacheHelper.getData(key: 'lang')); 
+      token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
+      lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
     try {
       await DioHelper.postData(
         url: BackendEndpoint.logout,
@@ -136,8 +136,8 @@ class MainController extends GetxController {
   }
 
   Future<ProfileModel> getProfile()async{
-    token.value = (await SecureCacheHelper.getData(key: 'token'))!;
-    lang.value = (await CacheHelper.getData(key: 'lang')); 
+    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
+    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
     try{
       final response =await DioHelper.getData(url: BackendEndpoint.profile,token: token.value,lang: lang.value);
       final apiResponse =ApiResponse<ProfileModel>.fromJson(response.data,(json) => ProfileModel.fromJson(json as Map<String,dynamic>),);
@@ -148,8 +148,8 @@ class MainController extends GetxController {
     }  
   }
   Future<List<DayVisits>> getMeVisitData()async{
-        token.value = (await SecureCacheHelper.getData(key: 'token'))!;
-    lang.value = (await CacheHelper.getData(key: 'lang'));
+    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
+    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
     try{
     final meResponse = await DioHelper.getData(
         query: {'type': 'mine'},
@@ -179,8 +179,8 @@ class MainController extends GetxController {
     }
   }
   Future<List<DayVisits>> getAllVisitData(Map<String,dynamic> query)async{
-        token.value = (await SecureCacheHelper.getData(key: 'token'))!;
-    lang.value = (await CacheHelper.getData(key: 'lang'));
+    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
+    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
     try{
       final allResponse = await DioHelper.getData(
         query: query,
@@ -211,8 +211,8 @@ class MainController extends GetxController {
   }
 
   Future<int> addVisit(VisitModel visit) async {
-    token.value = (await SecureCacheHelper.getData(key: 'token'))!;
-    lang.value = (await CacheHelper.getData(key: 'lang'));
+    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
+    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
     try {
       var response = await DioHelper.postData(
           url: BackendEndpoint.visits,
@@ -228,8 +228,8 @@ class MainController extends GetxController {
   }
 
   Future<List<DayVisits>> getArchivesVisits()async{
-    token.value = (await SecureCacheHelper.getData(key: 'token'))!;
-    lang.value = (await CacheHelper.getData(key: 'lang'));
+    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
+    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
     try{
     final response = await DioHelper.getData(
         url: BackendEndpoint.archive,
@@ -259,8 +259,8 @@ class MainController extends GetxController {
   }
 
   Future<void> onDone(int id) async {
-    token.value = (await SecureCacheHelper.getData(key: 'token'))!;
-    lang.value = (await CacheHelper.getData(key: 'lang'));
+    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
+    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
     try {
       await DioHelper.putData(url: '${BackendEndpoint.done}/${id.toString()}',token: token.value,lang: lang.value);
     } catch (e) {
@@ -269,8 +269,8 @@ class MainController extends GetxController {
   }
 
   Future<void> onInProgress(int id) async {
-    token.value = (await SecureCacheHelper.getData(key: 'token'))!;
-    lang.value = (await CacheHelper.getData(key: 'lang'));
+    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
+    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
     try {
       await DioHelper.putData(
           url: '${BackendEndpoint.inprogress}/${id.toString()}',token: token.value,lang: lang.value);
@@ -280,8 +280,8 @@ class MainController extends GetxController {
   }
 
   Future<void> onCanceled(int id) async {
-    token.value = (await SecureCacheHelper.getData(key: 'token'))!;
-    lang.value = (await CacheHelper.getData(key: 'lang'));
+    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
+    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
     try {
       await DioHelper.putData(
           url: '${BackendEndpoint.cancel}/${id.toString()}',token: token.value,lang: lang.value);
@@ -291,8 +291,8 @@ class MainController extends GetxController {
   }
 
   Future<void> onDeylayed(int id) async {
-    token.value = (await SecureCacheHelper.getData(key: 'token'))!;
-    lang.value = (await CacheHelper.getData(key: 'lang'));
+    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
+    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
     try {
       await DioHelper.putData(url: '${BackendEndpoint.delay}/${id.toString()}',token: token.value,lang: lang.value);
     } catch (e) {
@@ -307,8 +307,8 @@ class MainController extends GetxController {
   }
   
   Future<List<User>> getUserList(int type)async{
-    token.value = (await SecureCacheHelper.getData(key: 'token'))!;
-    lang.value = (await CacheHelper.getData(key: 'lang'));
+    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
+    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
     try{
       final response =await DioHelper.getData(url: BackendEndpoint.dropDown,token: token.value,lang: lang.value,query: toJson(type));
       final apiResponse = ApiResponse<List<User>>.fromJson(response.data,(json) {
@@ -326,8 +326,8 @@ class MainController extends GetxController {
   }
 
   Future<void> assignServent(int visitId,int servantId)async{
-    token.value = (await SecureCacheHelper.getData(key: 'token'))!;
-    lang.value = (await CacheHelper.getData(key: 'lang'));
+    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
+    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
     try{
       await DioHelper.putData(url: '${BackendEndpoint.servent}/${visitId.toString()}',data: {'servant_id':servantId},lang: lang.value,token: token.value);
     }catch(e){
@@ -336,8 +336,8 @@ class MainController extends GetxController {
   }
 
   Future<void> assignFather(int visitId,int fatherId)async{
-    token.value = (await SecureCacheHelper.getData(key: 'token'))!;
-    lang.value = (await CacheHelper.getData(key: 'lang'));
+    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
+    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
     try{
       await DioHelper.putData(url: '${BackendEndpoint.father}/${visitId.toString()}',data: {'father_id':fatherId},lang: lang.value,token: token.value);
     }catch(e){

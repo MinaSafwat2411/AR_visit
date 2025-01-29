@@ -50,8 +50,8 @@ class LoginController extends GetxController {
         response.data,
             (json) => UserModel.fromJson(json as Map<String, dynamic>),
       );
-      SecureCacheHelper.saveData(key: 'token', value: apiResponse.data!.token);
-      SecureCacheHelper.saveData(key: 'user', value: apiResponse.data!.user?.id.toString());
+      SecureCacheHelper.saveData(key: 'token', value: apiResponse.data?.token);
+      SecureCacheHelper.saveData(key: 'user', value: apiResponse.data?.user?.id.toString());
       var responseEnums = await DioHelper.getData(
             url: BackendEndpoint.enums, token: apiResponse.data!.token);
         var apiResponseEnums = ApiResponse<EnumsModel>.fromJson(responseEnums.data,

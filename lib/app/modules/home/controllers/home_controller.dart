@@ -35,7 +35,14 @@ class HomeController extends GetxController {
   var searchQuery = ''.obs;
   var allSearchQuery = ''.obs;
   var lang = ''.obs;
-  var tags = <TagsModel>[].obs;
+  var tags = [
+    TagsModel(name: 'New',value: 1,type: null,nameAr: 'جديد',isSelected: RxBool(false)),
+    TagsModel(name: 'assigned',value: null,type: 'assigned',nameAr: 'تم تعيينه',isSelected: RxBool(false)),
+    TagsModel(name: 'inprogress',value: 2,type: null,nameAr: 'قيد التنفيذ',isSelected: RxBool(false)),
+    TagsModel(name: 'Delayed',value: 3,type: null,nameAr: 'متأخر',isSelected: RxBool(false)),
+    TagsModel(name: 'done',value: 4,type: null,nameAr: 'تم',isSelected: RxBool(false)),
+    TagsModel(name: 'cancelled',value: 5,type: null,nameAr: 'تم إلغاؤه',isSelected: RxBool(false)),
+  ];
   var meVisits = <DayVisits>[].obs;
   var allVisits = <DayVisits>[].obs;
   var meSearchResults = <DayVisits>[].obs;
@@ -175,17 +182,6 @@ class HomeController extends GetxController {
     }
   }
 
-  void fetchTags() {
-    tags.value = [
-      TagsModel(name: 'New',value: 1,type: null,nameAr: 'جديد',isSelected: RxBool(false)),
-      TagsModel(name: 'assigned',value: null,type: 'assigned',nameAr: 'تم تعيينه',isSelected: RxBool(false)),
-      TagsModel(name: 'inprogress',value: 2,type: null,nameAr: 'قيد التنفيذ',isSelected: RxBool(false)),
-      TagsModel(name: 'Delayed',value: 3,type: null,nameAr: 'متأخر',isSelected: RxBool(false)),
-      TagsModel(name: 'done',value: 4,type: null,nameAr: 'تم',isSelected: RxBool(false)),
-      TagsModel(name: 'cancelled',value: 5,type: null,nameAr: 'تم إلغاؤه',isSelected: RxBool(false)),
-    ];
-  }
-
   void onCanceled(int id) async {
     Get.back(closeOverlays: true);
     isLoadingInternal(true);
@@ -263,9 +259,8 @@ class HomeController extends GetxController {
   void onInit() async {
     isLoading(true);
     title.value = ['My Visits','archives','reports','profile',];
-    fetchTags();
-    token.value = (await SecureCacheHelper.getData(key: 'token'))!;
-    lang.value = (await CacheHelper.getData(key: 'lang'));
+    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
+    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
     order.value =(CacheHelper.getIntList(key: 'order'))?? [];
     screens.value = [
       const VisitsScreen(),
@@ -273,7 +268,6 @@ class HomeController extends GetxController {
       const Center(child: Text('Coming Soon'),),
       const ProfileScreen()
     ];
-    currentScreen.value =0;
     getVisitsData();
     getArchivesData();
     getProfile();
