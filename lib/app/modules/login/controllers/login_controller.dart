@@ -58,7 +58,7 @@ class LoginController extends GetxController {
             (json) => EnumsModel.fromJson(json as Map<String, dynamic>));
         SecureCacheHelper.saveEnumsToStorage(apiResponseEnums.data!);
       Get.snackbar("Login", apiResponse.message ?? "");
-      Get.offNamed(Routes.VISITS);
+      Get.offNamed(Routes.HOME);
     } catch (e) {
       Get.snackbar("Error", 'Invalid Credentials');
     } finally {

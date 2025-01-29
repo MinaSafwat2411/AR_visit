@@ -112,6 +112,27 @@ class LoginView extends GetView<LoginController> {
                   btnColor: AppColors.trinidadColor,
                 ),
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                 children: [
+                   const Text('If you don\'t have aacount',style: TextStyle(
+                    fontSize: 16,
+                   ), ),
+                   const SizedBox(width: 10,),
+                   GestureDetector(
+                    onTap: () {
+                      
+                    },
+                     child: const Text('Register',style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.underline,
+                      fontSize: 16,
+                     ), ),
+                   )
+                 ],
+               )
             ],
           ),
         ),

@@ -2,6 +2,7 @@ import 'package:ar_visiting_app/app/core/controller/main_controller.dart';
 import 'package:ar_visiting_app/app/core/models/api_response/api_response.dart';
 import 'package:ar_visiting_app/app/core/services/dio_helper.dart';
 import 'package:ar_visiting_app/app/core/services/secure_cache_helper.dart';
+import 'package:ar_visiting_app/app/core/utils/app_colors.dart';
 import 'package:ar_visiting_app/app/core/utils/backend_endpoint.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,6 +21,7 @@ class VisitDetailsControllers extends GetxController {
   int visitId = Get.arguments;
   var lang = ''.obs;
   var mainController = MainController();
+  var bottomSheetIsOpened =RxBool(false);
 
   Future<void> launchPhoneDialer(String phoneNumber) async {
     final Uri phoneUrl = Uri(scheme: 'tel', path: phoneNumber);
@@ -47,22 +49,27 @@ class VisitDetailsControllers extends GetxController {
   }
 
   void getVisitData() async {
-    isLoading(true);
-    try {
-      final response = await DioHelper.getData(
-          url: '${BackendEndpoint.visits}/${visitId.toString()}',
-          token: token.value,
-          lang: lang.value);
-      final apiResponse = ApiResponse<VisitModel>.fromJson(response.data,
-          (json) => VisitModel.fromJson(json as Map<String, dynamic>));
-      visit.value = apiResponse.data!;
-    } catch (e) {
-      Get.snackbar('Error', 'Failed to load visit data');
-    } finally {
+      isLoading(true);
+      visit.value = await mainController.getVisitData(visitId);
       isLoading(false);
-    }
   }
 
+  Color statusColor(int status) {
+    var color = const Color(0xffffffff);
+    switch (status) {
+      case 1:
+        color = AppColors.violetPurple;
+      case 2:
+        color = AppColors.blue;
+      case 3:
+        color = AppColors.orange;
+      case 4:
+        color = AppColors.green;
+      case 5:
+        color = AppColors.red;
+    }
+    return color;
+  }
   String getAddressType(int address) {
     String s = '';
     switch (address) {
@@ -91,6 +98,7 @@ class VisitDetailsControllers extends GetxController {
     Get.back(closeOverlays: true);
     isLoading(true);
     await mainController.onDone(visitId);
+    visit.value=await mainController.getVisitData(visitId);
     isLoading(false);
   }
 
@@ -100,6 +108,7 @@ class VisitDetailsControllers extends GetxController {
     Get.back(closeOverlays: true);
     isLoading(true);
     await mainController.onCanceled(visitId);
+    visit.value=await mainController.getVisitData(visitId);
     isLoading(false);
   }
 
@@ -107,6 +116,7 @@ class VisitDetailsControllers extends GetxController {
     Get.back(closeOverlays: true);
     isLoading(true);
     await mainController.onInProgress(visitId);
+    visit.value =await mainController.getVisitData(visitId);
     isLoading(false);
   }
 
@@ -114,6 +124,7 @@ class VisitDetailsControllers extends GetxController {
     Get.back(closeOverlays: true);
     isLoading(true);
     await mainController.onDeylayed(visitId);
+    visit.value=await mainController.getVisitData(visitId);
     isLoading(false);
   }
 }

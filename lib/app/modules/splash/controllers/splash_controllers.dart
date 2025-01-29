@@ -24,7 +24,7 @@ class SplashController extends GetxController {
       try {
         await DioHelper.getData(
             url: BackendEndpoint.enums, token: token.value);
-                  Get.offNamed(Routes.VISITS);
+                  Get.offNamed(Routes.HOME);
       } catch (e) {
         Get.snackbar('Error', 'check your connection');
         reload.value = true;

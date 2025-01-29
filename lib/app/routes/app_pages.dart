@@ -1,11 +1,12 @@
-import 'package:ar_visiting_app/app/modules/allvisits/bindings/all_visits_binding.dart';
 import 'package:ar_visiting_app/app/modules/assign_father_visit/bindings/assign_father_visit_binding.dart';
 import 'package:ar_visiting_app/app/modules/assign_father_visit/views/assign_father_visit_view.dart';
 import 'package:ar_visiting_app/app/modules/assign_servant_visit/views/assign_servant_visit_view.dart';
 import 'package:ar_visiting_app/app/modules/edit_visit/bindings/edit_visit_binding.dart';
 import 'package:ar_visiting_app/app/modules/edit_visit/views/edit_visit_view.dart';
-import 'package:ar_visiting_app/app/modules/profile/bindings/profile_bindings.dart';
-import 'package:ar_visiting_app/app/modules/profile/views/profile_views.dart';
+import 'package:ar_visiting_app/app/modules/home/bindings/home_binding.dart';
+import 'package:ar_visiting_app/app/modules/home/views/home_view.dart';
+import 'package:ar_visiting_app/app/modules/my_order_visits/bindings/my_order_bindings.dart';
+import 'package:ar_visiting_app/app/modules/my_order_visits/views/my_order_visits_view.dart';
 import 'package:ar_visiting_app/app/modules/splash/bindings/splash_binding.dart';
 import 'package:ar_visiting_app/app/modules/splash/views/splash_views.dart';
 import 'package:ar_visiting_app/app/modules/visit_details/blinding/visit_details_blinding.dart';
@@ -13,12 +14,9 @@ import 'package:ar_visiting_app/app/modules/visit_details/views/visit_details_vi
 import 'package:get/get.dart';
 import '../modules/add_new_visit/bindings/add_new_visit_binding.dart';
 import '../modules/add_new_visit/views/add_new_visit_view.dart';
-import '../modules/allvisits/views/all_visits_view.dart';
 import '../modules/assign_servant_visit/bindings/assign_servant_visit_binding.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
-import '../modules/visits/bindings/visits_binding.dart';
-import '../modules/visits/views/visits_view.dart';
 
 part 'app_routes.dart';
 
@@ -39,25 +37,20 @@ class AppPages {
       binding: AddNewVisitBinding(),
     ),
     GetPage(
-      name: _Paths.VISITS,
-      page: () =>  const VisitsView(),
-      binding: VisitsBinding(),
-    ),
-    GetPage(
       name: _Paths.SPLASH,
-      page: () =>  const SplashViews(),
+      page: () => const SplashViews(),
       binding: SplashBinding(),
     ),
     GetPage(
-        name: _Paths.VISIT_DETAILS,
-        page: () => const VisitDetailsViews(),
-        binding: VisitDetailsBlinding(),
+      name: _Paths.VISIT_DETAILS,
+      page: () => const VisitDetailsViews(),
+      binding: VisitDetailsBlinding(),
     ),
     GetPage(
       name: _Paths.EDIT_VISIT,
       page: () => const EditVisitView(),
       binding: EditVisitBinding(),
-    )    ,
+    ),
     GetPage(
       name: _Paths.ASSIN_Father_VISIT,
       page: () => const AssignFatherVisitView(),
@@ -69,14 +62,13 @@ class AppPages {
       binding: AssignServantVisitBinding(),
     ),
     GetPage(
-      name: _Paths.PROFILE,
-      page: () => const ProfileViews(),
-      binding: ProfileBinding(),
+        name: _Paths.HOME,
+        page: () => const HomeView(),
+        binding: HomeBinding()
     ),
     GetPage(
-      name: _Paths.ALLVISITS,
-      page: () => const ALLVisitsViews(),
-      binding: ALLVisitsBinding(),
-    ),
+      name: _Paths.MY_ORDER,
+      page: () => const MyOrderVisitsView(),
+      binding: MyOrderBindings())
   ];
 }

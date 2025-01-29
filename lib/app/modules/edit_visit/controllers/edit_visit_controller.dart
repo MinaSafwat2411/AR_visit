@@ -160,7 +160,7 @@ class EditVisitController extends GetxController {
         attendantPhone: assistantPhoneController.text,
         note: noteController.text,
         addressUrl: googleLinkController.text,
-        area_id: areaId[areaNames.indexOf(areaName.value)],
+        areaId: areaId[areaNames.indexOf(areaName.value)],
         addressType: addressTypeList.indexOf(addressType.value)+1,
         );
         await mainController.editVisit(newVisit.value,visit.value.id!);
@@ -173,11 +173,8 @@ class EditVisitController extends GetxController {
 
   Future<void> getVisitData()async{
     isLoading(true);
-    try{
-      visit.value= (await mainController.getVisitData(visitId))!;
-    }catch(e){
-      Get.snackbar("Error", "Failed to retrieve visit data: $e");
-    }
+    visit.value= (await mainController.getVisitData(visitId));
+    isLoading(false);
   }
 
   void displayData() {

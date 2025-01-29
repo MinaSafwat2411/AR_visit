@@ -13,6 +13,21 @@ class CacheHelper{
   }){
     return  sharedPreferences!.get(key!);
   }
+  
+  static Future<bool> saveIntList({
+    @required String? key,
+    @required List<int>? value,
+  }) async {
+    List<String> stringList = value!.map((i) => i.toString()).toList();
+    return await sharedPreferences!.setStringList(key!, stringList);
+  }
+
+  static List<int>? getIntList({
+    @required String? key,
+  }) {
+    List<String>? stringList = sharedPreferences!.getStringList(key!);
+    return stringList?.map((i) => int.parse(i)).toList();
+  }
 
   static Future<bool> saveData({
     @required String? key,

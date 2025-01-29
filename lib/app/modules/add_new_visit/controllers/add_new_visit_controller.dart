@@ -148,18 +148,18 @@ class AddNewVisitController extends GetxController {
         address: patientAddressController.text,
         attendant: assistantNameController.text,
         attendantPhone: assistantPhoneController.text,
-        E1C1F: int.parse(patientFamIDController.text),
-        NR: int.parse(patientIDNumberController.text),
+        e1C1F: int.parse(patientFamIDController.text),
+        nR: int.parse(patientIDNumberController.text),
         note: noteController.text,
         addressUrl: googleLinkController.text,
-        area_id: areaId[areaNames.indexOf(areaName.value)],
+        areaId: areaId[areaNames.indexOf(areaName.value)],
         addressType: addressTypeList.indexOf(addressType.value)+1,
-        userId: userId[userNames.indexOf(userType.value)+1]
+        userId: userId[userNames.indexOf(userType.value)]
       );
       mainController.addVisit(newVisit.value);
       Get.snackbar("Visits", "Visit add successfully");
       Get.offNamedUntil(
-          Routes.VISITS,
+          Routes.HOME,
               (route) => route.settings.name == Routes.VISITS
       );
     }catch (e){

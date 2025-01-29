@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../core/utils/app_colors.dart';
-import '../../controllers/visits_controller.dart';
+import '../../../home/controllers/home_controller.dart';
 
-class TagItemWidget extends GetView<VisitController> {
+class TagItemWidget extends GetView<HomeController> {
   const TagItemWidget({
     super.key,
     required this.index,
@@ -20,13 +20,13 @@ class TagItemWidget extends GetView<VisitController> {
       },
       child: Card(
         elevation: 2,
-        color: controller.tags[index].isSelected.value ?  AppColors.trinidadColor :  AppColors.white,
+        color: controller.tags[index].isSelected.value ?  AppColors.trinidadColor :  AppColors.lightGray,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
           child: Text(
-            controller.lang== 'en'? controller.tags[index].name:controller.tags[index].nameAr,
-            style: TextStyle(color: controller.tags[index].isSelected.value ? AppColors.white : AppColors.trinidadColor),
+            controller.lang.value== 'en'? controller.tags[index].name:controller.tags[index].nameAr,
+            style: TextStyle(color: controller.tags[index].isSelected.value ? AppColors.lightGray : AppColors.trinidadColor),
           ),
         ),
       )
