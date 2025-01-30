@@ -326,8 +326,7 @@ class MainController extends GetxController {
   }
 
   Future<void> assignServent(int visitId,int servantId)async{
-    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
-    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
+
     try{
       await DioHelper.putData(url: '${BackendEndpoint.servent}/${visitId.toString()}',data: {'servant_id':servantId},lang: lang.value,token: token.value);
     }catch(e){

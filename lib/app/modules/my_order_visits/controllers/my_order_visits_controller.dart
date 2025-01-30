@@ -1,9 +1,9 @@
-import 'dart:ffi';
 import 'dart:ui';
 
 import 'package:ar_visiting_app/app/core/controller/main_controller.dart';
 import 'package:ar_visiting_app/app/core/models/visits/visitmodel.dart';
 import 'package:ar_visiting_app/app/core/services/cache_helper.dart';
+import 'package:ar_visiting_app/app/core/services/secure_cache_helper.dart';
 import 'package:ar_visiting_app/app/core/utils/app_colors.dart';
 import 'package:get/get.dart';
 
@@ -14,6 +14,7 @@ class MyOrderVisitsController extends GetxController{
   var visitList = <VisitModel>[].obs;
   var mainController =MainController();
   var lang = ''.obs;
+  var token = ''.obs;
 
   void getVisitData()async{
     isLoading(true);
@@ -50,6 +51,8 @@ class MyOrderVisitsController extends GetxController{
 
   @override
   void onInit() async{
+    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
+    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
     orderList.value =  CacheHelper.getIntList(key: 'order')??[];
     getVisitData();
     super.onInit();

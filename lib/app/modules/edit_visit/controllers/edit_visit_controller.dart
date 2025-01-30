@@ -3,6 +3,7 @@ import 'package:ar_visiting_app/app/core/controller/main_controller.dart';
 import 'package:ar_visiting_app/app/core/models/login/loginmodel.dart';
 import 'package:ar_visiting_app/app/core/models/visits/visitmodel.dart';
 import 'package:ar_visiting_app/app/core/services/cache_helper.dart';
+import 'package:ar_visiting_app/app/core/services/secure_cache_helper.dart';
 import 'package:ar_visiting_app/app/modules/add_new_visit/controllers/add_new_visit_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -194,7 +195,8 @@ class EditVisitController extends GetxController {
 
   @override
   void onInit() async {
-    lang.value =(await CacheHelper.getData(key: 'lang'))!;
+    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
+    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
     getAddressType();
     await getVisitData();
     await getData();

@@ -30,6 +30,7 @@ class VisitDetailsControllers extends GetxController {
 
 
 
+
   Future<void> getServantNames() async {
     isLoading.value = true;
     servant.value = (await mainController.getUserList(2));
@@ -37,7 +38,6 @@ class VisitDetailsControllers extends GetxController {
       servantNames.add(servant.name!);
       servantId.add(servant.id!);
     }
-    isLoading.value = false;
   }
 
   onServantSelected(int index)async{
@@ -119,25 +119,27 @@ class VisitDetailsControllers extends GetxController {
       fatherNames.add(father.name!);
       fatherId.add(father.id!);
     }
-    isLoading.value = false;
   }
 
   onFatherSelected(int index)async{
     isLoading(true);
     await mainController.assignFather(visitId, fatherId[index]);
     isLoading(false);
-  getVisitData();  
+    getVisitData();  
 }
 
 
-  void onClone(int id) async {}
+  void onClone(int id) async {
+
+  }
+  
   @override
   void onInit() async {
     token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
     lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
+    getVisitData();
     getFatherNames();
     getServantNames();
-    getVisitData();
     super.onInit();
   }
 

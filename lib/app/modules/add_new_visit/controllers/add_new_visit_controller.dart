@@ -171,8 +171,8 @@ class AddNewVisitController extends GetxController {
 
   @override
   void onInit() async{
-    token.value=(await SecureCacheHelper.getData(key: 'token'))!;
-    lang.value=(await CacheHelper.getData(key: 'lang'))!;
+    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
+    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
     getAddressType();
     getData();
     super.onInit();
