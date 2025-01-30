@@ -133,7 +133,7 @@ class VisitDetailsControllers extends GetxController {
 
   void onClone(int id) async {
     isLoading(true);
-    var visitId = mainController.addVisit(visit.value);
+    var visitId = await mainController.addVisit(visit.value);
     isLoading(false);
     Get.toNamed(Routes.EDIT_VISIT, arguments: visitId);
   }

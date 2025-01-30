@@ -1,6 +1,4 @@
 import 'package:ar_visiting_app/app/core/models/profile/profile_model.dart';
-import 'package:ar_visiting_app/app/core/services/dio_helper.dart';
-import 'package:ar_visiting_app/app/core/utils/backend_endpoint.dart';
 import 'package:ar_visiting_app/app/modules/home/screens/archive_visits_screen.dart';
 import 'package:ar_visiting_app/app/modules/home/screens/profile_screen.dart';
 import 'package:ar_visiting_app/app/modules/home/screens/visits_screen.dart';
@@ -208,7 +206,7 @@ class HomeController extends GetxController {
 
   void onClone(VisitModel visit) async {
     isLoadingInternal(true);
-    var visitId = mainController.addVisit(visit);
+    var visitId = await mainController.addVisit(visit);
     isLoadingInternal(false);
     Get.toNamed(Routes.EDIT_VISIT, arguments: visitId);
   }

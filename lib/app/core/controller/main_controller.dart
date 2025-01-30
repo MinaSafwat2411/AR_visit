@@ -112,7 +112,7 @@ class MainController extends GetxController {
           lang: lang.value);
       Get.snackbar("Visits", "Visit add successfully");
       Get.offNamedUntil(
-          Routes.VISITS, (route) => route.settings.name == Routes.VISITS);
+          Routes.VISIT_DETAILS,arguments: id, (route) => route.settings.name == Routes.HOME);
     } catch (e) {
       Get.snackbar("Error", e.toString());
     }
@@ -213,6 +213,7 @@ class MainController extends GetxController {
   Future<int> addVisit(VisitModel visit) async {
     token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
     lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
+    visit.date = changeFormatDB(visit.date??'');
     try {
       var response = await DioHelper.postData(
           url: BackendEndpoint.visits,

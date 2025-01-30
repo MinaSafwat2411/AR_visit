@@ -46,17 +46,21 @@ class VisitModel {
 
   VisitModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    e1C1F = json['E1C1F'];
+    nR = json['NR'];
+    userId = json['user_id'];
     userName = json['user_name'];
     userPhone = json['user_phone'];
     fatherName = json['father_name'];
     servantName = json['servant_name'];
     status =
-        json['status'] != null ?  Status.fromJson(json['status']) : null;
+        json['status'] != null ? new Status.fromJson(json['status']) : null;
     attendant = json['attendant'];
     attendantPhone = json['attendant_phone'];
     addressType = json['address_type'];
     address = json['address'];
     addressUrl = json['address_url'];
+    areaId = json['area_id'];
     areaName = json['area_name'];
     patientNums = json['patient_nums'];
     from = json['from'];
@@ -65,18 +69,11 @@ class VisitModel {
     note = json['note'];
   }
 
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['user_name'] = this.userName;
-    data['user_phone'] = this.userPhone;
-    data['father_name'] = this.fatherName;
-    data['servant_name'] = this.servantName;
-    if (this.status != null) {
-      data['status'] = this.status!.toJson();
-    }
-    data['E1C1F']=this.e1C1F;
-    data['NR']=this.nR;
+    if(e1C1F!=null) data['E1C1F']=this.e1C1F;
+    if(nR!=null) data['NR']=this.nR;
     data['user_id']=this.userId;
     data['area_id'] = this.areaId;
     data['attendant'] = this.attendant;
@@ -84,7 +81,6 @@ class VisitModel {
     data['address_type'] = this.addressType;
     data['address'] = this.address;
     data['address_url'] = this.addressUrl;
-    data['area_name'] = this.areaName;
     data['patient_nums'] = this.patientNums;
     data['from'] = this.from;
     data['to'] = this.to;

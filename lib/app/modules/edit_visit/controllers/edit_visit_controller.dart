@@ -72,9 +72,7 @@ class EditVisitController extends GetxController {
               ),
               child: child!);
         });
-    if (datePicked != null) {
-      dateController.text = "${datePicked.year}-${datePicked.month.toString().padLeft(2, '0')}-${datePicked.day.toString().padLeft(2, '0')}";
-    }
+        dateController.text = "${datePicked!.day.toString().padLeft(2, '0')}-${datePicked.month.toString().padLeft(2, '0')}-${datePicked.year}";
   }
     void getAddressType(){
     if(lang.value=='en'){
@@ -164,7 +162,7 @@ class EditVisitController extends GetxController {
         areaId: areaId[areaNames.indexOf(areaName.value)],
         addressType: addressTypeList.indexOf(addressType.value)+1,
         );
-        await mainController.editVisit(newVisit.value,visit.value.id!);
+        await mainController.editVisit(newVisit.value,visit.value.id?? -1);
     }catch (e){
       Get.snackbar("Error", e.toString());
     }finally{
