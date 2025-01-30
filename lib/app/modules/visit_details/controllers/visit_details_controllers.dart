@@ -2,8 +2,10 @@ import 'package:ar_visiting_app/app/core/controller/main_controller.dart';
 import 'package:ar_visiting_app/app/core/models/login/loginmodel.dart';
 import 'package:ar_visiting_app/app/core/services/secure_cache_helper.dart';
 import 'package:ar_visiting_app/app/core/utils/app_colors.dart';
+import 'package:ar_visiting_app/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -130,9 +132,12 @@ class VisitDetailsControllers extends GetxController {
 
 
   void onClone(int id) async {
-
+    isLoading(true);
+    var visitId = mainController.addVisit(visit.value);
+    isLoading(false);
+    Get.toNamed(Routes.EDIT_VISIT, arguments: visitId);
   }
-  
+
   @override
   void onInit() async {
     token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
