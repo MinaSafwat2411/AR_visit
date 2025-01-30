@@ -4,7 +4,6 @@ import 'package:ar_visiting_app/app/modules/my_order_visits/controllers/my_order
 import 'package:ar_visiting_app/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 
 class VisitCardItemOrderWidget extends GetView<MyOrderVisitsController> {
   const VisitCardItemOrderWidget({
@@ -14,85 +13,14 @@ class VisitCardItemOrderWidget extends GetView<MyOrderVisitsController> {
   final VisitModel visit;
   @override
   Widget build(BuildContext context) {
-    return Slidable(
-    key: ValueKey(visit.id),
-    endActionPane: ActionPane(
-      motion: const ScrollMotion(),
-      extentRatio: 0.6,
-      children: [
-      SlidableAction(
-        borderRadius: controller.lang.value == 'en'
-          ? const BorderRadius.only(topLeft: Radius.circular(20.0), bottomLeft: Radius.circular(20.0))
-          : const BorderRadius.only(topRight: Radius.circular(20.0), bottomRight: Radius.circular(20.0)),
-        onPressed: (context) {
-        // showDialog(
-        //   context: context,
-        //   builder: (context) => CustomDoubleAlert(
-        //   title: 'cloneComfirm'.tr,
-        //   leftButtonText: 'yes'.tr,
-        //   rightButtonText: 'no'.tr,
-        //   leftFunction: () => controller.onClone(visit),
-        //   rightFunction: () => Get.back(closeOverlays: true),
-        //   ),
-        // );
-        },
-        backgroundColor: AppColors.softAmber,
-        foregroundColor: Colors.black,
-        icon: Icons.copy,
-        padding: const EdgeInsets.all(8.0),
-        label: 'clone'.tr,
-      ),
-      SlidableAction(
-        onPressed: (context) {
-        // showDialog(
-        //   context: context,
-        //   builder: (context) => CustomDoubleAlert(
-        //   title: 'doneComfirm'.tr,
-        //   leftButtonText: 'yes'.tr,
-        //   rightButtonText: 'no'.tr,
-        //   leftFunction: () => controller.onDone(visit.id!),
-        //   rightFunction: () => Get.back(closeOverlays: true),
-        //   ),
-        // );
-        },
-        padding: const EdgeInsets.all(8.0),
-        backgroundColor: AppColors.softAmber,
-        foregroundColor: Colors.black,
-        icon: Icons.check_circle_outline,
-        label: 'done'.tr,
-      ),
-      SlidableAction(
-        onPressed: (context) {
-        // showDialog(
-        //   context: context,
-        //   builder: (context) => CustomDoubleAlert(
-        //   title: 'cancelComfirm'.tr,
-        //   leftButtonText: 'yes'.tr,
-        //   rightButtonText: 'no'.tr,
-        //   leftFunction: () => controller.onCanceled(visit.id!),
-        //   rightFunction: () => Get.back(closeOverlays: true),
-        //   ),
-        // );
-        },
-        borderRadius: controller.lang == 'en'
-          ? const BorderRadius.only(topRight: Radius.circular(20.0), bottomRight: Radius.circular(20.0))
-          : const BorderRadius.only(topLeft: Radius.circular(20.0), bottomLeft: Radius.circular(20.0)),
-        backgroundColor: AppColors.softAmber,
-        foregroundColor: Colors.black,
-        icon: Icons.cancel_outlined,
-        padding: const EdgeInsets.all(8.0),
-        label: 'cancel'.tr,
-      ),
-      ],
-    ),
-    child: GestureDetector(
+    return GestureDetector(
       onTap: () {
-      Get.toNamed(Routes.VISIT_DETAILS, arguments: visit.id);
+        Get.toNamed(Routes.VISIT_DETAILS, arguments: visit);
       },
       child: Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
       elevation: 4,
-      color: AppColors.softAmber,
+      color: controller.isDark.value?AppColors.codGray: AppColors.softAmber,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
@@ -111,7 +39,7 @@ class VisitCardItemOrderWidget extends GetView<MyOrderVisitsController> {
             style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
             ),
             Text(
-            '${'father'.tr}: ${visit.fatherName ?? 'No father'}',
+            '${'father'.tr}: ${visit.fatherName ?? ''}',
             style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
             ),
           ],
@@ -137,7 +65,7 @@ class VisitCardItemOrderWidget extends GetView<MyOrderVisitsController> {
             style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
             ),
             Text(
-            '${'servant'.tr}: ${visit.servantName ?? 'No Servant'}',
+            '${'servant'.tr}: ${visit.servantName ?? ''}',
             style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
             ),
           ],
@@ -146,7 +74,6 @@ class VisitCardItemOrderWidget extends GetView<MyOrderVisitsController> {
         ),
       ),
       ),
-    ),
     );
   }
 }

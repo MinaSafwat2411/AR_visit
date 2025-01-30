@@ -1,5 +1,7 @@
+import 'package:ar_visiting_app/app/core/models/visits/visitmodel.dart';
 import 'package:ar_visiting_app/app/core/services/cache_helper.dart';
 import 'package:ar_visiting_app/app/core/widgets/custom_textformfield.dart';
+import 'package:ar_visiting_app/app/modules/visit_details/di/operation_type.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +22,7 @@ class HomeView extends GetView<HomeController> {
         appBar: AppBar(
           actions: [
             Obx(() => ConditionalBuilder(
-              condition: controller.currentScreen.value==0,
+              condition: controller.currentScreen.value==0||controller.currentScreen.value==1,
               fallback: (context) => const SizedBox(),
               builder: (context) {
                 return Padding(
@@ -64,10 +66,8 @@ class HomeView extends GetView<HomeController> {
             )
             )
           ],
-          backgroundColor: AppColors.white,
-          title:Obx(() => Text(controller.title[controller.currentScreen.value].toString())),
+          title:Obx(() => Text(controller.title[controller.currentScreen.value].value.toString())),
         ),
-        backgroundColor: AppColors.white,
         resizeToAvoidBottomInset: false,
         floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -86,11 +86,6 @@ class HomeView extends GetView<HomeController> {
                   leftButtonText: 'yes'.tr,
                   leftFunction: () {
                     Get.back(closeOverlays: true);
-                    Get.toNamed(Routes.ADD_NEW_VISIT);
-                  },
-                  rightButtonText: 'no'.tr,
-                  rightFunction: () {
-                    Get.back(closeOverlays: true);
                     showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
@@ -100,37 +95,107 @@ class HomeView extends GetView<HomeController> {
                                   constraints: BoxConstraints(
                                       maxHeight:
                                           MediaQuery.of(context).size.height *
-                                              0.6),
+                                              0.42),
                                   child: Form(
                                     child: Column(
                                       children: [
-                                        CustomTextFormField(textController: controller.name, label: 'name'.tr, validator: (value) {},),
-                                        CustomTextFormField(textController: controller.nameAr, label: 'nameAr'.tr, validator: (value) {},),
-                                        CustomTextFormField(textController: controller.familyId, label: 'E1C1F'.tr, validator: (value) {},),
-                                        CustomTextFormField(textController: controller.familyNumber, label: 'NR'.tr, validator: (value) {},),
-                                        CustomTextFormField(textController: controller.email, label: 'email'.tr, validator: (value) {},),
-                                        CustomTextFormField(textController: controller.phone, label: 'phone'.tr, validator: (value) {},)
+                                        CustomTextFormField(
+                                          textController: controller.name,
+                                          label: 'patientName'.tr,
+                                          validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Please enter patient name';
+                                          }
+                                          return null;
+                                          },
+                                        ),
+                                        CustomTextFormField(
+                                          textController: controller.nameAr,
+                                          label: 'patientNameAr'.tr,
+                                          validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Please enter patient name in Arabic';
+                                          }
+                                          return null;
+                                          },
+                                        ),
+                                        CustomTextFormField(
+                                          textController: controller.familyId,
+                                          label: 'E1C1F'.tr,
+                                          validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Please enter family ID';
+                                          }
+                                          return null;
+                                          },
+                                        ),
+                                        CustomTextFormField(
+                                          textController: controller.familyNumber,
+                                          label: 'NR'.tr,
+                                          validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Please enter family number';
+                                          }
+                                          return null;
+                                          },
+                                        ),
+                                        CustomTextFormField(
+                                          textController: controller.email,
+                                          label: 'email'.tr,
+                                          validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Please enter email';
+                                          }
+                                          if (!GetUtils.isEmail(value)) {
+                                            return 'Please enter a valid email';
+                                          }
+                                          return null;
+                                          },
+                                        ),
+                                        CustomTextFormField(
+                                          textController: controller.phone,
+                                          label: 'phone'.tr,
+                                          validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Please enter phone number';
+                                          }
+                                          if (!GetUtils.isPhoneNumber(value)) {
+                                            return 'Please enter a valid phone number';
+                                          }
+                                          return null;
+                                          },
+                                        )
                                       ],
                                     ),
                                   ),
                                 ),
                               ),
                               actions: [
-                                TextButton(
-                                    style: const ButtonStyle(
-                                        backgroundColor: WidgetStatePropertyAll(
-                                            AppColors.trinidadColor)),
-                                    onPressed: () {
-                                      // controller.addPatient();
-                                      Get.back(closeOverlays: true);
-                                    },
-                                    child: Text(
-                                      'add'.tr,
-                                      style:
-                                          const TextStyle(color: AppColors.white),
-                                    ))
+                                ConditionalBuilder(
+                                  condition: !controller.isSubmited.value,
+                                  fallback: (context) => const CircularProgressIndicator(color: AppColors.trinidadColor,),
+                                  builder: (context) {
+                                    return TextButton(
+                                        style: const ButtonStyle(
+                                            backgroundColor: WidgetStatePropertyAll(
+                                                AppColors.trinidadColor)),
+                                        onPressed: () {
+                                          controller.addPatient();
+                                        },
+                                        child: Text(
+                                          'add'.tr,
+                                          style:
+                                              const TextStyle(color: AppColors.white),
+                                        ));
+                                  }
+                                )
                               ],
                             ));
+                  },
+                  rightButtonText: 'no'.tr,
+                  rightFunction: () {
+                    Get.back(closeOverlays: true);
+                    Get.toNamed(Routes.ADD_EDIT_VISIT,arguments: [OperationType.ADD]);
                   },
                 ),
               );
@@ -144,7 +209,6 @@ class HomeView extends GetView<HomeController> {
           ),
         ),
         bottomNavigationBar: BottomAppBar(
-          color: AppColors.white,
           elevation: 10,
           shadowColor: AppColors.gray,
           shape: const CircularNotchedRectangle(),
@@ -168,7 +232,11 @@ class HomeView extends GetView<HomeController> {
                           children: [
                             Obx(() => Container(
                                   decoration: BoxDecoration(
-                                      color: controller.currentScreen.value == 0
+                                      color: controller.isDark.value ?
+                                      controller.currentScreen.value == 0
+                                          ? AppColors.trinidadColor
+                                          : AppColors.codGray
+                                       :controller.currentScreen.value == 0
                                           ? AppColors.trinidadColor
                                           : AppColors.white,
                                       borderRadius: BorderRadius.circular(15)),
@@ -177,17 +245,24 @@ class HomeView extends GetView<HomeController> {
                                 )),
                             Obx(() => Icon(
                                   Icons.people_outline,
-                                  color: controller.currentScreen.value == 0
+                                  color: controller.isDark.value ?
+                                  controller.currentScreen.value == 0
+                                      ? AppColors.black
+                                      : AppColors.white
+                                   :controller.currentScreen.value == 0
                                       ? AppColors.white
                                       : AppColors.black,
                                 )),
                           ],
                         ),
                         Obx(() => Text(
-                              'Visits',
+                              'visits'.tr,
                               style: TextStyle(
                                   fontSize: 12,
-                                  color: controller.currentScreen.value == 0
+                                  color: controller.isDark.value ? controller.currentScreen.value == 0
+                                      ? AppColors.trinidadColor
+                                      : AppColors.white
+                                      :controller.currentScreen.value == 0
                                       ? AppColors.trinidadColor
                                       : AppColors.black),
                             )),
@@ -208,7 +283,11 @@ class HomeView extends GetView<HomeController> {
                           children: [
                             Obx(() => Container(
                                   decoration: BoxDecoration(
-                                      color: controller.currentScreen.value == 1
+                                      color: controller.isDark.value ? 
+                                      controller.currentScreen.value == 1
+                                          ? AppColors.trinidadColor
+                                          : AppColors.codGray
+                                      :controller.currentScreen.value == 1
                                           ? AppColors.trinidadColor
                                           : AppColors.white,
                                       borderRadius: BorderRadius.circular(15)),
@@ -217,17 +296,24 @@ class HomeView extends GetView<HomeController> {
                                 )),
                             Obx(() => Icon(
                               Icons.archive_outlined,
-                              color: controller.currentScreen.value == 1
+                              color:controller.isDark.value ? 
+                              controller.currentScreen.value == 1
+                                  ? AppColors.black
+                                  : AppColors.white
+                              : controller.currentScreen.value == 1
                                   ? AppColors.white
                                   : AppColors.black,
                             )),
                           ],
                         ),
                         Obx(() => Text(
-                              'Archive',
+                              'archive'.tr,
                               style: TextStyle(
-                                fontSize: 12,
-                                  color: controller.currentScreen.value == 1
+                                  fontSize: 12,
+                                  color: controller.isDark.value ? controller.currentScreen.value == 1
+                                      ? AppColors.trinidadColor
+                                      : AppColors.white
+                                      :controller.currentScreen.value == 1
                                       ? AppColors.trinidadColor
                                       : AppColors.black),
                             )),
@@ -252,7 +338,11 @@ class HomeView extends GetView<HomeController> {
                           children: [
                             Obx(() => Container(
                                   decoration: BoxDecoration(
-                                      color: controller.currentScreen.value == 2
+                                      color: controller.isDark.value ? 
+                                      controller.currentScreen.value == 2
+                                          ? AppColors.trinidadColor
+                                          : AppColors.codGray
+                                      :controller.currentScreen.value == 2
                                           ? AppColors.trinidadColor
                                           : AppColors.white,
                                       borderRadius: BorderRadius.circular(15)),
@@ -261,17 +351,24 @@ class HomeView extends GetView<HomeController> {
                                 )),
                             Obx(() => Icon(
                               Icons.analytics_outlined,
-                              color: controller.currentScreen.value == 2
+                              color:controller.isDark.value ? 
+                              controller.currentScreen.value == 2
+                                  ? AppColors.black
+                                  : AppColors.white
+                              : controller.currentScreen.value == 2
                                   ? AppColors.white
                                   : AppColors.black,
                             )),
                           ],
                         ),
                         Obx(() => Text(
-                              'Reports',
+                              'reports'.tr,
                               style: TextStyle(
                                   fontSize: 12,
-                                  color: controller.currentScreen.value == 2
+                                  color: controller.isDark.value ? controller.currentScreen.value == 2
+                                      ? AppColors.trinidadColor
+                                      : AppColors.white
+                                      :controller.currentScreen.value == 2
                                       ? AppColors.trinidadColor
                                       : AppColors.black),
                             )),
@@ -292,7 +389,11 @@ class HomeView extends GetView<HomeController> {
                           children: [
                             Obx(() => Container(
                                   decoration: BoxDecoration(
-                                      color: controller.currentScreen.value == 3
+                                      color: controller.isDark.value ? 
+                                      controller.currentScreen.value == 3
+                                          ? AppColors.trinidadColor
+                                          : AppColors.codGray
+                                      :controller.currentScreen.value == 3
                                           ? AppColors.trinidadColor
                                           : AppColors.white,
                                       borderRadius: BorderRadius.circular(15)),
@@ -301,17 +402,24 @@ class HomeView extends GetView<HomeController> {
                                 )),
                             Obx(() => Icon(
                               Icons.person_outlined,
-                              color: controller.currentScreen.value == 3
+                              color:controller.isDark.value ? 
+                              controller.currentScreen.value == 3
+                                  ? AppColors.black
+                                  : AppColors.white
+                              : controller.currentScreen.value == 3
                                   ? AppColors.white
                                   : AppColors.black,
                             )),
                           ],
                         ),
                         Obx(() => Text(
-                              'Profile',
+                              'profile'.tr,
                               style: TextStyle(
                                   fontSize: 12,
-                                  color: controller.currentScreen.value == 3
+                                  color: controller.isDark.value ? controller.currentScreen.value == 3
+                                      ? AppColors.trinidadColor
+                                      : AppColors.white
+                                      :controller.currentScreen.value == 3
                                       ? AppColors.trinidadColor
                                       : AppColors.black),
                             )),

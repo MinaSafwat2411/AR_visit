@@ -22,20 +22,20 @@ class MyOrderVisitsView extends GetView<MyOrderVisitsController> {
             child: TextButton(onPressed: ()async{
               controller.orderList.value=[];
               await CacheHelper.removeData(key: 'order');
-            }, child: const Text('Clear',style: TextStyle(color: AppColors.trinidadColor),)),
+            }, child:  Text('clear'.tr,style: const TextStyle(color: AppColors.trinidadColor),)),
           )
         ],
         leading: IconButton(onPressed: (){
             Get.back(result: controller.orderList);
         }, icon: const Icon(Icons.arrow_back)),
-        title: const Text('My Order Visits'),
+        title: Text('orderVisits'.tr),
       ),
       body: Obx(() => ConditionalBuilder(
         condition: !controller.isLoading.value,
         fallback: (context) => const Center(child: CircularProgressIndicator(color: AppColors.trinidadColor,)),
         builder: (context) {
             return Obx(() => ConditionalBuilder(
-              fallback: (context) => const Center(child: Text('Add Visits to Carts'),),
+              fallback: (context) =>  Center(child: Text('emptyOrder'.tr),),
               condition: controller.orderList.isNotEmpty,
               builder: (context) {
                 return Obx(() => ReorderableListView(

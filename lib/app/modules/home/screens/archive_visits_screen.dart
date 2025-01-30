@@ -10,17 +10,24 @@ class ArchiveVisitsScreen extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: SizedBox(
-            height: 50,
-            child: Form(
-              child: TextFormField(
-                style: const TextStyle(
-                    color: AppColors.gray, decoration: TextDecoration.none),
-                cursorColor: AppColors.white,
+    return Obx(() =>ConditionalBuilder(
+      condition: !controller.isLoading.value,
+      fallback: (context) => const Center (
+        child: CircularProgressIndicator(color: AppColors.trinidadColor,),
+      ),
+      builder: (context) {
+        return Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: SizedBox(
+                height: 50,
+                child: Form(
+                  child: TextFormField(
+                style: TextStyle(
+                  color: controller.isDark.value ? AppColors.white : AppColors.gray,
+                  decoration: TextDecoration.none),
+                cursorColor: controller.isDark.value ? AppColors.white : AppColors.black,
                 controller: controller.archiveSearchController,
                 onChanged: (value) {
                   controller.onSearchArchive(value);
@@ -28,43 +35,46 @@ class ArchiveVisitsScreen extends GetView<HomeController> {
                 textAlignVertical: TextAlignVertical.center,
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: AppColors.waferColor, // Set background color
+                  fillColor: controller.isDark.value ? AppColors.gray : AppColors.waferColor, // Set background color
                   focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: AppColors.waferColor),
-                    borderRadius: BorderRadius.circular(50),
+                  borderSide: BorderSide(color: controller.isDark.value ? AppColors.codGray : AppColors.waferColor),
+                  borderRadius: BorderRadius.circular(50),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: AppColors.waferColor),
-                    borderRadius: BorderRadius.circular(50),
+                  borderSide: BorderSide(color: controller.isDark.value ? AppColors.codGray : AppColors.waferColor),
+                  borderRadius: BorderRadius.circular(50),
                   ),
-                  focusColor: AppColors.waferColor,
+                  focusColor: controller.isDark.value ? AppColors.codGray : AppColors.waferColor,
                   hintText: 'search'.tr,
-                  prefixIcon: const Icon(
-                    Icons.search,
-                    color: AppColors.trinidadColor,
+                  prefixIcon: Icon(
+                  Icons.search,
+                  color: controller.isDark.value ? AppColors.white : AppColors.trinidadColor,
                   ),
+                ),
+                ),
                 ),
               ),
             ),
-          ),
-        ),
-        Expanded(
-          child: Obx(() => Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: ConditionalBuilder(
-                  condition: !controller.isLoadingInternal.value,
-                  builder: (context) => controller.allVisits.isNotEmpty
-                      ? MyDateVisitListWidget(
-                          visits: controller.archiveSearchResults)
-                      : Center(child: Text('noVisits'.tr)),
-                  fallback: (context) => const Center(
-                      child: CircularProgressIndicator(
-                    color: AppColors.trinidadColor,
+            Expanded(
+              child: Obx(() => Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: ConditionalBuilder(
+                      condition: !controller.isLoadingInternal.value,
+                      builder: (context) => controller.allVisits.isNotEmpty
+                          ? MyDateVisitListWidget(
+                              visits: controller.archiveSearchResults)
+                          : Center(child: Text('noVisits'.tr)),
+                      fallback: (context) => const Center(
+                          child: CircularProgressIndicator(
+                        color: AppColors.trinidadColor,
+                      )),
+                    ),
                   )),
-                ),
-              )),
-        )
-      ],
-    );;
+            )
+          ],
+        );
+      }
+    )
+    );
   }
 }

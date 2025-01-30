@@ -17,10 +17,10 @@ import '../../../routes/app_pages.dart';
 import '../../../core/models/tags/tags_model.dart';
 
 class HomeController extends GetxController {
-  var screens = <Widget>[].obs;
+  var screens = <Widget>[const VisitsScreen(), const ArchiveVisitsScreen(), const Center(child: Text('Coming Soon'),), const ProfileScreen()].obs;
   var pageController = PageController();
   var visitsPageController = PageController();
-  var title = <String>[].obs;
+  var title = <RxString>[RxString('visits'.tr),RxString('archives'.tr),RxString('reports'.tr),RxString('profile'.tr),].obs;
   var currentScreen = 0.obs;
   var isLoading = false.obs;
   var isLoadingInternal = false.obs;
@@ -33,6 +33,7 @@ class HomeController extends GetxController {
   var searchQuery = ''.obs;
   var allSearchQuery = ''.obs;
   var lang = ''.obs;
+
   var tags = [
     TagsModel(name: 'New',value: 1,type: null,nameAr: 'جديد',isSelected: RxBool(false)),
     TagsModel(name: 'assigned',value: null,type: 'assigned',nameAr: 'تم تعيينه',isSelected: RxBool(false)),
@@ -41,6 +42,7 @@ class HomeController extends GetxController {
     TagsModel(name: 'done',value: 4,type: null,nameAr: 'تم',isSelected: RxBool(false)),
     TagsModel(name: 'cancelled',value: 5,type: null,nameAr: 'تم إلغاؤه',isSelected: RxBool(false)),
   ];
+  var isSubmited = RxBool(false);
   var meVisits = <DayVisits>[].obs;
   var allVisits = <DayVisits>[].obs;
   var meSearchResults = <DayVisits>[].obs;
@@ -48,7 +50,7 @@ class HomeController extends GetxController {
   var allSearchResults = <DayVisits>[].obs;
   var patient = User().obs;
   var visitsArchives = <DayVisits>[].obs;
-  var darkMode = RxBool(false);
+  var isDark = RxBool(false);
   var profile =ProfileModel().obs;
   var order =<int>[].obs;
   TextEditingController searchController = TextEditingController();
@@ -65,14 +67,20 @@ class HomeController extends GetxController {
   var id =RxInt(-1);
 
 
-  void changeLanguage(String languageCode) {
+  void changeLanguage(String languageCode) async{
     lang.value = languageCode;
     CacheHelper.saveData(key: 'lang', value: languageCode);
     var locale = Locale(languageCode);
     Get.updateLocale(locale);
-    getArchivesData();
+    title.value = [RxString('visits'.tr),RxString('archives'.tr),RxString('reports'.tr),RxString('profile'.tr),].obs;
     getVisitsData();
-    runApp(MyApp());
+    getArchivesData();
+    getProfile();
+    runApp(MyApp(lang: lang.value,isDark:  isDark.value,));
+  }
+  void changeTheme()async{
+    await CacheHelper.saveData(key: 'isDark', value: isDark.value);
+    runApp(MyApp(lang: lang.value,isDark:  isDark.value,));
   }
 
   
@@ -83,7 +91,7 @@ class HomeController extends GetxController {
   }
   String formatDate(String dateString) {
     DateTime date = DateTime.parse(dateString.replaceAll('/', '-'));
-    String formattedDate = DateFormat('d-MMM').format(date);
+    String formattedDate = DateFormat('d-MMM', lang.value == 'ar' ? 'ar' : 'en').format(date);
     return formattedDate;
   }
 
@@ -96,6 +104,7 @@ class HomeController extends GetxController {
       isLoadingInternal(true);
       visitsArchives.value = [];  
       visitsArchives.value =await mainController.getArchivesVisits();
+      archiveSearchResults.value= visitsArchives;
       isLoadingInternal(false);
   }
 
@@ -118,17 +127,16 @@ class HomeController extends GetxController {
   }
 
   void addPatient() async {
-    isLoading(true);
+    isSubmited(true);
     await mainController.addPatient(User(
         statusValue: 2,
-        typeValue: 3,
         e1C1F: familyId.text,
         nR: familyNumber.text,
         email: email.text,
         phone: phone.text,
         name: name.text,
         nameAr: nameAr.text));
-    isLoading(false);
+        isSubmited(false);
   }
     void onSearchArchive(String value) {
     if (value.isEmpty||value =='') {
@@ -256,16 +264,10 @@ class HomeController extends GetxController {
   @override
   void onInit() async {
     isLoading(true);
-    title.value = ['My Visits','archives','reports','profile',];
     token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
     lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
     order.value =(CacheHelper.getIntList(key: 'order'))?? [];
-    screens.value = [
-      const VisitsScreen(),
-      const ArchiveVisitsScreen(),
-      const Center(child: Text('Coming Soon'),),
-      const ProfileScreen()
-    ];
+    isDark.value =(await CacheHelper.getData(key: 'isDark')) ?? false;
     getVisitsData();
     getArchivesData();
     getProfile();

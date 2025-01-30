@@ -1,4 +1,6 @@
+import 'package:ar_visiting_app/app/core/services/secure_cache_helper.dart';
 import 'package:ar_visiting_app/app/core/utils/app_string.dart';
+import 'package:ar_visiting_app/app/core/utils/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +18,10 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MyApp());
+  bool isDark = await CacheHelper.getData(key: 'isDark') ?? false;
+  String lang = await CacheHelper.getData(key: 'lang') ?? 'en';
+
+  runApp(MyApp(isDark: isDark,lang: lang));
 }
 class MyTranslations extends Translations {
   @override
@@ -30,11 +35,15 @@ class MyTranslations extends Translations {
 class MyApp extends StatelessWidget {
    MyApp({
     super.key,
+    required this.isDark,
+    required this.lang
   });
-  String lang = CacheHelper.getData(key: 'lang') ?? 'en';
+  final bool isDark;
+  final String lang;
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      darkTheme: isDark ? darkTheme:lightTheme,
       translations: MyTranslations(),
       debugShowCheckedModeBanner: false,
       locale:  Locale(lang),

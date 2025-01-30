@@ -34,7 +34,9 @@ class VisitsScreen extends GetView<HomeController> {
                     ),
                     Container(
                       decoration: BoxDecoration(
-                          color: controller.me.value
+                          color:controller.isDark.value? controller.me.value
+                              ? AppColors.trinidadColor
+                              : AppColors.gray: controller.me.value
                               ? AppColors.trinidadColor
                               : AppColors.white,
                           borderRadius: BorderRadius.circular(10)),
@@ -66,9 +68,11 @@ class VisitsScreen extends GetView<HomeController> {
                       ),
                       Container(
                         decoration: BoxDecoration(
-                            color: controller.me.value
-                                ? AppColors.white
-                                : AppColors.trinidadColor,
+                            color: controller.isDark.value? controller.me.value
+                              ? AppColors.gray
+                              : AppColors.trinidadColor: controller.me.value
+                              ? AppColors.white
+                              : AppColors.trinidadColor,
                             borderRadius: BorderRadius.circular(10)),
                         height: 5,
                         width: (MediaQuery.of(context).size.width / 2) - 30,

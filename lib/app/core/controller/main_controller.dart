@@ -54,7 +54,9 @@ class MainController extends GetxController {
     token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
     lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
     try{
-      await DioHelper.postData(url: BackendEndpoint.users,token: token.value,lang: lang.value, data: patient.toJson());
+      await DioHelper.postData(url: BackendEndpoint.patient,token: token.value,lang: lang.value, data: patient.toJson());
+      Get.snackbar('Success', 'Patient added successfully');
+      Get.back(closeOverlays: true);
     }catch(e){
       Get.snackbar('Error', 'couldn\'t add patient' );
     }
@@ -101,20 +103,25 @@ class MainController extends GetxController {
 
   }
 
-  Future<void> editVisit(VisitModel visit, int id) async {
+  Future<VisitModel> editVisit(VisitModel visit, int id) async {
     token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
     lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
     try {
-      await DioHelper.putData(
+      final response= await DioHelper.putData(
           url: '${BackendEndpoint.visits}/${id.toString()}',
           token: token.value,
-          data: visit.toJson(),
+          data: visit.toJsonEdit(),
           lang: lang.value);
+      final apiResponse=ApiResponse<VisitModel>.fromJson(
+        response.data,
+        (json) => VisitModel.fromJson(json as Map<String,dynamic>),
+      );
       Get.snackbar("Visits", "Visit add successfully");
-      Get.offNamedUntil(
-          Routes.VISIT_DETAILS,arguments: id, (route) => route.settings.name == Routes.HOME);
+      return apiResponse.data ?? VisitModel();
+
     } catch (e) {
       Get.snackbar("Error", e.toString());
+      return VisitModel();
     }
   }
     void logout() async {
@@ -210,7 +217,7 @@ class MainController extends GetxController {
     }
   }
 
-  Future<int> addVisit(VisitModel visit) async {
+  Future<VisitModel> addVisit(VisitModel visit) async {
     token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
     lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
     visit.date = changeFormatDB(visit.date??'');
@@ -221,10 +228,10 @@ class MainController extends GetxController {
           data: visit.toJson());
       final apiResponse = ApiResponse<VisitModel>.fromJson(response.data,
           (json) => VisitModel.fromJson(json as Map<String, dynamic>));
-      return apiResponse.data?.id?? -1;
+      return apiResponse.data ?? VisitModel();
     } catch (e) {
       Get.snackbar("Error", 'Failed to add visit');
-      return -1;
+      return VisitModel();
     }
   }
 

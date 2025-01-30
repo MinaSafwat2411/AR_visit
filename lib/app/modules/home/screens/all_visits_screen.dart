@@ -18,49 +18,64 @@ class AllVisitsScreen extends GetView<HomeController> {
           child: SizedBox(
             height: 50,
             child: Form(
-              child: TextFormField(
-                style: const TextStyle(
-                    color: AppColors.gray, decoration: TextDecoration.none),
-                cursorColor: AppColors.white,
-                controller: controller.allSearchController,
-                onChanged: (value) {
-                  controller.onSearchAll(value);
-                },
-                textAlignVertical: TextAlignVertical.center,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: AppColors.waferColor, // Set background color
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: AppColors.waferColor),
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: AppColors.waferColor),
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  focusColor: AppColors.waferColor,
-                  hintText: 'search'.tr,
-                  prefixIcon: const Icon(
-                    Icons.search,
-                    color: AppColors.trinidadColor,
-                  ),
+                child: TextFormField(
+              style: TextStyle(
+                  color: controller.isDark.value
+                      ? AppColors.white
+                      : AppColors.gray,
+                  decoration: TextDecoration.none),
+              cursorColor:
+                  controller.isDark.value ? AppColors.white : AppColors.black,
+              controller: controller.allSearchController,
+              onChanged: (value) {
+                controller.onSearchAll(value);
+              },
+              textAlignVertical: TextAlignVertical.center,
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: controller.isDark.value
+                    ? AppColors.gray
+                    : AppColors.waferColor, // Set background color
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: controller.isDark.value
+                          ? AppColors.codGray
+                          : AppColors.waferColor),
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: controller.isDark.value
+                          ? AppColors.codGray
+                          : AppColors.waferColor),
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                focusColor: controller.isDark.value
+                    ? AppColors.codGray
+                    : AppColors.waferColor,
+                hintText: 'search'.tr,
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: controller.isDark.value
+                      ? AppColors.white
+                      : AppColors.trinidadColor,
                 ),
               ),
-            ),
+            )),
           ),
         ),
         Padding(
-              padding: const EdgeInsets.only(left: 12,right: 12),
-              child: SizedBox(
-                  height: 45,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) => TagItemWidget(
-                      index: index,
-                    ),
-                    itemCount: controller.tags.length,
-                  )),
-            ),
+          padding: const EdgeInsets.only(left: 12, right: 12),
+          child: SizedBox(
+              height: 45,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) => TagItemWidget(
+                  index: index,
+                ),
+                itemCount: controller.tags.length,
+              )),
+        ),
         Expanded(
           child: Obx(() => Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),

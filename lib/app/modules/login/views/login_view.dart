@@ -117,7 +117,7 @@ class LoginView extends GetView<LoginController> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                  children: [
-                   const Text('If you don\'t have aacount',style: TextStyle(
+                    Text('registerInfo'.tr,style: const TextStyle(
                     fontSize: 16,
                    ), ),
                    const SizedBox(width: 10,),
@@ -125,7 +125,7 @@ class LoginView extends GetView<LoginController> {
                     onTap: () {
                       
                     },
-                     child: const Text('Register',style: TextStyle(
+                     child:  Text('register'.tr,style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       decoration: TextDecoration.underline,
                       fontSize: 16,

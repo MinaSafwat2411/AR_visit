@@ -10,22 +10,23 @@ import '../../../core/widgets/custom_big_textfield.dart';
 import '../../../core/widgets/custom_button.dart';
 import '../../../core/widgets/custom_dropdownlist.dart';
 import '../../../core/widgets/custom_textformfield.dart';
-import '../controllers/add_new_visit_controller.dart';
+import '../controllers/add_edit_visit_controller.dart';
 
-class AddNewVisitView extends GetView<AddNewVisitController> {
-  const AddNewVisitView({super.key});
+class AddEditVisitView extends GetView<AddEditVisitController> {
+  const AddEditVisitView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(
-            'newVisitTitle'.tr,
+          title: Obx(() => Text(
+            controller.titles[controller.currentScreen.value],
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 26,
               fontFamily: 'Inter',
             ),
+          )
           ),
           leading: IconButton(
             onPressed: () {
@@ -37,27 +38,44 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
         floatingActionButton: SizedBox(
           width: MediaQuery.of(context).size.width * 0.9,
           height: 58,
-          child: CustomButton(
-            text: 'submit'.tr,
-            btnColor: AppColors.trinidadColor,
-            onPressed: () {
-              if (controller.formKey.currentState!.validate()) {
-                showDialog(
-                    context: context,
-                    builder: (context) => CustomDoubleAlert(
-                          title: 'newVisitTitle'.tr,
-                          rightFunction: () {
-                            Get.back(closeOverlays: true);
-                          },
-                          leftFunction: () {
-                            Get.back(closeOverlays: true);
-                            controller.addVisit();
-                          },
-                          rightButtonText: 'no'.tr,
-                          leftButtonText: 'yes'.tr,
-                        ));
-              }
-            },
+          child: Obx(() => ConditionalBuilder(
+            fallback: (context) => const Center(
+              child: CircularProgressIndicator(color: AppColors.trinidadColor,),
+            ),
+            condition: !controller.internalLoading.value,
+            builder: (context) {
+              return Obx(() => CustomButton(
+                text: controller.buttonText[controller.currentScreen.value],
+                btnColor: AppColors.trinidadColor,
+                onPressed: () {
+                  if (controller.formKey.currentState!.validate()) {
+                    showDialog(
+                        context: context,
+                        builder: (context) =>  CustomDoubleAlert(
+                              title: 'Save Visit',
+                              rightFunction: () {
+                                Get.back(closeOverlays: true);
+                              },
+                              leftFunction: () {
+                                Get.back(closeOverlays: true);
+                                switch(controller.currentScreen.value){
+                                  case 0:controller.addVisit();
+                                  case 1 :controller.editVisit();
+                                  case 2: controller.clone();
+                                }
+
+                              },
+                              rightButtonText: 'no'.tr,
+                              leftButtonText: 'yes'.tr,
+                            )
+
+                    );
+                  }
+                },
+              )
+              );
+            }
+          )
           ),
         ),
         body: Obx(() => ConditionalBuilder(
@@ -83,6 +101,7 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                                   },
                                   label: 'user'.tr,
                                   items: controller.userNames,
+                                  currentValue: controller.userType.value,
                                 ),
                                 Padding(
                                   padding:
@@ -158,6 +177,7 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                                   },
                                   label: 'addressType'.tr,
                                   items: controller.addressTypeList,
+                                  currentValue: controller.addressType.value,
                                 ),
                                 CustomTextFormField(
                                   label: 'address'.tr,
@@ -176,6 +196,7 @@ class AddNewVisitView extends GetView<AddNewVisitController> {
                                   },
                                   label: 'zone'.tr,
                                   items: controller.areaNames,
+                                  currentValue: controller.visit.value.areaName,
                                 ),
                                 CustomTextFormField(
                                   textController:

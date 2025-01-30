@@ -4,7 +4,7 @@ part of 'app_pages.dart';
 abstract class Routes {
   Routes._();
   static const LOGIN = _Paths.LOGIN;
-  static const ADD_NEW_VISIT = _Paths.ADD_NEW_VISIT;
+  static const ADD_EDIT_VISIT = _Paths.ADD_NEW_VISIT;
   static const EDIT_VISIT = _Paths.EDIT_VISIT;
   static const VISITS = _Paths.VISITS;
   static const ALLVISITS = _Paths.ALLVISITS;
@@ -20,7 +20,7 @@ abstract class Routes {
 abstract class _Paths {
   _Paths._();
   static const LOGIN = '/login';
-  static const ADD_NEW_VISIT = '/add-new-visit';
+  static const ADD_NEW_VISIT = '/add-edit-visit';
   static const EDIT_VISIT = '/edit-visit';
   static const VISITS = '/visits';
   static const ALLVISITS = '/all-visits';

@@ -21,6 +21,8 @@ abstract class AppColors {
   static const Color gray= Color(0xff828282);
   static const Color gray20= Color(0x337F7F7F);
   static const Color chartreuseYellow= Color(0xffDBE600);
+  static const Color codGray = Color(0xff1E1E1E);
+  static const Color codGray2 = Color(0xff121212);
   static const Color mirage= Color(0xff1A202C);
   static const Color doveGray= Color(0xff666666);
   static const Color boulder= Color(0xff7A7A7A);

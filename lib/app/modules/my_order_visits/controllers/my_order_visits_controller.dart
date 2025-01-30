@@ -7,31 +7,34 @@ import 'package:ar_visiting_app/app/core/services/secure_cache_helper.dart';
 import 'package:ar_visiting_app/app/core/utils/app_colors.dart';
 import 'package:get/get.dart';
 
-class MyOrderVisitsController extends GetxController{
-  var isLoading =RxBool(false);
+class MyOrderVisitsController extends GetxController {
+  var isLoading = RxBool(false);
   var orderList = <int>[].obs;
   var newVisitOrderList = <VisitModel>[].obs;
   var visitList = <VisitModel>[].obs;
-  var mainController =MainController();
+  var mainController = MainController();
   var lang = ''.obs;
   var token = ''.obs;
+  var isDark = RxBool(false);
 
-  void getVisitData()async{
+  void getVisitData() async {
     isLoading(true);
     // ignore: avoid_function_literals_in_foreach_calls
-    orderList.forEach((element) async {
-      visitList.add(await mainController.getVisitData(element));
-    },
+    orderList.forEach(
+      (element) async {
+        visitList.add(await mainController.getVisitData(element));
+      },
     );
     isLoading(false);
-    
   }
-    void reorderList(int oldIndex, int newIndex) {
+
+  void reorderList(int oldIndex, int newIndex) {
     if (newIndex > oldIndex) newIndex -= 1;
     final item = orderList.removeAt(oldIndex);
     orderList.insert(newIndex, item);
   }
-    Color statusColor(int status) {
+
+  Color statusColor(int status) {
     var color = const Color(0xffffffff);
     switch (status) {
       case 1:
@@ -48,12 +51,12 @@ class MyOrderVisitsController extends GetxController{
     return color;
   }
 
-
   @override
-  void onInit() async{
-    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
-    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
-    orderList.value =  CacheHelper.getIntList(key: 'order')??[];
+  void onInit() async {
+    token.value = (await SecureCacheHelper.getData(key: 'token')) ?? '';
+    lang.value = (await CacheHelper.getData(key: 'lang')) ?? 'en';
+    orderList.value = CacheHelper.getIntList(key: 'order') ?? [];
+    isDark.value = (await CacheHelper.getData(key: 'isDark')) ?? false;
     getVisitData();
     super.onInit();
   }

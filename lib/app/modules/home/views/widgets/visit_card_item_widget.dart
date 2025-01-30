@@ -54,7 +54,7 @@ class VisitCardItemWidget extends GetView<HomeController> {
               style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
             ),
             Text(
-              '${'father'.tr}: ${visit.fatherName ?? 'No father'}',
+              '${'father'.tr}: ${visit.fatherName ?? '' }',
               style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
             ),
             ],
@@ -80,7 +80,7 @@ class VisitCardItemWidget extends GetView<HomeController> {
               style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
             ),
             Text(
-              '${'servant'.tr}: ${visit.servantName ?? 'No Servant'}',
+              '${'servant'.tr}:${visit.servantName ?? '' }' , 
               style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
             ),
             ],
@@ -112,8 +112,8 @@ class VisitCardItemWidget extends GetView<HomeController> {
             ),
           );
           },
-          backgroundColor: AppColors.softAmber,
-          foregroundColor: Colors.black,
+          backgroundColor: controller.isDark.value? AppColors.codGray: AppColors.softAmber,
+          foregroundColor: controller.isDark.value? AppColors.trinidadColor: AppColors.black,
           icon: Icons.copy,
           padding: const EdgeInsets.all(8.0),
           label: 'clone'.tr,
@@ -132,8 +132,8 @@ class VisitCardItemWidget extends GetView<HomeController> {
           );
           },
           padding: const EdgeInsets.all(8.0),
-          backgroundColor: AppColors.softAmber,
-          foregroundColor: Colors.black,
+          backgroundColor: controller.isDark.value? AppColors.codGray: AppColors.softAmber,
+          foregroundColor: controller.isDark.value? AppColors.trinidadColor: AppColors.black,
           icon: Icons.check_circle_outline,
           label: 'done'.tr,
         ),
@@ -153,8 +153,8 @@ class VisitCardItemWidget extends GetView<HomeController> {
           borderRadius: controller.lang == 'en'
             ? const BorderRadius.only(topRight: Radius.circular(20.0), bottomRight: Radius.circular(20.0))
             : const BorderRadius.only(topLeft: Radius.circular(20.0), bottomLeft: Radius.circular(20.0)),
-          backgroundColor: AppColors.softAmber,
-          foregroundColor: Colors.black,
+          backgroundColor: controller.isDark.value? AppColors.codGray: AppColors.softAmber,
+          foregroundColor: controller.isDark.value? AppColors.trinidadColor: AppColors.black,
           icon: Icons.cancel_outlined,
           padding: const EdgeInsets.all(8.0),
           label: 'cancel'.tr,
@@ -163,12 +163,16 @@ class VisitCardItemWidget extends GetView<HomeController> {
       ),
       child: GestureDetector(
         onTap: () {
-        Get.toNamed(Routes.VISIT_DETAILS, arguments: visit.id);
+        Get.toNamed(Routes.VISIT_DETAILS, arguments: visit)?.then((value) {
+          if(value){
+            controller.getVisitsData();
+          }
+        },);
         },
         child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
         elevation: 4,
-        color: AppColors.softAmber,
+        color: controller.isDark.value? AppColors.codGray: AppColors.softAmber,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
@@ -187,7 +191,7 @@ class VisitCardItemWidget extends GetView<HomeController> {
               style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
               ),
               Text(
-              '${'father'.tr}: ${visit.fatherName ?? 'No father'}',
+              '${'father'.tr}: ${visit.fatherName ?? ''}',
               style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
               ),
             ],
@@ -213,7 +217,7 @@ class VisitCardItemWidget extends GetView<HomeController> {
               style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
               ),
               Text(
-              '${'servant'.tr}: ${visit.servantName ?? 'No Servant'}',
+              '${'servant'.tr}: ${visit.servantName ?? ''}',
               style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
               ),
             ],

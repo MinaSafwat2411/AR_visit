@@ -69,6 +69,22 @@ class VisitModel {
     note = json['note'];
   }
 
+  Map<String, dynamic> toJsonEdit() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['user_id']=this.userId;
+    data['area_id'] = this.areaId;
+    data['attendant'] = this.attendant;
+    data['attendant_phone'] = this.attendantPhone;
+    data['address_type'] = this.addressType;
+    data['address'] = this.address;
+    data['address_url'] = this.addressUrl;
+    data['patient_nums'] = this.patientNums;
+    data['from'] = this.from;
+    data['to'] = this.to;
+    data['date'] = this.date;
+    data['note'] = this.note;
+    return data;
+  }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();

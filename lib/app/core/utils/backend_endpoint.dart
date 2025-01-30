@@ -14,6 +14,7 @@ class BackendEndpoint {
   static const settings = '$api/settings';
   static const enums = '$settings/enums';
   static const users = '$api/users';
+  static const patient = '$users/patient';
   static const dropDown = '$users/dropdown';
   static const profile = '$users/profile';
   static const servent ='$visits/servant';

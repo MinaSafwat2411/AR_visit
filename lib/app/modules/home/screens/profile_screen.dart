@@ -53,7 +53,6 @@ class ProfileScreen extends GetView<HomeController> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Stack(
-                    alignment: Alignment.topLeft,
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 12.0),
@@ -64,51 +63,51 @@ class ProfileScreen extends GetView<HomeController> {
                               border: Border.all(
                                   color: AppColors.trinidadColor, width: 2)),
                           child:  Padding(
-                            padding: EdgeInsets.all(12),
+                            padding: const EdgeInsets.all(12),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  'email',
-                                  style: TextStyle(fontSize: 18),
+                                Text(
+                                  'email'.tr,
+                                  style: const TextStyle(fontSize: 18),
                                 ),
                                 Text(
                                   controller.profile.value.email??'',
-                                  style: TextStyle(color: AppColors.gray),
+                                  style: const TextStyle(color: AppColors.gray),
                                 ),
                                 const Divider(
                                   color: AppColors.trinidadColor,
                                 ),
-                                const Text(
-                                  'Rank',
-                                  style: TextStyle(fontSize: 18),
+                                Text(
+                                  'rank'.tr,
+                                  style: const TextStyle(fontSize: 18),
                                 ),
                                 Text(
                                   controller.profile.value.type?.name ?? '',
-                                  style: TextStyle(color: AppColors.gray),
+                                  style: const TextStyle(color: AppColors.gray),
                                 ),
                                 const Divider(
                                   color: AppColors.trinidadColor,
                                 ),
-                                const Text(
-                                  'status',
-                                  style: TextStyle(fontSize: 18),
+                                Text(
+                                  'status'.tr,
+                                  style: const TextStyle(fontSize: 18),
                                 ),
                                 Text(
                                   controller.profile.value.status?.name?? '',
-                                  style: TextStyle(color: AppColors.gray),
+                                  style: const TextStyle(color: AppColors.gray),
                                 ),
                                 const Divider(
                                   color: AppColors.trinidadColor,
                                 ),
-                                const Text(
-                                  'Phone',
-                                  style: TextStyle(fontSize: 18),
+                                Text(
+                                  'phone'.tr,
+                                  style: const TextStyle(fontSize: 18),
                                 ),
                                 Text(
                                   controller.profile.value.phone ?? '',
-                                  style: TextStyle(color: AppColors.gray),
+                                  style: const TextStyle(color: AppColors.gray),
                                 ),
                               ],
                             ),
@@ -117,17 +116,18 @@ class ProfileScreen extends GetView<HomeController> {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 14.0),
-                        child: Container(
-                          decoration: const BoxDecoration(color: AppColors.white),
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 4.0),
-                            child: Text(
-                              'presonal information',
-                              style: TextStyle(
-                                  backgroundColor: AppColors.white, fontSize: 15),
-                            ),
+                        child: Obx(() =>Container(
+                          decoration:  BoxDecoration(color: controller.isDark.value? AppColors.codGray2: AppColors.white),
+                          child:  Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                            child: Obx(() => Text(
+                              'presonalInformation'.tr,
+                              style:  TextStyle(
+                                  backgroundColor: controller.isDark.value? AppColors.codGray2: AppColors.white, fontSize: 15),
+                            )),
                           ),
-                        ),
+                        ))
+                        ,
                       ),
                     ],
                   ),
@@ -135,7 +135,6 @@ class ProfileScreen extends GetView<HomeController> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Stack(
-                    alignment: Alignment.topLeft,
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 12.0),
@@ -167,18 +166,18 @@ class ProfileScreen extends GetView<HomeController> {
                                               },
                                             ));
                                   },
-                                  child: const Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 8.0),
+                                  child:  Padding(
+                                    padding: const EdgeInsets.symmetric(vertical: 8.0),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.max,
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          'Language',
-                                          style: TextStyle(fontSize: 18),
+                                          'language'.tr,
+                                          style: const TextStyle(fontSize: 18),
                                         ),
-                                        Padding(
+                                        const Padding(
                                           padding: EdgeInsets.only(right: 4.0),
                                           child: Row(
                                             children: [
@@ -208,14 +207,15 @@ class ProfileScreen extends GetView<HomeController> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      const Text(
-                                        'Dark Mode',
-                                        style: TextStyle(fontSize: 18),
+                                       Text(
+                                        'darkMode'.tr,
+                                        style: const TextStyle(fontSize: 18),
                                       ),
                                       Obx(() => Switch(
-                                            value: controller.darkMode.value,
+                                            value: controller.isDark.value,
                                             onChanged: (value) {
-                                              controller.darkMode.value = value;
+                                              controller.isDark.value = value;
+                                              controller.changeTheme();
                                             },
                                             activeColor: AppColors.trinidadColor,
                                           ))
@@ -229,17 +229,18 @@ class ProfileScreen extends GetView<HomeController> {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 14.0),
-                        child: Container(
-                          decoration: const BoxDecoration(color: AppColors.white),
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 4.0),
-                            child: Text(
-                              'App Setting',
-                              style: TextStyle(
-                                  backgroundColor: AppColors.white, fontSize: 15),
+                        child: Obx(() =>Container(
+                          decoration: BoxDecoration( color: controller.isDark.value? AppColors.codGray2: AppColors.white),
+                          child:  Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                            child: Obx(() =>Text(
+                              'appSetting'.tr,
+                              style:  TextStyle(
+                                  backgroundColor: controller.isDark.value? AppColors.codGray2: AppColors.white, fontSize: 15),
+                            )
                             ),
                           ),
-                        ),
+                        )),
                       ),
                     ],
                   ),
@@ -261,19 +262,19 @@ class ProfileScreen extends GetView<HomeController> {
                           onTap: () {
                             controller.logout();
                           },
-                          child: const Row(
+                          child:  Row(
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.logout,
                                 color: AppColors.trinidadColor,
                                 size: 32,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 5,
                               ),
                               Text(
-                                'Log out',
-                                style: TextStyle(
+                                'logout'.tr,
+                                style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 18,
                                     color: AppColors.trinidadColor),

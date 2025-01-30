@@ -81,7 +81,6 @@ class User {
     data['NR']=int.parse(nR!);
     data['email']=email;
     data['phone']=phone;
-    data['type']=typeValue;
     data['status']=statusValue;
 
     return data;
