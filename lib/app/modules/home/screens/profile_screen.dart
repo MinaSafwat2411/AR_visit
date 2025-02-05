@@ -26,7 +26,7 @@ class ProfileScreen extends GetView<HomeController> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image(
-                      image: AssetImage('avaRewaseIcon'.tr),
+                      image: AssetImage('imageLogo'.tr),
                       width: 100,
                       height: 100,
                     ),
