@@ -55,8 +55,7 @@ class MyVisitsScreen extends GetView<HomeController> {
                 child: ConditionalBuilder(
                   condition: !controller.isLoadingInternal.value,
                   builder: (context) => controller.meVisits.isNotEmpty
-                      ? MyDateVisitListWidget(
-                          visits: controller.meSearchResults)
+                      ? const MyDateVisitListWidget()
                       : Center(child: Text('noVisits'.tr)),
                   fallback: (context) => const Center(
                       child: CircularProgressIndicator(

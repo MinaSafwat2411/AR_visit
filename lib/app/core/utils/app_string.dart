@@ -238,6 +238,6 @@ class AppStringsAr extends AppStrings {
     'register': 'تسجيل',
     'clear': 'مسح',
     'orderVisits': 'زياراتي المرتبة',
-    'emptyOrder': 'أضف زيارات إلى السلة'
+    'emptyOrder': 'أضف زيارات إلى السلة',
   };
 }

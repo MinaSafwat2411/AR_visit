@@ -1,6 +1,7 @@
 import 'package:ar_visiting_app/app/core/models/api_response/api_response.dart';
 import 'package:ar_visiting_app/app/core/models/area/areamodel.dart';
 import 'package:ar_visiting_app/app/core/models/login/loginmodel.dart';
+import 'package:ar_visiting_app/app/core/models/oder/order_model.dart';
 import 'package:ar_visiting_app/app/core/models/profile/profile_model.dart';
 import 'package:ar_visiting_app/app/core/models/visits/VisitsModel.dart';
 import 'package:ar_visiting_app/app/core/models/visits/visitmodel.dart';
@@ -159,7 +160,7 @@ class MainController extends GetxController {
     lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
     try{
     final meResponse = await DioHelper.getData(
-        query: {'type': 'mine'},
+        query: {'me': 1},
         url: BackendEndpoint.visits,
         token: token.value,
         lang: lang.value,
@@ -172,7 +173,7 @@ class MainController extends GetxController {
           }
           return (json as List<dynamic>).map((dayJson) {
             if (dayJson == null) {
-              return DayVisits(day: 'Unknown', visits: []);
+              return DayVisits(day: 'Unknown', visits: <VisitModel>[].obs);
             } else {
               return DayVisits.fromJson(dayJson as Map<String, dynamic>);
             }
@@ -182,6 +183,30 @@ class MainController extends GetxController {
       return meApiResponse.data?? [];
     }catch(e){
       Get.snackbar('Error', 'Failed to retrieve my visit data');
+      return [];
+    }
+  }
+
+  Future<List<VisitModel>> getReport(int id)async{
+    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
+    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
+    try{
+      final response = await DioHelper.getData(url: BackendEndpoint.reports,token: token.value,lang: lang.value,query: {
+        'user_id':id
+      });
+      final apiResponse = ApiResponse<List<VisitModel>>.fromJson(
+        response.data,
+            (json) {
+          if (json == null) {
+            return [];
+          }
+          return (json as List).map((e) => VisitModel.fromJson(e)).toList();
+        },
+      );
+      return apiResponse.data ?? [];
+    }catch(e){
+      print(e.toString());
+      Get.snackbar('Error', 'Failed to retrieve report data');
       return [];
     }
   }
@@ -203,7 +228,7 @@ class MainController extends GetxController {
           }
           return (json as List<dynamic>).map((dayJson) {
             if (dayJson == null) {
-              return DayVisits(day: 'Unknown', visits: []);
+              return DayVisits(day: 'Unknown', visits: <VisitModel>[].obs);
             } else {
               return DayVisits.fromJson(dayJson as Map<String, dynamic>);
             }
@@ -235,7 +260,22 @@ class MainController extends GetxController {
     }
   }
 
-  Future<List<DayVisits>> getArchivesVisits()async{
+  Future<void> orderVisit(OrderModel order) async {
+    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
+    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
+    try{
+      await DioHelper.putData(
+        url: BackendEndpoint.order,
+        lang: lang.value,
+        data: order.toJson(),
+        token: token.value,
+      );
+    }catch(e){
+      Get.snackbar('Error', 'Failed to order visits');
+    }
+  }
+
+  Future<List<VisitModel>> getArchivesVisits()async{
     token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
     lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
     try{
@@ -244,22 +284,16 @@ class MainController extends GetxController {
         token: token.value,
         lang: lang.value,
       );
-      final apiResponse = ApiResponse<List<DayVisits>>.fromJson(
+      final apiResponse = ApiResponse<List<VisitModel>>.fromJson(
         response.data,
         (json) {
           if (json == null) {
             return [];
           }
-          return (json as List<dynamic>).map((dayJson) {
-            if (dayJson == null) {
-              return DayVisits(day: 'Unknown', visits: []);
-            } else {
-              return DayVisits.fromJson(dayJson as Map<String, dynamic>);
-            }
-          }).toList();
+          return (json as List).map((e) => VisitModel.fromJson(e)).toList();
         },
       );
-      return apiResponse.data??[];
+      return apiResponse.data ?? [];
     }catch(e){
       Get.snackbar('Error', 'Failed to retrieve archive visits');
       return [];

@@ -8,12 +8,14 @@ class CustomBottomSheet extends GetView<VisitDetailsControllers> {
   final String title;
   final List<String> items;
   final BottomSheetType bottomSheetType;
+  final bool isDark;
 
   const CustomBottomSheet({
     Key? key,
     required this.title,
     required this.items,
     required this.bottomSheetType,
+    required this.isDark
   }) : super(key: key);
 
   @override
@@ -21,7 +23,7 @@ class CustomBottomSheet extends GetView<VisitDetailsControllers> {
     return Container(
       height: 500,
       decoration: BoxDecoration(
-        color: AppColors.lightGray,
+        color: isDark? AppColors.black:AppColors.lightGray,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
@@ -45,7 +47,6 @@ class CustomBottomSheet extends GetView<VisitDetailsControllers> {
                 Text(
                   title,
                   style: const TextStyle(
-                    color: Colors.black,
                     fontSize: 20,
                     fontWeight: FontWeight.w500,
                     height: 1.25,
@@ -88,13 +89,12 @@ class CustomBottomSheet extends GetView<VisitDetailsControllers> {
                     height: 72,
                     child: Card(
                       elevation: 2,
-                      color: AppColors.white,
+                      color: isDark? AppColors.codGray2:AppColors.lightGray,
                       child: Padding(
                         padding: const EdgeInsets.all(14),
                         child: Text(
                           items[index],
                           style: const TextStyle(
-                            color: Colors.black,
                             fontSize: 20,
                             fontWeight: FontWeight.w500,
                           ),

@@ -23,10 +23,10 @@ class TagItemWidget extends GetView<HomeController> {
             elevation: 2,
             color: controller.isDark.value? controller.tags[index].isSelected.value
                 ? AppColors.trinidadColor
-                : AppColors.gray: 
+                : AppColors.gray:
                 controller.tags[index].isSelected.value
                 ? AppColors.trinidadColor
-                : AppColors.gray,
+                : AppColors.white,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             child: Padding(
@@ -37,11 +37,11 @@ class TagItemWidget extends GetView<HomeController> {
                     : controller.tags[index].nameAr,
                 style: TextStyle(
                     color: controller.isDark.value? controller.tags[index].isSelected.value
-                ? AppColors.gray
+                ? AppColors.white
                 : AppColors.white: 
                 controller.tags[index].isSelected.value
-                ? AppColors.gray
-                : AppColors.white,),
+                ? AppColors.white
+                : AppColors.trinidadColor,),
               ),
             ),
           )),

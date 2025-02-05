@@ -1,10 +1,11 @@
 // ignore_for_file: file_names
 
 import 'package:ar_visiting_app/app/core/models/visits/visitmodel.dart';
+import 'package:get/get.dart';
 
 class DayVisits {
   final String day;
-  final List<VisitModel> visits;
+  final RxList<VisitModel> visits;
 
   DayVisits({required this.day, required this.visits});
 
@@ -13,7 +14,7 @@ class DayVisits {
       day: json['day'],
       visits: (json['visits'] as List<dynamic>)
           .map((visitJson) => VisitModel.fromJson(visitJson as Map<String, dynamic>))
-          .toList(),
+          .toList().obs,
     );
   }
 }

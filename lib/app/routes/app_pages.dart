@@ -1,8 +1,6 @@
 
 import 'package:ar_visiting_app/app/modules/home/bindings/home_binding.dart';
 import 'package:ar_visiting_app/app/modules/home/views/home_view.dart';
-import 'package:ar_visiting_app/app/modules/my_order_visits/bindings/my_order_bindings.dart';
-import 'package:ar_visiting_app/app/modules/my_order_visits/views/my_order_visits_view.dart';
 import 'package:ar_visiting_app/app/modules/splash/bindings/splash_binding.dart';
 import 'package:ar_visiting_app/app/modules/splash/views/splash_views.dart';
 import 'package:ar_visiting_app/app/modules/visit_details/blinding/visit_details_blinding.dart';
@@ -46,9 +44,5 @@ class AppPages {
         page: () => const HomeView(),
         binding: HomeBinding()
     ),
-    GetPage(
-      name: _Paths.MY_ORDER,
-      page: () => const MyOrderVisitsView(),
-      binding: MyOrderBindings())
   ];
 }

@@ -40,16 +40,10 @@ dependencies:
   conditional_builder_null_safety: ^0.0.6
   hexcolor: ^3.0.1
   smooth_page_indicator: ^1.2.0+3
-  fluttertoast: ^8.2.8
   carousel_slider: ^5.0.0
-  firebase_core: ^3.7.0
-  cloud_firestore: ^5.4.5
-  firebase_auth_web: ^5.13.3
-  web: ^1.0.0
-  firebase_auth: ^5.3.2
   get: ^4.6.6
   shared_preferences: ^2.3.3
-  flutter_slidable: ^3.1.1
+  flutter_slidable: ^4.0.0
   url_launcher: ^6.3.1
   permission_handler: ^11.3.1
   dio: ^5.7.0

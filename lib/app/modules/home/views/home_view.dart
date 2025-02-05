@@ -1,8 +1,6 @@
-import 'package:ar_visiting_app/app/core/models/visits/visitmodel.dart';
-import 'package:ar_visiting_app/app/core/services/cache_helper.dart';
+
 import 'package:ar_visiting_app/app/core/widgets/custom_textformfield.dart';
 import 'package:ar_visiting_app/app/modules/visit_details/di/operation_type.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,52 +18,6 @@ class HomeView extends GetView<HomeController> {
     return Form(
       child: Scaffold(
         appBar: AppBar(
-          actions: [
-            Obx(() => ConditionalBuilder(
-              condition: controller.currentScreen.value==0||controller.currentScreen.value==1,
-              fallback: (context) => const SizedBox(),
-              builder: (context) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: 
-                    DragTarget(
-                      builder: (context, candidateData, rejectedData) {
-                        return Stack(
-                          alignment: Alignment.topRight,
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                Get.toNamed(Routes.MY_ORDER)?.then((result) {
-                                    controller.order.value=result;
-                                });
-                              },
-                              icon: const Icon(Icons.shopping_bag_outlined,size: 28,),
-                            ),
-                            Obx(() => ConditionalBuilder(
-                              condition: controller.order.isNotEmpty,
-                              fallback: (context) => const SizedBox(),
-                              builder: (context) {
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 8,),
-                                  child: Container(
-                                    alignment: Alignment.topCenter,
-                                    height: 18,
-                                    width: 18,
-                                    decoration: BoxDecoration(color: AppColors.trinidadColor,borderRadius: BorderRadius.circular(8)),
-                                    child: Text('${controller.order.length}',style: const TextStyle(color: AppColors.white,fontSize: 12,fontWeight: FontWeight.bold),),),
-                                );
-                              }
-                            )
-                            )
-                          ],
-                        );
-                      },
-                    ),
-                );
-              }
-            )
-            )
-          ],
           title:Obx(() => Text(controller.title[controller.currentScreen.value].value.toString())),
         ),
         resizeToAvoidBottomInset: false,

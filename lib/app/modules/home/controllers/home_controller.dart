@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../../../core/controller/main_controller.dart';
 import '../../../core/models/login/loginmodel.dart';
+import '../../../core/models/oder/order_model.dart';
 import '../../../core/models/visits/VisitsModel.dart';
 import '../../../core/models/visits/visitmodel.dart';
 import '../../../core/services/cache_helper.dart';
@@ -15,9 +16,10 @@ import '../../../core/services/secure_cache_helper.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../routes/app_pages.dart';
 import '../../../core/models/tags/tags_model.dart';
+import '../screens/report_screen.dart';
 
 class HomeController extends GetxController {
-  var screens = <Widget>[const VisitsScreen(), const ArchiveVisitsScreen(), const Center(child: Text('Coming Soon'),), const ProfileScreen()].obs;
+  var screens = <Widget>[const VisitsScreen(), const ArchiveVisitsScreen(), const ReportScreen(), const ProfileScreen()].obs;
   var pageController = PageController();
   var visitsPageController = PageController();
   var title = <RxString>[RxString('visits'.tr),RxString('archives'.tr),RxString('reports'.tr),RxString('profile'.tr),].obs;
@@ -33,26 +35,30 @@ class HomeController extends GetxController {
   var searchQuery = ''.obs;
   var allSearchQuery = ''.obs;
   var lang = ''.obs;
+  var userNames = <String>[].obs;
+  var userId = <int>[].obs;
 
   var tags = [
     TagsModel(name: 'New',value: 1,type: null,nameAr: 'جديد',isSelected: RxBool(false)),
-    TagsModel(name: 'assigned',value: null,type: 'assigned',nameAr: 'تم تعيينه',isSelected: RxBool(false)),
     TagsModel(name: 'inprogress',value: 2,type: null,nameAr: 'قيد التنفيذ',isSelected: RxBool(false)),
-    TagsModel(name: 'Delayed',value: 3,type: null,nameAr: 'متأخر',isSelected: RxBool(false)),
-    TagsModel(name: 'done',value: 4,type: null,nameAr: 'تم',isSelected: RxBool(false)),
-    TagsModel(name: 'cancelled',value: 5,type: null,nameAr: 'تم إلغاؤه',isSelected: RxBool(false)),
+    TagsModel(name: 'assigned',value: 3,type: 'assigned',nameAr: 'تم تعيينه',isSelected: RxBool(false)),
+    TagsModel(name: 'Delayed',value: 4,type: null,nameAr: 'متأخر',isSelected: RxBool(false)),
+    TagsModel(name: 'done',value: 5,type: null,nameAr: 'تم',isSelected: RxBool(false)),
+    TagsModel(name: 'cancelled',value: 6,type: null,nameAr: 'تم إلغاؤه',isSelected: RxBool(false)),
   ];
   var isSubmited = RxBool(false);
   var meVisits = <DayVisits>[].obs;
   var allVisits = <DayVisits>[].obs;
   var meSearchResults = <DayVisits>[].obs;
-  var archiveSearchResults = <DayVisits>[].obs;
+  var archiveSearchResults = <VisitModel>[].obs;
+  var visitsReport = <VisitModel>[].obs;
   var allSearchResults = <DayVisits>[].obs;
   var patient = User().obs;
-  var visitsArchives = <DayVisits>[].obs;
+  var visitsArchives = <VisitModel>[].obs;
   var isDark = RxBool(false);
   var profile =ProfileModel().obs;
-  var order =<int>[].obs;
+  var order =<int>[];
+  var orderVisits =<VisitModel>[].obs;
   TextEditingController searchController = TextEditingController();
   TextEditingController allSearchController = TextEditingController();
   TextEditingController archiveSearchController = TextEditingController();
@@ -67,6 +73,9 @@ class HomeController extends GetxController {
   var id =RxInt(-1);
 
 
+  void changeVisitOrder()async{
+    await mainController.orderVisit(OrderModel(ids: order));
+  }
   void changeLanguage(String languageCode) async{
     lang.value = languageCode;
     CacheHelper.saveData(key: 'lang', value: languageCode);
@@ -108,6 +117,24 @@ class HomeController extends GetxController {
       isLoadingInternal(false);
   }
 
+  Future<void> getFatherServantData() async {
+    try {
+      var userData = await mainController.getUserData();
+      for (var element in userData) {
+        userNames.add(element.name!);
+        userId.add(element.id!);
+      }
+    }catch(e){
+      Get.snackbar("Error", "Failed to retrieve area details");
+    }
+  }
+
+  Future<void> onUserSelected(String user)async{
+    isLoadingInternal(true);
+    visitsReport.value = await mainController.getReport(userId[userNames.indexOf(user)]);
+    isLoadingInternal(false);
+  }
+
   void getProfile()async{
     isLoadingInternal(true);
     profile.value = await mainController.getProfile();
@@ -142,16 +169,7 @@ class HomeController extends GetxController {
     if (value.isEmpty||value =='') {
       archiveSearchResults.value = visitsArchives;
     } else {
-      archiveSearchResults.value = visitsArchives
-          .map((day) => DayVisits(
-              day: day.day,
-              visits: day.visits
-                  .where((visit) => visit.userName!
-                      .toLowerCase()
-                      .contains(value.toLowerCase()))
-                  .toList()))
-          .where((day) => day.visits.isNotEmpty)
-          .toList();
+      archiveSearchResults.value = visitsArchives.where((value)=> value.userName!.toLowerCase().contains(value.userName!.toLowerCase())).toList();
     }
   }
 
@@ -166,9 +184,9 @@ class HomeController extends GetxController {
                   .where((visit) => visit.userName!
                       .toLowerCase()
                       .contains(value.toLowerCase()))
-                  .toList()))
+                  .toList().obs))
           .where((day) => day.visits.isNotEmpty)
-          .toList();
+          .toList().obs;
     }
   }
     void onSearchAll(String value) {
@@ -182,7 +200,7 @@ class HomeController extends GetxController {
                   .where((visit) => visit.userName!
                       .toLowerCase()
                       .contains(value.toLowerCase()))
-                  .toList()))
+                  .toList().obs))
           .where((day) => day.visits.isNotEmpty)
           .toList();
     }
@@ -203,11 +221,13 @@ class HomeController extends GetxController {
       case 2:
         color = AppColors.blue;
       case 3:
-        color = AppColors.orange;
+        color = AppColors.trinidadColor;
       case 4:
-        color = AppColors.green;
+        color = AppColors.orange;
       case 5:
-        color = AppColors.red;
+        color = AppColors.green;
+        case 6:
+          color=AppColors.red;
     }
     return color;
   }
@@ -239,14 +259,11 @@ class HomeController extends GetxController {
     isLoadingInternal(true);
     Map<String, dynamic> query = {};
     if (index != -1) {
-      if (tags[index].value != null) {
         query = {'status': tags[index].value};
-      } else {
-        query = {};
-      }
     }
     meVisits.value =await mainController.getMeVisitData();
     allVisits.value = await mainController.getAllVisitData(query);
+    meSearchResults.value = meVisits;
     meSearchResults.value = meVisits;
     allSearchResults.value = allVisits;
     isLoadingInternal(false);
@@ -255,22 +272,17 @@ class HomeController extends GetxController {
   void onBottomNavItemClicked(int index) {
     pageController.jumpToPage(index);
   }
-  @override
-  void update([List<Object>? ids, bool condition = true]) {
-    order.value = (CacheHelper.getIntList(key: 'order')) ?? [];
-    super.update(ids, condition);
-    }
 
   @override
   void onInit() async {
     isLoading(true);
     token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
     lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
-    order.value =(CacheHelper.getIntList(key: 'order'))?? [];
     isDark.value =(await CacheHelper.getData(key: 'isDark')) ?? false;
     getVisitsData();
     getArchivesData();
     getProfile();
+    getFatherServantData();
     isLoading(false);
     super.onInit();
   }

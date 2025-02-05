@@ -1,11 +1,11 @@
 import 'package:ar_visiting_app/app/core/models/visits/visitmodel.dart';
 import 'package:ar_visiting_app/app/core/utils/app_colors.dart';
-import 'package:ar_visiting_app/app/modules/my_order_visits/controllers/my_order_visits_controller.dart';
+import 'package:ar_visiting_app/app/modules/home/controllers/home_controller.dart';
 import 'package:ar_visiting_app/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class VisitCardItemOrderWidget extends GetView<MyOrderVisitsController> {
+class VisitCardItemOrderWidget extends GetView<HomeController> {
   const VisitCardItemOrderWidget({
     super.key,
     required this.visit,
@@ -17,10 +17,10 @@ class VisitCardItemOrderWidget extends GetView<MyOrderVisitsController> {
       onTap: () {
         Get.toNamed(Routes.VISIT_DETAILS, arguments: visit);
       },
-      child: Card(
+      child: Obx(() =>Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
       elevation: 4,
-      color: controller.isDark.value?AppColors.codGray: AppColors.softAmber,
+      color: controller.isDark.value? AppColors.codGray: AppColors.softAmber,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
@@ -73,7 +73,7 @@ class VisitCardItemOrderWidget extends GetView<MyOrderVisitsController> {
         ],
         ),
       ),
-      ),
+      )),
     );
   }
 }

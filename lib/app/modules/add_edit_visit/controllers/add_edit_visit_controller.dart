@@ -14,8 +14,8 @@ class AddEditVisitController extends GetxController {
   var userType = ''.obs;
   var areaName = ''.obs;
   var areaNames = <String>[].obs;
-  var userNames = <String>[].obs;
   var areaId = <int>[].obs;
+  var userNames = <String>[].obs;
   var userId = <int>[].obs;
   var areaData =<AreaModel>[].obs;
   var userData =<User>[].obs;

@@ -5,6 +5,8 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../views/widgets/visit_card_item_widget.dart';
+
 class ArchiveVisitsScreen extends GetView<HomeController> {
   const ArchiveVisitsScreen({super.key});
 
@@ -61,8 +63,15 @@ class ArchiveVisitsScreen extends GetView<HomeController> {
                     child: ConditionalBuilder(
                       condition: !controller.isLoadingInternal.value,
                       builder: (context) => controller.allVisits.isNotEmpty
-                          ? MyDateVisitListWidget(
-                              visits: controller.archiveSearchResults)
+                          ?           ListView.separated(
+                        physics: const BouncingScrollPhysics(),
+                        shrinkWrap: true,
+                        itemBuilder: (context, visitIndex) {
+                          return VisitCardItemWidget(visit: controller.archiveSearchResults[visitIndex]);  // Pass the VisitModel object
+                        },
+                        separatorBuilder: (context, index) => const SizedBox(height: 10),
+                        itemCount:controller.archiveSearchResults.length,
+                      )
                           : Center(child: Text('noVisits'.tr)),
                       fallback: (context) => const Center(
                           child: CircularProgressIndicator(

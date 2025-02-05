@@ -3,8 +3,6 @@ import 'package:ar_visiting_app/app/core/models/api_response/api_response.dart';
 import 'package:ar_visiting_app/app/core/models/enums/enums.dart';
 import 'package:ar_visiting_app/app/core/models/login/loginmodel.dart';
 import 'package:ar_visiting_app/app/core/services/dio_helper.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -20,8 +18,7 @@ class LoginController extends GetxController {
   var isLoading = false.obs;
   var id = ''.obs;
   var nR = ''.obs;
-  FirebaseAuth auth = FirebaseAuth.instance;
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
+
   var login= LoginModel().obs;
 
 
@@ -66,22 +63,6 @@ class LoginController extends GetxController {
     }
   }
 
-  Future<String?> getEmailFromUsername(String username) async {
-    try {
-      var querySnapshot = await FirebaseFirestore.instance
-          .collection('users')
-          .where('username', isEqualTo: username)
-          .get();
-      if (querySnapshot.docs.isNotEmpty) {
-        return querySnapshot.docs.first.data()['email'] as String;
-      } else {
-        return null;
-      }
-    } catch (e) {
-      return null;
-    }
-  }
-
   bool validateForm() {
     final isValid = loginFormKey.currentState?.validate() ?? false;
     if (!isValid) {
@@ -90,23 +71,6 @@ class LoginController extends GetxController {
     return isValid;
   }
 
-  void handleFirebaseError(FirebaseAuthException e) {
-    String errorMessage;
-    switch (e.code) {
-      case 'invalid-email':
-        errorMessage = "Invalid email format.";
-        break;
-      case 'user-not-found':
-        errorMessage = "No user found with this email.";
-        break;
-      case 'wrong-password':
-        errorMessage = "Incorrect password.";
-        break;
-      default:
-        errorMessage = "Login failed. Please try again.";
-    }
-    Get.snackbar("Login Error", errorMessage);
-  }
 
 
   @override

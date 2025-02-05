@@ -29,6 +29,8 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
           ),
           actions: [
             PopupMenuButton(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+                menuPadding: const EdgeInsets.symmetric(horizontal: 8),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(
                       20), // Set your desired border radius here
@@ -37,8 +39,12 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                 initialValue: OperationType.NEW,
                 onSelected: (OperationType value) {
                   if (value == OperationType.EDIT) {
-                    Get.toNamed(Routes.ADD_EDIT_VISIT,
-                        arguments: [OperationType.EDIT,controller.visit.value]);
+                    if(controller.visit.value.status?.value != 5 &&controller.visit.value.status?.value != 5) {
+                      Get.toNamed(Routes.ADD_EDIT_VISIT,
+                          arguments: [OperationType.EDIT,controller.visit.value]);
+                    } else {
+                      Get.snackbar('Visit', 'can\'t edit this visit');
+                    }
                   }  else if (value == OperationType.CLONE) {
                     Get.toNamed(Routes.ADD_EDIT_VISIT,
                         arguments: [OperationType.CLONE,controller.visit.value]);
@@ -46,10 +52,17 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                     showDialog(
                         context: context,
                         builder: (context) => CustomDoubleAlert(
-                              title: 'deylayComfirm'.tr,
+                              title: 'delayComfirm'.tr,
                               leftButtonText: 'yes'.tr,
                               rightButtonText: 'no'.tr,
-                              leftFunction: () => controller.onDelay(),
+                              leftFunction: () {
+                                if(controller.visit.value.status?.value != 5 &&controller.visit.value.status?.value != 5) {
+                                  controller.onDelay();
+                                } else {
+                                  Get.back(closeOverlays: true);
+                                  Get.snackbar('Visit', 'can\'t delay this visit');
+                                }
+                              },
                               rightFunction: () =>
                                   Get.back(closeOverlays: true),
                         ));
@@ -60,28 +73,33 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                           title: 'cancelComfirm'.tr,
                           leftButtonText: 'yes'.tr,
                           rightButtonText: 'no'.tr,
-                          leftFunction: () => controller.onCanceled(),
+                          leftFunction: () {
+                            if(controller.visit.value.status?.value != 5 &&controller.visit.value.status?.value != 5) {
+                              controller.onCanceled();
+                            } else {
+                              Get.back(closeOverlays: true);
+                              Get.snackbar('Visit', 'can\'t cancel this visit');
+                            }
+                          },
                           rightFunction: () =>
                               Get.back(closeOverlays: true),
                         ));
                   }
                 },
                 position: PopupMenuPosition.under,
-                color: AppColors.white,
+                color: controller.isDark.value? AppColors.black:AppColors.white,
                 itemBuilder: (context) => <PopupMenuEntry<OperationType>>[
                       PopupMenuItem<OperationType>(
                         value: OperationType.EDIT,
                         child: Row(
                           children: [
-                            Image(
-                              image: AssetImage('editIcon'.tr),
-                              width: 25,
-                              height: 25,
-                            ),
+                            const Icon(Icons.edit),
                             const SizedBox(
                               width: 15,
                             ),
-                            Text('edit'.tr),
+                            Text('edit'.tr,style: TextStyle(
+                              color: controller.isDark.value? AppColors.white: AppColors.black,
+                            ),),
                           ],
                         ),
                       ),
@@ -92,15 +110,13 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                         value: OperationType.CANCELED,
                         child: Row(
                           children: [
-                            Image(
-                              image: AssetImage('cancelIcon'.tr),
-                              width: 25,
-                              height: 25,
-                            ),
+                            const Icon(Icons.plus_one_outlined),
                             const SizedBox(
                               width: 15,
                             ),
-                            Text('cancel'.tr),
+                            Text('cancel'.tr,style: TextStyle(
+                              color: controller.isDark.value? AppColors.white: AppColors.black,
+                            ),),
                           ],
                         ),
                       ),
@@ -117,7 +133,9 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                             const SizedBox(
                               width: 15,
                             ),
-                            Text('clone'.tr),
+                            Text('clone'.tr,style: TextStyle(
+                              color: controller.isDark.value? AppColors.white: AppColors.black,
+                            ),),
                           ],
                         ),
                       ),
@@ -132,7 +150,9 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                               const SizedBox(
                                 width: 15,
                               ),
-                              Text('deylayed'.tr)
+                              Text('deylayed'.tr,style: TextStyle(
+                                color: controller.isDark.value? AppColors.white: AppColors.black,
+                              ),)
                             ],
                           ))
                     ])
@@ -604,7 +624,7 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                     ),
                   ),
                   Obx(() => ConditionalBuilder(
-                      condition: controller.visit.value.status?.value == 1,
+                      condition: controller.visit.value.status?.value != 2 && controller.visit.value.status?.value != 5&&controller.visit.value.status?.value != 6,
                       fallback: (context) => const SizedBox(),
                       builder: (context) {
                         return SizedBox(
@@ -629,7 +649,8 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                                                 title: 'father'.tr, 
                                                 items: controller.fatherNames,
                                                 bottomSheetType: BottomSheetType.FATHER,
-                                                );
+                                                isDark: controller.isDark.value,
+                                              );
                                             },
                                           );
                                         },
@@ -642,6 +663,7 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                                                 title: 'servant'.tr, 
                                                 items: controller.servantNames,
                                                 bottomSheetType: BottomSheetType.SERVANT,
+                                                isDark: controller.isDark.value,
                                                 );
                                             },
                                           );
@@ -655,7 +677,7 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                     height: 12,
                   ),
                   Obx(() => ConditionalBuilder(
-                      condition: controller.visit.value.status?.value == 2,
+                      condition: controller.visit.value.status?.value !=5 && controller.visit.value.status?.value != 6,
                       fallback: (context) => const SizedBox(),
                       builder: (context) {
                         return SizedBox(
@@ -684,8 +706,7 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                   ),
                   Obx(() => ConditionalBuilder(
                       fallback: (context) => const SizedBox(),
-                      condition: controller.visit.value.fatherName != '' &&
-                          controller.visit.value.status?.value == 1,
+                      condition: controller.visit.value.fatherName!= null && controller.visit.value.fatherName != '' && controller.visit.value.status?.value !=5&& controller.visit.value.status?.value !=6&& controller.visit.value.status?.value !=2,
                       builder: (context) {
                         return SizedBox(
                           width: MediaQuery.of(context).size.width * 0.9,

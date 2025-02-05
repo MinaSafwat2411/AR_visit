@@ -17,217 +17,143 @@ class VisitCardItemWidget extends GetView<HomeController> {
   final VisitModel visit;
   @override
   Widget build(BuildContext context) {
-    return LongPressDraggable<VisitModel>(
-      data: visit,
-      onDragCompleted: () async{
-        if(controller.order.contains(visit.id)){
-          Get.snackbar("Visit",'Visit is already in the cart');
-        }else{
-          controller.order.add(visit.id ?? -1);
-          await CacheHelper.saveIntList(key: 'order', value: controller.order);
-        }
-      },
-      childWhenDragging: Container(
-        height:95,
+    return Slidable(
+    key: ValueKey(visit.id),
+    endActionPane: ActionPane(
+      motion: const ScrollMotion(),
+      extentRatio: 0.6,
+      children: [
+      SlidableAction(
+        borderRadius: controller.lang.value == 'en'
+          ? const BorderRadius.only(topLeft: Radius.circular(20.0), bottomLeft: Radius.circular(20.0))
+          : const BorderRadius.only(topRight: Radius.circular(20.0), bottomRight: Radius.circular(20.0)),
+        onPressed: (context) {
+        showDialog(
+          context: context,
+          builder: (context) => CustomDoubleAlert(
+          title: 'cloneComfirm'.tr,
+          leftButtonText: 'yes'.tr,
+          rightButtonText: 'no'.tr,
+          leftFunction: () => controller.onClone(visit),
+          rightFunction: () => Get.back(closeOverlays: true),
+          ),
+        );
+        },
+        backgroundColor: controller.isDark.value? AppColors.codGray: AppColors.softAmber,
+        foregroundColor: controller.isDark.value? AppColors.trinidadColor: AppColors.black,
+        icon: Icons.copy,
+        padding: const EdgeInsets.all(8.0),
+        label: 'clone'.tr,
       ),
-      feedback: Material(
-      color: Colors.transparent,
+      SlidableAction(
+        onPressed: (context) {
+        showDialog(
+          context: context,
+          builder: (context) => CustomDoubleAlert(
+          title: 'doneComfirm'.tr,
+          leftButtonText: 'yes'.tr,
+          rightButtonText: 'no'.tr,
+          leftFunction: () => controller.onDone(visit.id!),
+          rightFunction: () => Get.back(closeOverlays: true),
+          ),
+        );
+        },
+        padding: const EdgeInsets.all(8.0),
+        backgroundColor: controller.isDark.value? AppColors.codGray: AppColors.softAmber,
+        foregroundColor: controller.isDark.value? AppColors.trinidadColor: AppColors.black,
+        icon: Icons.check_circle_outline,
+        label: 'done'.tr,
+      ),
+      SlidableAction(
+        onPressed: (context) {
+        showDialog(
+          context: context,
+          builder: (context) => CustomDoubleAlert(
+          title: 'cancelComfirm'.tr,
+          leftButtonText: 'yes'.tr,
+          rightButtonText: 'no'.tr,
+          leftFunction: () => controller.onCanceled(visit.id!),
+          rightFunction: () => Get.back(closeOverlays: true),
+          ),
+        );
+        },
+        borderRadius: controller.lang == 'en'
+          ? const BorderRadius.only(topRight: Radius.circular(20.0), bottomRight: Radius.circular(20.0))
+          : const BorderRadius.only(topLeft: Radius.circular(20.0), bottomLeft: Radius.circular(20.0)),
+        backgroundColor: controller.isDark.value? AppColors.codGray: AppColors.softAmber,
+        foregroundColor: controller.isDark.value? AppColors.trinidadColor: AppColors.black,
+        icon: Icons.cancel_outlined,
+        padding: const EdgeInsets.all(8.0),
+        label: 'cancel'.tr,
+      ),
+      ],
+    ),
+    child: GestureDetector(
+      onTap: () {
+      Get.toNamed(Routes.VISIT_DETAILS, arguments: visit)?.then((value) {
+        if(value){
+          controller.getVisitsData();
+        }
+      },);
+      },
       child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-        elevation: 4,
-        color: AppColors.softAmber,
-        child: Padding(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+      elevation: 4,
+      color: controller.isDark.value? AppColors.codGray: AppColors.softAmber,
+      child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
-          mainAxisSize: MainAxisSize.max,
-          children: [
+        mainAxisSize: MainAxisSize.max,
+        children: [
           Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             Text(
-              visit.userName!,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+            visit.userName!,
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
             ),
             Text(
-              '${'noOfPeople'.tr} : ${visit.patientNums}',
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+            '${'noOfPeople'.tr} : ${visit.patientNums}',
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
             ),
             Text(
-              '${'father'.tr}: ${visit.fatherName ?? '' }',
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+            '${'father'.tr}: ${visit.fatherName ?? ''}',
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
             ),
-            ],
+          ],
           ),
           const SizedBox(width: 10,),
           Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4.0),
-              child: Text(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: Text(
               visit.status!.name ?? '',
               style: TextStyle(
-                color: controller.statusColor(visit.status?.value ?? 0),
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
+              color: controller.statusColor(visit.status?.value ?? 0),
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
               ),
-              ),
+            ),
             ),
             Text(
-              '${'zone'.tr}: ${visit.areaName}',
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+            '${'zone'.tr}: ${visit.areaName}',
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
             ),
             Text(
-              '${'servant'.tr}:${visit.servantName ?? '' }' , 
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+            '${'servant'.tr}: ${visit.servantName ?? ''}',
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
             ),
-            ],
-          ),
           ],
-        ),
-        ),
-      ),
-      ),
-      child: Slidable(
-      key: ValueKey(visit.id),
-      endActionPane: ActionPane(
-        motion: const ScrollMotion(),
-        extentRatio: 0.6,
-        children: [
-        SlidableAction(
-          borderRadius: controller.lang.value == 'en'
-            ? const BorderRadius.only(topLeft: Radius.circular(20.0), bottomLeft: Radius.circular(20.0))
-            : const BorderRadius.only(topRight: Radius.circular(20.0), bottomRight: Radius.circular(20.0)),
-          onPressed: (context) {
-          showDialog(
-            context: context,
-            builder: (context) => CustomDoubleAlert(
-            title: 'cloneComfirm'.tr,
-            leftButtonText: 'yes'.tr,
-            rightButtonText: 'no'.tr,
-            leftFunction: () => controller.onClone(visit),
-            rightFunction: () => Get.back(closeOverlays: true),
-            ),
-          );
-          },
-          backgroundColor: controller.isDark.value? AppColors.codGray: AppColors.softAmber,
-          foregroundColor: controller.isDark.value? AppColors.trinidadColor: AppColors.black,
-          icon: Icons.copy,
-          padding: const EdgeInsets.all(8.0),
-          label: 'clone'.tr,
-        ),
-        SlidableAction(
-          onPressed: (context) {
-          showDialog(
-            context: context,
-            builder: (context) => CustomDoubleAlert(
-            title: 'doneComfirm'.tr,
-            leftButtonText: 'yes'.tr,
-            rightButtonText: 'no'.tr,
-            leftFunction: () => controller.onDone(visit.id!),
-            rightFunction: () => Get.back(closeOverlays: true),
-            ),
-          );
-          },
-          padding: const EdgeInsets.all(8.0),
-          backgroundColor: controller.isDark.value? AppColors.codGray: AppColors.softAmber,
-          foregroundColor: controller.isDark.value? AppColors.trinidadColor: AppColors.black,
-          icon: Icons.check_circle_outline,
-          label: 'done'.tr,
-        ),
-        SlidableAction(
-          onPressed: (context) {
-          showDialog(
-            context: context,
-            builder: (context) => CustomDoubleAlert(
-            title: 'cancelComfirm'.tr,
-            leftButtonText: 'yes'.tr,
-            rightButtonText: 'no'.tr,
-            leftFunction: () => controller.onCanceled(visit.id!),
-            rightFunction: () => Get.back(closeOverlays: true),
-            ),
-          );
-          },
-          borderRadius: controller.lang == 'en'
-            ? const BorderRadius.only(topRight: Radius.circular(20.0), bottomRight: Radius.circular(20.0))
-            : const BorderRadius.only(topLeft: Radius.circular(20.0), bottomLeft: Radius.circular(20.0)),
-          backgroundColor: controller.isDark.value? AppColors.codGray: AppColors.softAmber,
-          foregroundColor: controller.isDark.value? AppColors.trinidadColor: AppColors.black,
-          icon: Icons.cancel_outlined,
-          padding: const EdgeInsets.all(8.0),
-          label: 'cancel'.tr,
-        ),
+          ),
         ],
-      ),
-      child: GestureDetector(
-        onTap: () {
-        Get.toNamed(Routes.VISIT_DETAILS, arguments: visit)?.then((value) {
-          if(value){
-            controller.getVisitsData();
-          }
-        },);
-        },
-        child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-        elevation: 4,
-        color: controller.isDark.value? AppColors.codGray: AppColors.softAmber,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-              visit.userName!,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-              ),
-              Text(
-              '${'noOfPeople'.tr} : ${visit.patientNums}',
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-              ),
-              Text(
-              '${'father'.tr}: ${visit.fatherName ?? ''}',
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-              ),
-            ],
-            ),
-            const SizedBox(width: 10,),
-            Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4.0),
-              child: Text(
-                visit.status!.name ?? '',
-                style: TextStyle(
-                color: controller.statusColor(visit.status?.value ?? 0),
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
-                ),
-              ),
-              ),
-              Text(
-              '${'zone'.tr}: ${visit.areaName}',
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-              ),
-              Text(
-              '${'servant'.tr}: ${visit.servantName ?? ''}',
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-              ),
-            ],
-            ),
-          ],
-          ),
-        ),
         ),
       ),
       ),
+    ),
     );
   }
 }
