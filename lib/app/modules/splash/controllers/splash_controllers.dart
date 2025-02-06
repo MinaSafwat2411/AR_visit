@@ -1,4 +1,6 @@
 
+import 'dart:async';
+
 import 'package:ar_visiting_app/app/core/services/dio_helper.dart';
 import 'package:ar_visiting_app/app/core/utils/backend_endpoint.dart';
 import 'package:get/get.dart';
@@ -22,17 +24,14 @@ class SplashController extends GetxController {
 
 
   void onNavigate() async {
-    try {
       token.value = await SecureCacheHelper.getData(key: 'token') ?? '';
-      await DioHelper.getData(
-        url: BackendEndpoint.enums,
-        token: token.value,
-        lang: lang.value,
-      );
-      Get.offNamed(Routes.HOME, arguments: [lang,isDark,token]);
-    }catch (e) {
-      Get.offNamed(Routes.LOGIN,arguments: [lang,isDark]);
-    }
+      Timer(const Duration(seconds: 3),() {
+        if(token.value == '') {
+          Get.offNamed(Routes.LOGIN,arguments: [lang,isDark]);
+          return;
+        }else{
+          Get.offNamed(Routes.HOME, arguments: [lang,isDark,token]);
+        }
+      },);
   }
-
 }
