@@ -14,7 +14,6 @@ class SplashController extends GetxController {
 
   @override
   void onInit() async {
-    token.value = await SecureCacheHelper.getData(key: 'token') ?? '';
     lang.value = await CacheHelper.getData(key: 'lang') ?? 'en';
     isDark.value = await CacheHelper.getData(key: 'isDark')?? false;
     super.onInit();
@@ -24,6 +23,7 @@ class SplashController extends GetxController {
 
   void onNavigate() async {
     try {
+      token.value = await SecureCacheHelper.getData(key: 'token') ?? '';
       await DioHelper.getData(
         url: BackendEndpoint.enums,
         token: token.value,
