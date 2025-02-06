@@ -13,62 +13,62 @@ import 'package:ar_visiting_app/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 
 class MainController extends GetxController {
-  var token = ''.obs;
-  var lang = ''.obs;
 
   String changeFormatDB(String date) {
     var newDate = '';
     try {
-      newDate ='${date.substring(6,10)}-${date.substring(3,5)}-${date.substring(0,2)}';
+      newDate =
+          '${date.substring(6, 10)}-${date.substring(3, 5)}-${date.substring(0, 2)}';
     } catch (e) {
       Get.snackbar('Error', 'Invalid date format');
     }
     return newDate;
   }
+
   String changeFormatView(String date) {
     var newDate = '';
     try {
-      newDate ='${date.substring(0,2)}-${date.substring(3,5)}-${date.substring(6,10)}';
+      newDate =
+          '${date.substring(0, 2)}-${date.substring(3, 5)}-${date.substring(6, 10)}';
     } catch (e) {
       Get.snackbar('Error', 'Invalid date format');
     }
     return newDate;
   }
-  Future<VisitModel> getVisitData(int id)async{
-    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
-    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
+
+  Future<VisitModel> getVisitData(String lang, String token, int id) async {
     try {
       final response = await DioHelper.getData(
           url: '${BackendEndpoint.visits}/${id.toString()}',
-          token: token.value,
-          lang: lang.value);
+          token: token,
+          lang: lang);
       final apiResponse = ApiResponse<VisitModel>.fromJson(response.data,
           (json) => VisitModel.fromJson(json as Map<String, dynamic>));
-          return apiResponse.data ?? VisitModel();
+      return apiResponse.data ?? VisitModel();
     } catch (e) {
       Get.snackbar('Error', 'Failed to load visit data');
       return VisitModel();
-    } 
-  }
-
-  Future<void> addPatient(User patient)async{
-    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
-    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
-    try{
-      await DioHelper.postData(url: BackendEndpoint.patient,token: token.value,lang: lang.value, data: patient.toJson());
-      Get.snackbar('Success', 'Patient added successfully');
-      Get.back(closeOverlays: true);
-    }catch(e){
-      Get.snackbar('Error', 'couldn\'t add patient' );
     }
   }
 
-  Future<List<User>> getUserData() async {
-    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
-    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
+  Future<void> addPatient(String lang, String token, User patient) async {
+    try {
+      await DioHelper.postData(
+          url: BackendEndpoint.patient,
+          token: token,
+          lang: lang,
+          data: patient.toJson());
+      Get.snackbar('Success', 'Patient added successfully');
+      Get.back(closeOverlays: true);
+    } catch (e) {
+      Get.snackbar('Error', 'couldn\'t add patient');
+    }
+  }
+
+  Future<List<User>> getUserData(String lang, String token) async {
     try {
       var responseUsers = await DioHelper.getData(
-          url: BackendEndpoint.dropDown, lang: lang.value, token: token.value);
+          url: BackendEndpoint.dropDown, lang: lang, token: token);
       final ApiResponse<List<User>> apiResponseUsers =
           ApiResponse.fromJson(responseUsers.data, (json) {
         if (json == null) {
@@ -76,19 +76,17 @@ class MainController extends GetxController {
         }
         return (json as List).map((e) => User.fromJson(e)).toList();
       });
-      return apiResponseUsers.data ??[];
+      return apiResponseUsers.data ?? [];
     } catch (e) {
       Get.snackbar("Error", "Failed to retrieve area details");
       return [];
     }
   }
 
-  Future<List<AreaModel>> getAreaData() async {
-    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
-    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
+  Future<List<AreaModel>> getAreaData(String lang, String token) async {
     try {
       var responseArea = await DioHelper.getData(
-          url: BackendEndpoint.areas, lang: lang.value, token: token.value);
+          url: BackendEndpoint.areas, lang: lang, token: token);
       final ApiResponse<List<AreaModel>> apiResponseArea =
           ApiResponse.fromJson(responseArea.data, (json) {
         if (json == null) {
@@ -96,44 +94,36 @@ class MainController extends GetxController {
         }
         return (json as List).map((e) => AreaModel.fromJson(e)).toList();
       });
-      return apiResponseArea.data ??[];
+      return apiResponseArea.data ?? [];
     } catch (e) {
       Get.snackbar("Error", "Failed to retrieve area details");
       return [];
     }
-
   }
 
-  Future<VisitModel> editVisit(VisitModel visit, int id) async {
-    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
-    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
+  Future<VisitModel> editVisit(String lang, String token, VisitModel visit, int id) async {
     try {
-      final response= await DioHelper.putData(
+      final response = await DioHelper.putData(
           url: '${BackendEndpoint.visits}/${id.toString()}',
-          token: token.value,
+          token: token,
           data: visit.toJsonEdit(),
-          lang: lang.value);
-      final apiResponse=ApiResponse<VisitModel>.fromJson(
+          lang: lang);
+      final apiResponse = ApiResponse<VisitModel>.fromJson(
         response.data,
-        (json) => VisitModel.fromJson(json as Map<String,dynamic>),
+        (json) => VisitModel.fromJson(json as Map<String, dynamic>),
       );
       Get.snackbar("Visits", "Visit add successfully");
       return apiResponse.data ?? VisitModel();
-
     } catch (e) {
       Get.snackbar("Error", e.toString());
       return VisitModel();
     }
   }
-    void logout() async {
-      token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
-      lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
+
+  void logout(String lang, String token) async {
     try {
       await DioHelper.postData(
-        url: BackendEndpoint.logout,
-        token: token.value,
-        lang: lang.value
-      );
+          url: BackendEndpoint.logout, token: token, lang: lang);
       Get.snackbar('Logout', 'logout successfully');
       SecureCacheHelper.removeData(key: 'token');
       CacheHelper.removeData(key: 'order');
@@ -143,27 +133,28 @@ class MainController extends GetxController {
     }
   }
 
-  Future<ProfileModel> getProfile()async{
-    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
-    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
-    try{
-      final response =await DioHelper.getData(url: BackendEndpoint.profile,token: token.value,lang: lang.value);
-      final apiResponse =ApiResponse<ProfileModel>.fromJson(response.data,(json) => ProfileModel.fromJson(json as Map<String,dynamic>),);
+  Future<ProfileModel> getProfile(String lang, String token) async {
+    try {
+      final response = await DioHelper.getData(
+          url: BackendEndpoint.profile, token: token, lang: lang);
+      final apiResponse = ApiResponse<ProfileModel>.fromJson(
+        response.data,
+        (json) => ProfileModel.fromJson(json as Map<String, dynamic>),
+      );
       return apiResponse.data ?? ProfileModel();
-    } catch(e){
+    } catch (e) {
       Get.snackbar('Error', 'Failed to retrieve profile data');
       return ProfileModel();
-    }  
+    }
   }
-  Future<List<DayVisits>> getMeVisitData()async{
-    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
-    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
-    try{
-    final meResponse = await DioHelper.getData(
+
+  Future<List<DayVisits>> getMeVisitData(String lang, String token) async {
+    try {
+      final meResponse = await DioHelper.getData(
         query: {'me': 1},
         url: BackendEndpoint.visits,
-        token: token.value,
-        lang: lang.value,
+        token: token,
+        lang: lang,
       );
       final meApiResponse = ApiResponse<List<DayVisits>>.fromJson(
         meResponse.data,
@@ -180,23 +171,24 @@ class MainController extends GetxController {
           }).toList();
         },
       );
-      return meApiResponse.data?? [];
-    }catch(e){
+      return meApiResponse.data ?? [];
+    } catch (e) {
       Get.snackbar('Error', 'Failed to retrieve my visit data');
       return [];
     }
   }
 
-  Future<List<VisitModel>> getReport(int id)async{
-    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
-    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
-    try{
-      final response = await DioHelper.getData(url: BackendEndpoint.reports,token: token.value,lang: lang.value,query: {
-        'user_id':id
-      });
+  Future<List<VisitModel>> getReport(String lang, String token, int id) async {
+    try {
+      final response = await DioHelper.getData(
+          url: BackendEndpoint.reports,
+          token: token,
+          lang: lang,
+          query: {'user_id': id});
+      print(response.data);
       final apiResponse = ApiResponse<List<VisitModel>>.fromJson(
         response.data,
-            (json) {
+        (json) {
           if (json == null) {
             return [];
           }
@@ -204,21 +196,21 @@ class MainController extends GetxController {
         },
       );
       return apiResponse.data ?? [];
-    }catch(e){
+    } catch (e) {
       print(e.toString());
       Get.snackbar('Error', 'Failed to retrieve report data');
       return [];
     }
   }
-  Future<List<DayVisits>> getAllVisitData(Map<String,dynamic> query)async{
-    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
-    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
-    try{
+
+  Future<List<DayVisits>> getAllVisitData(
+      String lang, String token, Map<String, dynamic> query) async {
+    try {
       final allResponse = await DioHelper.getData(
         query: query,
         url: BackendEndpoint.visits,
-        token: token.value,
-        lang: lang.value,
+        token: token,
+        lang: lang,
       );
       final allApiResponse = ApiResponse<List<DayVisits>>.fromJson(
         allResponse.data,
@@ -236,20 +228,19 @@ class MainController extends GetxController {
         },
       );
       return allApiResponse.data ?? [];
-    }catch(e){
+    } catch (e) {
       Get.snackbar('Error', 'Failed to retrieve all visit data');
       return [];
     }
   }
 
-  Future<VisitModel> addVisit(VisitModel visit) async {
-    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
-    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
-    visit.date = changeFormatDB(visit.date??'');
+  Future<VisitModel> addVisit(String lang, String token,VisitModel visit) async {
+    visit.date = changeFormatDB(visit.date ?? '');
     try {
       var response = await DioHelper.postData(
           url: BackendEndpoint.visits,
-          token: token.value,
+          token: token,
+          lang: lang,
           data: visit.toJson());
       final apiResponse = ApiResponse<VisitModel>.fromJson(response.data,
           (json) => VisitModel.fromJson(json as Map<String, dynamic>));
@@ -260,29 +251,25 @@ class MainController extends GetxController {
     }
   }
 
-  Future<void> orderVisit(OrderModel order) async {
-    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
-    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
-    try{
+  Future<void> orderVisit(String lang, String token, OrderModel order) async {
+    try {
       await DioHelper.putData(
         url: BackendEndpoint.order,
-        lang: lang.value,
+        lang: lang,
         data: order.toJson(),
-        token: token.value,
+        token: token,
       );
-    }catch(e){
+    } catch (e) {
       Get.snackbar('Error', 'Failed to order visits');
     }
   }
 
-  Future<List<VisitModel>> getArchivesVisits()async{
-    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
-    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
-    try{
-    final response = await DioHelper.getData(
+  Future<List<VisitModel>> getArchivesVisits(String lang, String token) async {
+    try {
+      final response = await DioHelper.getData(
         url: BackendEndpoint.archive,
-        token: token.value,
-        lang: lang.value,
+        token: token,
+        lang: lang,
       );
       final apiResponse = ApiResponse<List<VisitModel>>.fromJson(
         response.data,
@@ -294,49 +281,51 @@ class MainController extends GetxController {
         },
       );
       return apiResponse.data ?? [];
-    }catch(e){
+    } catch (e) {
       Get.snackbar('Error', 'Failed to retrieve archive visits');
       return [];
     }
   }
 
-  Future<void> onDone(int id) async {
-    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
-    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
+  Future<void> onDone(String lang, String token, int id) async {
     try {
-      await DioHelper.putData(url: '${BackendEndpoint.done}/${id.toString()}',token: token.value,lang: lang.value);
+      await DioHelper.putData(
+          url: '${BackendEndpoint.done}/${id.toString()}',
+          token: token,
+          lang: lang);
     } catch (e) {
       Get.snackbar('Error', 'Can\'t make visit done');
     }
   }
 
-  Future<void> onInProgress(int id) async {
-    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
-    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
+  Future<void> onInProgress(String lang, String token, int id) async {
     try {
       await DioHelper.putData(
-          url: '${BackendEndpoint.inprogress}/${id.toString()}',token: token.value,lang: lang.value);
+          url: '${BackendEndpoint.inprogress}/${id.toString()}',
+          token: token,
+          lang: lang);
     } catch (e) {
       Get.snackbar('Error', 'Can\'t make visit inprogress');
     }
   }
 
-  Future<void> onCanceled(int id) async {
-    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
-    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
+  Future<void> onCanceled(String lang, String token,int id) async {
     try {
       await DioHelper.putData(
-          url: '${BackendEndpoint.cancel}/${id.toString()}',token: token.value,lang: lang.value);
+          url: '${BackendEndpoint.cancel}/${id.toString()}',
+          token: token,
+          lang: lang);
     } catch (e) {
       Get.snackbar('Error', 'Can\'t make visit inprogress');
     }
   }
 
-  Future<void> onDeylayed(int id) async {
-    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
-    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
+  Future<void> onDelayed(String lang, String token, int id) async {
     try {
-      await DioHelper.putData(url: '${BackendEndpoint.delay}/${id.toString()}',token: token.value,lang: lang.value);
+      await DioHelper.putData(
+          url: '${BackendEndpoint.delay}/${id.toString()}',
+          token: token,
+          lang: lang);
     } catch (e) {
       Get.snackbar('Error', 'Can\'t make visit inprogress');
     }
@@ -347,41 +336,49 @@ class MainController extends GetxController {
     data['type'] = id;
     return data;
   }
-  
-  Future<List<User>> getUserList(int type)async{
-    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
-    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
-    try{
-      final response =await DioHelper.getData(url: BackendEndpoint.dropDown,token: token.value,lang: lang.value,query: toJson(type));
-      final apiResponse = ApiResponse<List<User>>.fromJson(response.data,(json) {
+
+  Future<List<User>> getUserList(String lang, String token, int type) async {
+    try {
+      final response = await DioHelper.getData(
+          url: BackendEndpoint.dropDown,
+          token: token,
+          lang: lang,
+          query: toJson(type));
+      final apiResponse =
+          ApiResponse<List<User>>.fromJson(response.data, (json) {
         if (json == null) {
           return [];
         }
         return (json as List).map((e) => User.fromJson(e)).toList();
       });
 
-      return apiResponse.data??[];
-    }catch(e){
+      return apiResponse.data ?? [];
+    } catch (e) {
       Get.snackbar('Error', 'Failed to retrieve user list');
       return [];
     }
   }
 
-  Future<void> assignServent(int visitId,int servantId)async{
-
-    try{
-      await DioHelper.putData(url: '${BackendEndpoint.servent}/${visitId.toString()}',data: {'servant_id':servantId},lang: lang.value,token: token.value);
-    }catch(e){
+  Future<void> assignServant(String lang, String token,int visitId, int servantId) async {
+    try {
+      await DioHelper.putData(
+          url: '${BackendEndpoint.servent}/${visitId.toString()}',
+          data: {'servant_id': servantId},
+          lang: lang,
+          token: token);
+    } catch (e) {
       Get.snackbar('Error', 'Failed to assign servant');
     }
   }
 
-  Future<void> assignFather(int visitId,int fatherId)async{
-    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
-    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
-    try{
-      await DioHelper.putData(url: '${BackendEndpoint.father}/${visitId.toString()}',data: {'father_id':fatherId},lang: lang.value,token: token.value);
-    }catch(e){
+  Future<void> assignFather(String lang, String token, int visitId, int fatherId) async {
+    try {
+      await DioHelper.putData(
+          url: '${BackendEndpoint.father}/${visitId.toString()}',
+          data: {'father_id': fatherId},
+          lang: lang,
+          token: token);
+    } catch (e) {
       Get.snackbar('Error', 'Failed to assign servant');
     }
   }

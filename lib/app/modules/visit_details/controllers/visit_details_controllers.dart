@@ -1,42 +1,36 @@
 import 'package:ar_visiting_app/app/core/controller/main_controller.dart';
 import 'package:ar_visiting_app/app/core/models/login/loginmodel.dart';
-import 'package:ar_visiting_app/app/core/services/secure_cache_helper.dart';
 import 'package:ar_visiting_app/app/core/utils/app_colors.dart';
 import 'package:ar_visiting_app/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../../../core/models/visits/visitmodel.dart';
-import '../../../core/services/cache_helper.dart';
 
 class VisitDetailsControllers extends GetxController {
-  var token = ''.obs;
+  var token = Get.arguments[2] as RxString;
   var isLoading = false.obs;
-  var isDropdownOpen = false.obs;
-  var visitTime = ''.obs;
   var visit = VisitModel().obs;
-  var lang = ''.obs;
+  var lang = Get.arguments[0] as RxString;
   var visitId = RxInt(-1);
   var mainController = MainController();
-  var bottomSheetIsOpened = RxBool(false);
   var father = <User>[].obs;
   var fatherNames = <String>[].obs;
   var fatherId = <int>[].obs;
   var servant = <User>[].obs;
   var servantNames = <String>[].obs;
   var servantId = <int>[].obs;
-  var isDark = RxBool(false);
+  var isDark = Get.arguments[1] as RxBool;
 
   Future<void> getFatherServantNames() async {
     isLoading(true);
-    servant.value = (await mainController.getUserList(2));
+    servant.value = (await mainController.getUserList(lang.value,token.value,2));
     for (var servant in servant) {
       servantNames.add(servant.name!);
       servantId.add(servant.id!);
     }
-    father.value = (await mainController.getUserList(1));
+    father.value = (await mainController.getUserList(lang.value,token.value,1));
     for (var father in father) {
       fatherNames.add(father.name!);
       fatherId.add(father.id!);
@@ -46,7 +40,7 @@ class VisitDetailsControllers extends GetxController {
 
   onServantSelected(int index) async {
     isLoading(true);
-    await mainController.assignServent(visitId.value, servantId[index]);
+    await mainController.assignServant(lang.value,token.value,visitId.value, servantId[index]);
     isLoading(false);
     getVisitData();
   }
@@ -78,7 +72,7 @@ class VisitDetailsControllers extends GetxController {
 
   void getVisitData() async {
     isLoading(true);
-    visit.value = await mainController.getVisitData(visitId.value);
+    visit.value = await mainController.getVisitData(lang.value,token.value,visitId.value);
     isLoading(false);
   }
 
@@ -141,56 +135,47 @@ class VisitDetailsControllers extends GetxController {
 
   onFatherSelected(int index) async {
     isLoading(true);
-    await mainController.assignFather(visitId.value, fatherId[index]);
+    await mainController.assignFather(lang.value,token.value,visitId.value, fatherId[index]);
     isLoading(false);
     getVisitData();
   }
 
-  void onClone() async {
-    isLoading(true);
-    var id = await mainController.addVisit(visit.value);
-    isLoading(false);
-    Get.toNamed(Routes.EDIT_VISIT, arguments: id);
-  }
 
   void onDone() async {
     Get.back(closeOverlays: true);
     isLoading(true);
-    await mainController.onDone(visitId.value);
-    visit.value = await mainController.getVisitData(visitId.value);
+    await mainController.onDone(lang.value,token.value,visitId.value);
+    visit.value = await mainController.getVisitData(lang.value,token.value,visitId.value);
     isLoading(false);
   }
 
   void onCanceled() async {
     Get.back(closeOverlays: true);
     isLoading(true);
-    await mainController.onCanceled(visitId.value);
-    visit.value = await mainController.getVisitData(visitId.value);
+    await mainController.onCanceled(lang.value,token.value,visitId.value);
+    visit.value = await mainController.getVisitData(lang.value,token.value,visitId.value);
     isLoading(false);
   }
 
   void onInProgress() async {
     Get.back(closeOverlays: true);
     isLoading(true);
-    await mainController.onInProgress(visitId.value);
-    visit.value = await mainController.getVisitData(visitId.value);
+    await mainController.onInProgress(lang.value,token.value,visitId.value);
+    visit.value = await mainController.getVisitData(lang.value,token.value,visitId.value);
     isLoading(false);
   }
 
   void onDelay() async {
     Get.back(closeOverlays: true);
     isLoading(true);
-    await mainController.onDeylayed(visitId.value);
-    visit.value = await mainController.getVisitData(visitId.value);
+    await mainController.onDelayed(lang.value,token.value,visitId.value);
+    visit.value = await mainController.getVisitData(lang.value,token.value,visitId.value);
     isLoading(false);
   }
 
   @override
   void onInit() async {
-    token.value = (await SecureCacheHelper.getData(key: 'token')) ?? '';
-    lang.value = (await CacheHelper.getData(key: 'lang')) ?? 'en';
-    isDark.value = (await CacheHelper.getData(key: 'isDark')) ?? false;
-    visit.value = Get.arguments;
+    visit.value = Get.arguments[3];
     visitId.value = visit.value.id ?? -1;
     getFatherServantNames();
     super.onInit();

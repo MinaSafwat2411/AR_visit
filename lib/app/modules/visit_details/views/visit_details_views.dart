@@ -41,13 +41,13 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                   if (value == OperationType.EDIT) {
                     if(controller.visit.value.status?.value != 5 &&controller.visit.value.status?.value != 5) {
                       Get.toNamed(Routes.ADD_EDIT_VISIT,
-                          arguments: [OperationType.EDIT,controller.visit.value]);
+                          arguments: [controller.lang,controller.isDark,controller.token,OperationType.EDIT,controller.visit.value]);
                     } else {
                       Get.snackbar('Visit', 'can\'t edit this visit');
                     }
                   }  else if (value == OperationType.CLONE) {
                     Get.toNamed(Routes.ADD_EDIT_VISIT,
-                        arguments: [OperationType.CLONE,controller.visit.value]);
+                        arguments: [controller.lang,controller.isDark,controller.token,OperationType.CLONE,controller.visit.value]);
                   } else if (value == OperationType.DELAYED) {
                     showDialog(
                         context: context,

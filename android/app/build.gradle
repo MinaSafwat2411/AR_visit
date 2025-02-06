@@ -1,12 +1,8 @@
 plugins {
     id "com.android.application"
-    // START: FlutterFire Configuration
-    id 'com.google.gms.google-services'
-    // END: FlutterFire Configuration
+    id 'com.google.gms.google-services' // FlutterFire
     id "kotlin-android"
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
-
 }
 
 def localProperties = new Properties()
@@ -27,26 +23,22 @@ if (flutterVersionName == null) {
     flutterVersionName = "1.0"
 }
 
+
 android {
     namespace = "com.example.ar_visiting_app"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = "27.0.12077973"
+    compileSdk flutter.compileSdkVersion
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "11" // Ensure Kotlin JVM target is consistent
-    }
-    tasks.withType(JavaCompile) {
-        options.compilerArgs.add('-Xlint:-options')
+        jvmTarget = "11"
     }
 
     defaultConfig {
         applicationId = "com.example.ar_visiting_app"
-        // Use flutter.minSdkVersion for consistency or set it directly to 23
-        minSdkVersion 23 // Change this to flutter.minSdkVersion if you want to use a property
+        minSdkVersion flutter.minSdkVersion // Use Flutter property
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -54,13 +46,10 @@ android {
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.debug
+            signingConfig = signingConfigs.debug // Replace with your release signing config
         }
     }
 }
-
 flutter {
     source = "../.."
 }

@@ -18,6 +18,9 @@ class LoginController extends GetxController {
   var isLoading = false.obs;
   var id = ''.obs;
   var nR = ''.obs;
+  var lang = Get.arguments[0].obs as RxString;
+  var isDark = Get.arguments[1].obs as RxBool;
+  var token = ''.obs;
 
   var login= LoginModel().obs;
 
@@ -55,9 +58,9 @@ class LoginController extends GetxController {
             (json) => EnumsModel.fromJson(json as Map<String, dynamic>));
         SecureCacheHelper.saveEnumsToStorage(apiResponseEnums.data!);
       Get.snackbar("Login", apiResponse.message ?? "");
-      Get.offNamed(Routes.HOME);
+      Get.offNamed(Routes.HOME, arguments: [lang.value,isDark.value,apiResponse.data!.token]);
     } catch (e) {
-      Get.snackbar("Error", 'Invalid Credentials');
+      Get.snackbar("Error", e.toString());
     } finally {
       isLoading(false);
     }

@@ -31,13 +31,12 @@ class HomeController extends GetxController {
   var lastPage = RxBool(false);
   var onMeSearch = RxBool(false);
   var onAllSearch = RxBool(false);
-  var token = ''.obs;
+  var token = Get.arguments[2] as RxString;
   var searchQuery = ''.obs;
   var allSearchQuery = ''.obs;
-  var lang = ''.obs;
+  var lang = Get.arguments[0] as RxString;
   var userNames = <String>[].obs;
   var userId = <int>[].obs;
-
   var tags = [
     TagsModel(name: 'New',value: 1,type: null,nameAr: 'جديد',isSelected: RxBool(false)),
     TagsModel(name: 'inprogress',value: 2,type: null,nameAr: 'قيد التنفيذ',isSelected: RxBool(false)),
@@ -46,7 +45,7 @@ class HomeController extends GetxController {
     TagsModel(name: 'done',value: 5,type: null,nameAr: 'تم',isSelected: RxBool(false)),
     TagsModel(name: 'cancelled',value: 6,type: null,nameAr: 'تم إلغاؤه',isSelected: RxBool(false)),
   ];
-  var isSubmited = RxBool(false);
+  var isSubmitted = RxBool(false);
   var meVisits = <DayVisits>[].obs;
   var allVisits = <DayVisits>[].obs;
   var meSearchResults = <DayVisits>[].obs;
@@ -55,7 +54,7 @@ class HomeController extends GetxController {
   var allSearchResults = <DayVisits>[].obs;
   var patient = User().obs;
   var visitsArchives = <VisitModel>[].obs;
-  var isDark = RxBool(false);
+  var isDark = Get.arguments[1] as RxBool;
   var profile =ProfileModel().obs;
   var order =<int>[];
   var orderVisits =<VisitModel>[].obs;
@@ -68,13 +67,10 @@ class HomeController extends GetxController {
   TextEditingController familyId = TextEditingController();
   TextEditingController familyNumber = TextEditingController();
   TextEditingController phone = TextEditingController();
-
-  var textDirection = TextDirection.LTR.obs;
   var id =RxInt(-1);
 
-
   void changeVisitOrder()async{
-    await mainController.orderVisit(OrderModel(ids: order));
+    await mainController.orderVisit(token.value,lang.value,OrderModel(ids: order));
   }
   void changeLanguage(String languageCode) async{
     lang.value = languageCode;
@@ -95,7 +91,7 @@ class HomeController extends GetxController {
   
   void logout() async {
     isLoadingInternal(true);
-    mainController.logout();
+    mainController.logout(token.value,lang.value);
     isLoadingInternal(false);
   }
   String formatDate(String dateString) {
@@ -106,20 +102,20 @@ class HomeController extends GetxController {
 
   void onDone(int id) async {
     isLoadingInternal(true);
-    mainController.onDone(id);
+    mainController.onDone(token.value,lang.value,id);
     getVisitsData();
   }
   Future<void> getArchivesData() async {
       isLoadingInternal(true);
       visitsArchives.value = [];  
-      visitsArchives.value =await mainController.getArchivesVisits();
+      visitsArchives.value =await mainController.getArchivesVisits(lang.value,token.value);
       archiveSearchResults.value= visitsArchives;
       isLoadingInternal(false);
   }
 
   Future<void> getFatherServantData() async {
     try {
-      var userData = await mainController.getUserData();
+      var userData = await mainController.getUserData(lang.value,token.value);
       for (var element in userData) {
         userNames.add(element.name!);
         userId.add(element.id!);
@@ -131,13 +127,13 @@ class HomeController extends GetxController {
 
   Future<void> onUserSelected(String user)async{
     isLoadingInternal(true);
-    visitsReport.value = await mainController.getReport(userId[userNames.indexOf(user)]);
+    visitsReport.value = await mainController.getReport(token.value,lang.value,userId[userNames.indexOf(user)]);
     isLoadingInternal(false);
   }
 
   void getProfile()async{
     isLoadingInternal(true);
-    profile.value = await mainController.getProfile();
+    profile.value = await mainController.getProfile(lang.value,token.value);
     isLoadingInternal(false);
   }
 
@@ -154,8 +150,8 @@ class HomeController extends GetxController {
   }
 
   void addPatient() async {
-    isSubmited(true);
-    await mainController.addPatient(User(
+    isSubmitted(true);
+    await mainController.addPatient(token.value,lang.value,User(
         statusValue: 2,
         e1C1F: familyId.text,
         nR: familyNumber.text,
@@ -163,7 +159,7 @@ class HomeController extends GetxController {
         phone: phone.text,
         name: name.text,
         nameAr: nameAr.text));
-        isSubmited(false);
+        isSubmitted(false);
   }
     void onSearchArchive(String value) {
     if (value.isEmpty||value =='') {
@@ -209,7 +205,7 @@ class HomeController extends GetxController {
   void onCanceled(int id) async {
     Get.back(closeOverlays: true);
     isLoadingInternal(true);
-    mainController.onCanceled(id);
+    mainController.onCanceled(token.value,lang.value,id);
     getVisitsData();
   }
 
@@ -234,7 +230,7 @@ class HomeController extends GetxController {
 
   void onClone(VisitModel visit) async {
     isLoadingInternal(true);
-    var visitId = await mainController.addVisit(visit);
+    var visitId = await mainController.addVisit(token.value,lang.value,visit);
     isLoadingInternal(false);
     Get.toNamed(Routes.EDIT_VISIT, arguments: visitId);
   }
@@ -261,8 +257,8 @@ class HomeController extends GetxController {
     if (index != -1) {
         query = {'status': tags[index].value};
     }
-    meVisits.value =await mainController.getMeVisitData();
-    allVisits.value = await mainController.getAllVisitData(query);
+    meVisits.value =await mainController.getMeVisitData(lang.value,token.value);
+    allVisits.value = await mainController.getAllVisitData(lang.value,token.value,query);
     meSearchResults.value = meVisits;
     meSearchResults.value = meVisits;
     allSearchResults.value = allVisits;
@@ -276,9 +272,6 @@ class HomeController extends GetxController {
   @override
   void onInit() async {
     isLoading(true);
-    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
-    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
-    isDark.value =(await CacheHelper.getData(key: 'isDark')) ?? false;
     getVisitsData();
     getArchivesData();
     getProfile();

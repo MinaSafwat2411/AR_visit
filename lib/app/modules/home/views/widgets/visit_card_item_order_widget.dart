@@ -15,8 +15,12 @@ class VisitCardItemOrderWidget extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.toNamed(Routes.VISIT_DETAILS, arguments: visit);
-      },
+        Get.toNamed(Routes.VISIT_DETAILS, arguments: [controller.lang,controller.isDark, controller.token,visit])?.then((value) {
+          if(value){
+            controller.getVisitsData();
+          }
+        },);
+        },
       child: Obx(() =>Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
       elevation: 4,

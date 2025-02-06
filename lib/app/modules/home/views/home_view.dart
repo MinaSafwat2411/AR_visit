@@ -124,7 +124,7 @@ class HomeView extends GetView<HomeController> {
                               ),
                               actions: [
                                 ConditionalBuilder(
-                                  condition: !controller.isSubmited.value,
+                                  condition: !controller.isSubmitted.value,
                                   fallback: (context) => const CircularProgressIndicator(color: AppColors.trinidadColor,),
                                   builder: (context) {
                                     return TextButton(
@@ -147,7 +147,7 @@ class HomeView extends GetView<HomeController> {
                   rightButtonText: 'no'.tr,
                   rightFunction: () {
                     Get.back(closeOverlays: true);
-                    Get.toNamed(Routes.ADD_EDIT_VISIT,arguments: [OperationType.ADD]);
+                    Get.toNamed(Routes.ADD_EDIT_VISIT,arguments: [controller.lang,controller.isDark,controller.token,OperationType.ADD]);
                   },
                 ),
               );

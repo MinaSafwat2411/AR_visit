@@ -21,21 +21,22 @@ class AddEditVisitController extends GetxController {
   var userData =<User>[].obs;
   var isLoading = false.obs;
   var id =''.obs;
-  var lang=''.obs;
+  var lang=Get.arguments[0] as RxString;
   final formKey = GlobalKey<FormState>();
   var addressTypeList=<String>[].obs;
-  var token = ''.obs;
+  var token = Get.arguments[2] as RxString;
   var newVisit = VisitModel().obs;
   var mainController = MainController();
   var visit =VisitModel(
     areaName: null,
     addressType: null
   ).obs;
+  var isDark = Get.arguments[1] as RxBool;
   var visitId = RxInt(-1);
   var titles =<String>['newVisitTitle'.tr,'editVisitTitle'.tr,'cloneVisitTitle'.tr].obs;
   var buttonText =<String>['add'.tr,'edit'.tr,'clone'.tr].obs;
   var currentScreen= RxInt(0);
-  var operationType =Get.arguments[0];
+  var operationType =Get.arguments[3];
   var internalLoading= RxBool(false);
 
   TextEditingController dateController = TextEditingController();
@@ -138,16 +139,16 @@ class AddEditVisitController extends GetxController {
   }
   Future<void> getData() async {
     try {
-      var userData = await mainController.getUserData();
-      var areaData = await mainController.getAreaData();
-      areaData?.forEach((element) {
+      var userData = await mainController.getUserData(lang.value, token.value);
+      var areaData = await mainController.getAreaData(lang.value, token.value);
+      for (var element in areaData) {
         areaNames.add(element.name!);
         areaId.add(element.id!);
-      });
-      userData?.forEach((element) {
+      }
+      for (var element in userData) {
         userNames.add(element.name!);
         userId.add(element.id!);
-      });
+      }
     }catch(e){
       Get.snackbar("Error", "Failed to retrieve area details");
     }
@@ -173,7 +174,7 @@ class AddEditVisitController extends GetxController {
         areaId: areaId[areaNames.indexOf(areaName.value)],
         addressType: addressTypeList.indexOf(addressType.value)+1,
       );
-      visit.value = await mainController.editVisit(newVisit.value,visit.value.id?? -1);
+      visit.value = await mainController.editVisit(token.value,lang.value,newVisit.value,visit.value.id?? -1);
       Get.offNamedUntil(
           Routes.VISIT_DETAILS,arguments: visit.value, (route) => route.settings.name == Routes.HOME);
     }catch (e){
@@ -222,7 +223,7 @@ class AddEditVisitController extends GetxController {
         addressType: addressTypeList.indexOf(addressType.value)+1,
         userId: userId[userNames.indexOf(userType.value)]
       );
-      visit.value = await mainController.addVisit(newVisit.value);
+      visit.value = await mainController.addVisit(token.value,lang.value,newVisit.value);
       Get.snackbar("Visits", "Visit add successfully");
       Get.offNamedUntil(
           Routes.VISIT_DETAILS,
@@ -238,8 +239,6 @@ class AddEditVisitController extends GetxController {
   @override
   void onInit() async {
     isLoading(true);
-    token.value = (await SecureCacheHelper.getData(key: 'token'))??'';
-    lang.value = (await CacheHelper.getData(key: 'lang'))??'en';
     if(operationType == OperationType.ADD){
       currentScreen.value =0;
       getAddressType();
@@ -248,13 +247,13 @@ class AddEditVisitController extends GetxController {
       currentScreen.value =1;
       getAddressType();
       await getData();
-      visit.value =Get.arguments[1];
+      visit.value =Get.arguments[4];
       displayData();
     }else if(operationType == OperationType.CLONE){
       currentScreen.value =2;
       getAddressType();
       await getData();
-      visit.value =Get.arguments[1];
+      visit.value =Get.arguments[4];
       displayData();
     }
     isLoading(false);
