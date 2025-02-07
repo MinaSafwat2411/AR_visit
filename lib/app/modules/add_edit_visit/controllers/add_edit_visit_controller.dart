@@ -21,22 +21,21 @@ class AddEditVisitController extends GetxController {
   var userData =<User>[].obs;
   var isLoading = false.obs;
   var id =''.obs;
-  var lang=Get.arguments[0] as RxString;
+  var lang=''.obs;
   final formKey = GlobalKey<FormState>();
   var addressTypeList=<String>[].obs;
-  var token = Get.arguments[2] as RxString;
+  var token = ''.obs;
   var newVisit = VisitModel().obs;
   var mainController = MainController();
   var visit =VisitModel(
     areaName: null,
     addressType: null
   ).obs;
-  var isDark = Get.arguments[1] as RxBool;
+  var isDark = RxBool(false);
   var visitId = RxInt(-1);
   var titles =<String>['newVisitTitle'.tr,'editVisitTitle'.tr,'cloneVisitTitle'.tr].obs;
   var buttonText =<String>['add'.tr,'edit'.tr,'clone'.tr].obs;
   var currentScreen= RxInt(0);
-  var operationType =Get.arguments[3];
   var internalLoading= RxBool(false);
 
   TextEditingController dateController = TextEditingController();
@@ -173,10 +172,11 @@ class AddEditVisitController extends GetxController {
         addressUrl: googleLinkController.text,
         areaId: areaId[areaNames.indexOf(areaName.value)],
         addressType: addressTypeList.indexOf(addressType.value)+1,
+        id: visit.value.id,
       );
-      visit.value = await mainController.editVisit(token.value,lang.value,newVisit.value,visit.value.id?? -1);
+      visit.value = await mainController.editVisit(lang.value,token.value,newVisit.value);
       Get.offNamedUntil(
-          Routes.VISIT_DETAILS,arguments: visit.value, (route) => route.settings.name == Routes.HOME);
+          Routes.VISIT_DETAILS,arguments: [lang.value,isDark.value,token.value,visit.value], (route) => route.settings.name == Routes.HOME);
     }catch (e){
       Get.snackbar("Error", e.toString());
     }finally{
@@ -223,11 +223,11 @@ class AddEditVisitController extends GetxController {
         addressType: addressTypeList.indexOf(addressType.value)+1,
         userId: userId[userNames.indexOf(userType.value)]
       );
-      visit.value = await mainController.addVisit(token.value,lang.value,newVisit.value);
+      visit.value = await mainController.addVisit(lang.value,token.value,newVisit.value);
       Get.snackbar("Visits", "Visit add successfully");
       Get.offNamedUntil(
           Routes.VISIT_DETAILS,
-              arguments: visit.value,
+              arguments: [lang.value,isDark.value,token.value,visit.value],
               (route) => route.settings.name == Routes.HOME
       );
     }catch (e){
@@ -239,6 +239,10 @@ class AddEditVisitController extends GetxController {
   @override
   void onInit() async {
     isLoading(true);
+    token.value =Get.arguments[2];
+    isDark.value =Get.arguments[1];
+    lang.value =Get.arguments[0];
+    var operationType =Get.arguments[3];
     if(operationType == OperationType.ADD){
       currentScreen.value =0;
       getAddressType();

@@ -101,10 +101,13 @@ class MainController extends GetxController {
     }
   }
 
-  Future<VisitModel> editVisit(String lang, String token, VisitModel visit, int id) async {
+  Future<VisitModel> editVisit(String lang, String token, VisitModel visit) async {
     try {
+      print(visit.toJsonEdit());
+      print(token);
+      print('${BackendEndpoint.visits}/${visit.id.toString()}');
       final response = await DioHelper.putData(
-          url: '${BackendEndpoint.visits}/${id.toString()}',
+          url: '${BackendEndpoint.visits}/${visit.id.toString()}',
           token: token,
           data: visit.toJsonEdit(),
           lang: lang);
@@ -115,6 +118,7 @@ class MainController extends GetxController {
       Get.snackbar("Visits", "Visit add successfully");
       return apiResponse.data ?? VisitModel();
     } catch (e) {
+      print(e.toString());
       Get.snackbar("Error", e.toString());
       return VisitModel();
     }
@@ -125,9 +129,8 @@ class MainController extends GetxController {
       await DioHelper.postData(
           url: BackendEndpoint.logout, token: token, lang: lang);
       Get.snackbar('Logout', 'logout successfully');
-      SecureCacheHelper.removeData(key: 'token');
+      CacheHelper.removeData(key: 'token');
       CacheHelper.removeData(key: 'order');
-      Get.offAllNamed(Routes.LOGIN);
     } catch (e) {
       Get.snackbar('Error', 'check your connection');
     }

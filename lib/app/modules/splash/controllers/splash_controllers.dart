@@ -24,14 +24,18 @@ class SplashController extends GetxController {
 
 
   void onNavigate() async {
-      token.value = await SecureCacheHelper.getData(key: 'token') ?? '';
+    try{
+      token.value = await CacheHelper.getData(key: 'token') ?? '';
       Timer(const Duration(seconds: 3),() {
-        if(token.value == '') {
-          Get.offNamed(Routes.LOGIN,arguments: [lang,isDark]);
+        if (token.value.isEmpty) {
+          Get.offNamed(Routes.LOGIN, arguments: [lang.value, isDark.value]);
           return;
-        }else{
-          Get.offNamed(Routes.HOME, arguments: [lang,isDark,token]);
+        } else {
+          Get.offNamed(Routes.HOME, arguments: [lang.value, isDark.value, token.value]);
         }
-      },);
-  }
+      });
+    }catch(e){
+      Get.offNamed(Routes.LOGIN,arguments: [lang.value,isDark.value]);
+    }
+    }
 }

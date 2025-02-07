@@ -16,6 +16,7 @@ import '../../../core/services/secure_cache_helper.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../routes/app_pages.dart';
 import '../../../core/models/tags/tags_model.dart';
+import '../../visit_details/di/operation_type.dart';
 import '../screens/report_screen.dart';
 
 class HomeController extends GetxController {
@@ -31,10 +32,10 @@ class HomeController extends GetxController {
   var lastPage = RxBool(false);
   var onMeSearch = RxBool(false);
   var onAllSearch = RxBool(false);
-  var token = Get.arguments[2] as RxString;
+  var token = ''.obs;
   var searchQuery = ''.obs;
   var allSearchQuery = ''.obs;
-  var lang = Get.arguments[0] as RxString;
+  var lang = ''.obs;
   var userNames = <String>[].obs;
   var userId = <int>[].obs;
   var tags = [
@@ -54,7 +55,7 @@ class HomeController extends GetxController {
   var allSearchResults = <DayVisits>[].obs;
   var patient = User().obs;
   var visitsArchives = <VisitModel>[].obs;
-  var isDark = Get.arguments[1] as RxBool;
+  var isDark = RxBool(false);
   var profile =ProfileModel().obs;
   var order =<int>[];
   var orderVisits =<VisitModel>[].obs;
@@ -92,6 +93,7 @@ class HomeController extends GetxController {
   void logout() async {
     isLoadingInternal(true);
     mainController.logout(token.value,lang.value);
+    Get.offAllNamed(Routes.LOGIN,arguments: [lang.value,isDark.value]);
     isLoadingInternal(false);
   }
   String formatDate(String dateString) {
@@ -229,10 +231,8 @@ class HomeController extends GetxController {
   }
 
   void onClone(VisitModel visit) async {
-    isLoadingInternal(true);
-    var visitId = await mainController.addVisit(token.value,lang.value,visit);
-    isLoadingInternal(false);
-    Get.toNamed(Routes.EDIT_VISIT, arguments: visitId);
+    Get.toNamed(Routes.ADD_EDIT_VISIT,
+        arguments: [lang.value,isDark.value,token.value,OperationType.CLONE,visit]);
   }
 
   void onTagsChanged(int index) {
@@ -272,6 +272,9 @@ class HomeController extends GetxController {
   @override
   void onInit() async {
     isLoading(true);
+    isDark.value =Get.arguments[1];
+    lang.value =Get.arguments[0];
+    token.value =Get.arguments[2];
     getVisitsData();
     getArchivesData();
     getProfile();

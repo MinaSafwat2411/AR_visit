@@ -107,9 +107,9 @@ class VisitCardItemWidget extends GetView<HomeController> {
       child: GestureDetector(
         onTap: () {
           Get.toNamed(Routes.VISIT_DETAILS, arguments: [
-            controller.lang,
-            controller.isDark,
-            controller.token,
+            controller.lang.value,
+            controller.isDark.value,
+            controller.token.value,
             visit
           ])?.then(
             (value) {

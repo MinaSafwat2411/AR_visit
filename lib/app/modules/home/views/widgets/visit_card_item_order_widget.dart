@@ -15,7 +15,7 @@ class VisitCardItemOrderWidget extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.toNamed(Routes.VISIT_DETAILS, arguments: [controller.lang,controller.isDark, controller.token,visit])?.then((value) {
+        Get.toNamed(Routes.VISIT_DETAILS, arguments: [controller.lang.value,controller.isDark.value, controller.token.value,visit])?.then((value) {
           if(value){
             controller.getVisitsData();
           }

@@ -2,6 +2,7 @@
 import 'package:ar_visiting_app/app/core/models/api_response/api_response.dart';
 import 'package:ar_visiting_app/app/core/models/enums/enums.dart';
 import 'package:ar_visiting_app/app/core/models/login/loginmodel.dart';
+import 'package:ar_visiting_app/app/core/services/cache_helper.dart';
 import 'package:ar_visiting_app/app/core/services/dio_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,12 +19,18 @@ class LoginController extends GetxController {
   var isLoading = false.obs;
   var id = ''.obs;
   var nR = ''.obs;
-  var lang = Get.arguments[0].obs as RxString;
-  var isDark = Get.arguments[1].obs as RxBool;
+  var lang = ''.obs;
+  var isDark = RxBool(false);
   var token = ''.obs;
 
   var login= LoginModel().obs;
 
+  @override
+  void onInit() {
+    lang.value=Get.arguments[0];
+    isDark.value=Get.arguments[1];
+    super.onInit();
+  }
 
   void getArid(){
     RegExp regExp = RegExp(r'E1C1F(\d+)NR(\d+)');
@@ -50,13 +57,7 @@ class LoginController extends GetxController {
         response.data,
             (json) => UserModel.fromJson(json as Map<String, dynamic>),
       );
-      SecureCacheHelper.saveData(key: 'token', value: apiResponse.data?.token);
-      SecureCacheHelper.saveData(key: 'user', value: apiResponse.data?.user?.id.toString());
-      var responseEnums = await DioHelper.getData(
-            url: BackendEndpoint.enums, token: apiResponse.data!.token);
-        var apiResponseEnums = ApiResponse<EnumsModel>.fromJson(responseEnums.data,
-            (json) => EnumsModel.fromJson(json as Map<String, dynamic>));
-        SecureCacheHelper.saveEnumsToStorage(apiResponseEnums.data!);
+      CacheHelper.saveData(key: 'token', value: apiResponse.data?.token);
       Get.snackbar("Login", apiResponse.message ?? "");
       Get.offNamed(Routes.HOME, arguments: [lang.value,isDark.value,apiResponse.data!.token]);
     } catch (e) {

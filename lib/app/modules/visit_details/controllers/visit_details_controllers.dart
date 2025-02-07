@@ -1,7 +1,6 @@
 import 'package:ar_visiting_app/app/core/controller/main_controller.dart';
 import 'package:ar_visiting_app/app/core/models/login/loginmodel.dart';
 import 'package:ar_visiting_app/app/core/utils/app_colors.dart';
-import 'package:ar_visiting_app/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -9,10 +8,10 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../core/models/visits/visitmodel.dart';
 
 class VisitDetailsControllers extends GetxController {
-  var token = Get.arguments[2] as RxString;
+  var token = ''.obs;
   var isLoading = false.obs;
   var visit = VisitModel().obs;
-  var lang = Get.arguments[0] as RxString;
+  var lang = ''.obs;
   var visitId = RxInt(-1);
   var mainController = MainController();
   var father = <User>[].obs;
@@ -21,7 +20,7 @@ class VisitDetailsControllers extends GetxController {
   var servant = <User>[].obs;
   var servantNames = <String>[].obs;
   var servantId = <int>[].obs;
-  var isDark = Get.arguments[1] as RxBool;
+  var isDark = RxBool(false);
 
   Future<void> getFatherServantNames() async {
     isLoading(true);
@@ -175,6 +174,9 @@ class VisitDetailsControllers extends GetxController {
 
   @override
   void onInit() async {
+    lang.value = Get.arguments[0];
+    isDark.value = Get.arguments[1];
+    token.value = Get.arguments[2];
     visit.value = Get.arguments[3];
     visitId.value = visit.value.id ?? -1;
     getFatherServantNames();

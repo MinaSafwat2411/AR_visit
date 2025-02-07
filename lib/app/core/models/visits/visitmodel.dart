@@ -71,7 +71,6 @@ class VisitModel {
 
   Map<String, dynamic> toJsonEdit() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['user_id']=this.userId;
     data['area_id'] = this.areaId;
     data['attendant'] = this.attendant;
     data['attendant_phone'] = this.attendantPhone;
