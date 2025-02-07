@@ -129,7 +129,7 @@ class HomeController extends GetxController {
 
   Future<void> onUserSelected(String user)async{
     isLoadingInternal(true);
-    visitsReport.value = await mainController.getReport(token.value,lang.value,userId[userNames.indexOf(user)]);
+    visitsReport.value = await mainController.getReport(lang.value,token.value,userId[userNames.indexOf(user)]);
     isLoadingInternal(false);
   }
 
