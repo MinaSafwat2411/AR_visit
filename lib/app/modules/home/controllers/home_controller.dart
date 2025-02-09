@@ -71,7 +71,7 @@ class HomeController extends GetxController {
   var id =RxInt(-1);
 
   void changeVisitOrder()async{
-    await mainController.orderVisit(token.value,lang.value,OrderModel(ids: order));
+    await mainController.orderVisit(lang.value,token.value,OrderModel(ids: order));
   }
   void changeLanguage(String languageCode) async{
     lang.value = languageCode;
