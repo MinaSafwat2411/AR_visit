@@ -47,6 +47,7 @@ class RegisterController extends GetxController{
       password: passwordController.text
     );
     await mainController.register(lang.value, register.value);
+    Get.back();
     isLoading(false);
   }
 

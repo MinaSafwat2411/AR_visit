@@ -73,7 +73,6 @@ class RegisterView extends GetView<RegisterController> {
                 break;
                 case 2 :if(controller.key3.currentState!.validate()){
                   controller.registerAccount();
-                  Get.back();
                 }
               }
               controller.getBtnText();
