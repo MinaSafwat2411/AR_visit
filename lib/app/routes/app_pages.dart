@@ -10,6 +10,8 @@ import '../modules/add_edit_visit/bindings/add_edit_visit_binding.dart';
 import '../modules/add_edit_visit/views/add_edit_visit_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
+import '../modules/register/bindings/register_blinding.dart';
+import '../modules/register/views/register_view.dart';
 
 part 'app_routes.dart';
 
@@ -44,5 +46,9 @@ class AppPages {
         page: () => const HomeView(),
         binding: HomeBinding()
     ),
+    GetPage(name: _Paths.REGISTER,
+        page: () => const RegisterView(),
+      binding: RegisterBlinding()
+    )
   ];
 }

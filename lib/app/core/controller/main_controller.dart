@@ -12,6 +12,8 @@ import 'package:ar_visiting_app/app/core/utils/backend_endpoint.dart';
 import 'package:ar_visiting_app/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 
+import '../models/register/register_model.dart';
+
 class MainController extends GetxController {
 
   String changeFormatDB(String date) {
@@ -385,4 +387,14 @@ class MainController extends GetxController {
       Get.snackbar('Error', 'Failed to assign servant');
     }
   }
+  Future<void> register(String lang , RegisterModel register)async{
+    try {
+      await DioHelper.postData(
+          url: BackendEndpoint.register,
+          lang: lang,
+          data: register.toJson());
+  }catch(e){
+      Get.snackbar('Error', 'Failed to register');
+    }
+    }
 }

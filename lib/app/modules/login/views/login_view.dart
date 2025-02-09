@@ -1,3 +1,4 @@
+import 'package:ar_visiting_app/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/utils/app_colors.dart';
@@ -123,7 +124,7 @@ class LoginView extends GetView<LoginController> {
                    const SizedBox(width: 10,),
                    GestureDetector(
                     onTap: () {
-                      
+                      Get.toNamed(Routes.REGISTER,arguments: [controller.lang.value,controller.isDark.value]);
                     },
                      child:  Text('register'.tr,style: const TextStyle(
                       fontWeight: FontWeight.bold,

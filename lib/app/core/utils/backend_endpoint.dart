@@ -21,4 +21,5 @@ class BackendEndpoint {
   static const profile = '$users/profile';
   static const servent ='$visits/servant';
   static const father ='$visits/father';
+  static const register = '$users/register';
 }

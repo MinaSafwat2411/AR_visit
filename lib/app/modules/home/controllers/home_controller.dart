@@ -92,7 +92,7 @@ class HomeController extends GetxController {
   
   void logout() async {
     isLoadingInternal(true);
-    mainController.logout(token.value,lang.value);
+    mainController.logout(lang.value,token.value);
     Get.offAllNamed(Routes.LOGIN,arguments: [lang.value,isDark.value]);
     isLoadingInternal(false);
   }
@@ -104,7 +104,7 @@ class HomeController extends GetxController {
 
   void onDone(int id) async {
     isLoadingInternal(true);
-    mainController.onDone(token.value,lang.value,id);
+    mainController.onDone(lang.value,token.value,id);
     getVisitsData();
   }
   Future<void> getArchivesData() async {
@@ -153,7 +153,7 @@ class HomeController extends GetxController {
 
   void addPatient() async {
     isSubmitted(true);
-    await mainController.addPatient(token.value,lang.value,User(
+    await mainController.addPatient(lang.value,token.value,User(
         statusValue: 2,
         e1C1F: familyId.text,
         nR: familyNumber.text,
@@ -207,7 +207,7 @@ class HomeController extends GetxController {
   void onCanceled(int id) async {
     Get.back(closeOverlays: true);
     isLoadingInternal(true);
-    mainController.onCanceled(token.value,lang.value,id);
+    mainController.onCanceled(lang.value,token.value,id);
     getVisitsData();
   }
 

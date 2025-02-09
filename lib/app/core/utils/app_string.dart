@@ -18,6 +18,8 @@ class AppStringsEn extends AppStrings {
     'passwordTitle': 'Password',
     'passwordValidate1': 'Please enter your password',
     'passwordValidate2': 'Password must be at least 6 characters',
+    'passwordValidate3': 'Password not match',
+    'confirmpassword':'Confirm Password',
     'userTitle': 'E1C1FXXXXNRX',
     'userValidate': 'Please enter your ARID!',
     'login': 'Login',
@@ -26,6 +28,7 @@ class AppStringsEn extends AppStrings {
     'visitDetailsTitle': 'Visit Details',
     'yesterday': 'Yesterday',
     'today': 'Today',
+    'name':'Name',
     'tomorrow': 'Tomorrow',
     'noOfPeople': 'No. of people',
     'father': 'Father',
@@ -117,7 +120,12 @@ class AppStringsEn extends AppStrings {
     'register': 'Register',
     'clear': 'Clear',
     'orderVisits': 'My Order Visits',
-    'emptyOrder':'Add Visits to Carts'
+    'emptyOrder':'Add Visits to Carts',
+    'next': 'Next',
+    'nameAr':'Name in Arabic',
+    'emailValidate': 'Please enter a valid email address',
+    'phoneValidate': 'Phone must consist of 11 numbers',
+    'nameValidate': 'Name can\'t be empty',
   };
 }
 
@@ -137,6 +145,7 @@ class AppStringsAr extends AppStrings {
     'passwordTitle': 'ادخل كلمة السر',
     'passwordValidate1': 'رجاء ادخال كلمه السر',
     'passwordValidate2': 'يجب أن تتكون كلمة المرور من 6 أحرف على الأقل',
+    'passwordValidate3': 'كلمة المرور غير متطابقة',
     'userTitle': 'ادخل رقم العضويه',
     'arid': 'رقم العضويه',
     'userValidate': 'رجاء ادخال رقم العضوية',
@@ -239,5 +248,12 @@ class AppStringsAr extends AppStrings {
     'clear': 'مسح',
     'orderVisits': 'زياراتي المرتبة',
     'emptyOrder': 'أضف زيارات إلى السلة',
+    'next':'التالي',
+    'name':'الاسم',
+    'nameAr':'الاسم بللغة العربية',
+    'confirmpassword': 'تأكيد كلمة السر',
+    'emailValidate': 'رجاء إدخال بريد إلكتروني صحيح',
+    'phoneValidate': 'يجب أن يتكون الهاتف من 11 رقم',
+    'nameValidate': 'لا يمكن أن يكون الاسم فارغًا'
   };
 }
