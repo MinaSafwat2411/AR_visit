@@ -380,10 +380,11 @@ class MainController extends GetxController {
     }
   }
   Future<void> register(String lang , RegisterModel register)async{
+
     try {
       await DioHelper.postData(
           url: BackendEndpoint.register,
-          lang: lang,
+          lang: 'en',
           data: register.toJson());
   }catch(e){
       Get.snackbar('Error', 'Failed to register');
