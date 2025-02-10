@@ -2,7 +2,6 @@ import 'package:ar_visiting_app/app/core/widgets/custom_small_textField.dart';
 import 'package:ar_visiting_app/app/core/widgets/custom_textformfield.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
 
 import '../controllers/register_controller.dart';
 
@@ -21,11 +20,13 @@ class AddNameAridScreen extends GetView<RegisterController> {
               if(value.isEmpty){
                 return 'nameValidate'.tr;
               }
+              return null;
             },),
             CustomTextFormField(textController: controller.nameArController, label: 'nameAr'.tr, validator: (value) {
               if(value.isEmpty){
                 return 'nameValidate'.tr;
               }
+              return null;
             },),
             Row(
               children: [
@@ -35,6 +36,7 @@ class AddNameAridScreen extends GetView<RegisterController> {
                   if(value.isEmpty){
                     return 'userValidate'.tr;
                   }
+                  return null;
                 },),
                 const Spacer(),
                 const Text("NR"),
@@ -43,6 +45,7 @@ class AddNameAridScreen extends GetView<RegisterController> {
                   if(value.isEmpty){
                     return 'userValidate'.tr;
                   }
+                  return null;
                 },),
               ],
             ),

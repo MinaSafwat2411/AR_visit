@@ -22,27 +22,27 @@ class ProfileModel {
     id = json['id'];
     name = json['name'];
     email = json['email'];
-    type = json['type'] != null ? new Type.fromJson(json['type']) : null;
-    status = json['status'] != null ? new Type.fromJson(json['status']) : null;
+    type = json['type'] != null ? Type.fromJson(json['type']) : null;
+    status = json['status'] != null ? Type.fromJson(json['status']) : null;
     phone = json['phone'];
     e1C1F = json['E1C1F'];
     nR = json['NR'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['email'] = this.email;
-    if (this.type != null) {
-      data['type'] = this.type!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['email'] = email;
+    if (type != null) {
+      data['type'] = type!.toJson();
     }
-    if (this.status != null) {
-      data['status'] = this.status!.toJson();
+    if (status != null) {
+      data['status'] = status!.toJson();
     }
-    data['phone'] = this.phone;
-    data['E1C1F'] = this.e1C1F;
-    data['NR'] = this.nR;
+    data['phone'] = phone;
+    data['E1C1F'] = e1C1F;
+    data['NR'] = nR;
     return data;
   }
 }
@@ -59,9 +59,9 @@ class Type {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['value'] = this.value;
-    data['name'] = this.name;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['value'] = value;
+    data['name'] = name;
     return data;
   }
 }

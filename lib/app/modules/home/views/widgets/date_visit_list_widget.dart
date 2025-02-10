@@ -3,7 +3,6 @@ import 'package:ar_visiting_app/app/core/utils/app_colors.dart';
 import 'package:ar_visiting_app/app/modules/home/controllers/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'visit_card_item_order_widget.dart';
 import 'visit_card_item_widget.dart';
 class DateVisitListWidget extends GetView<HomeController> {
   const DateVisitListWidget({

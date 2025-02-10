@@ -1,4 +1,3 @@
-import 'package:ar_visiting_app/app/core/widgets/TestVisitdetails.dart';
 import 'package:ar_visiting_app/app/core/widgets/custom_alert.dart';
 import 'package:ar_visiting_app/app/core/widgets/custom_bottom_sheet.dart';
 import 'package:ar_visiting_app/app/core/widgets/custom_button.dart';
@@ -515,7 +514,7 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                                 children: [
                                   Text(
                                     'father'.tr,
-                                    style: TextStyle(fontSize: 18),
+                                    style: const TextStyle(fontSize: 18),
                                   ),
                                   Text(
                                     controller.visit.value.fatherName ??
@@ -527,7 +526,7 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                                   ),
                                    Text(
                                     'servant'.tr,
-                                    style: TextStyle(fontSize: 18),
+                                    style: const TextStyle(fontSize: 18),
                                   ),
                                   Text(
                                     controller.visit.value.servantName ??
@@ -578,7 +577,7 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                                 children: [
                                   Text(
                                     'notes'.tr,
-                                    style: TextStyle(fontSize: 18),
+                                    style: const TextStyle(fontSize: 18),
                                   ),
                                   Text(
                                     controller.visit.value.note ?? 'No Note',

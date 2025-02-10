@@ -1,4 +1,3 @@
-import 'package:ar_visiting_app/app/core/models/visits/VisitsModel.dart';
 import 'package:ar_visiting_app/app/core/utils/app_colors.dart';
 import 'package:ar_visiting_app/app/modules/home/controllers/home_controller.dart';
 import 'package:flutter/material.dart';

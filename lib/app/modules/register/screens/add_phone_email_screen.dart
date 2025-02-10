@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
-
-import '../../../core/widgets/custom_small_textField.dart';
 import '../../../core/widgets/custom_textformfield.dart';
 import '../controllers/register_controller.dart';
 
@@ -24,14 +21,16 @@ class AddPhoneEmailScreen extends GetView<RegisterController> {
               if(!emailRegex.hasMatch(value)){
                 return 'emailValidate'.tr;
               }
+              return null;
             },),
             CustomTextFormField(textController: controller.phoneController, label: 'phone'.tr, validator: (value) {
               if(value.length != 11){
                 return 'phoneValidate'.tr;
               }
+              return null;
             },),
           ],
         )
-    );;
+    );
   }
 }

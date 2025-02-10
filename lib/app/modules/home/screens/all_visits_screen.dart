@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/utils/app_colors.dart';
 import '../views/widgets/date_visit_list_widget.dart';
-import '../views/widgets/my_date_visit_list_widget.dart';
 
 class AllVisitsScreen extends GetView<HomeController> {
   const AllVisitsScreen({super.key});

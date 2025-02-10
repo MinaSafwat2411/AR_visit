@@ -10,6 +10,7 @@ class CustomBottomSheet extends GetView<VisitDetailsControllers> {
   final BottomSheetType bottomSheetType;
   final bool isDark;
 
+  // ignore: use_super_parameters
   const CustomBottomSheet({
     Key? key,
     required this.title,

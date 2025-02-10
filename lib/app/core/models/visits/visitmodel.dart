@@ -54,7 +54,7 @@ class VisitModel {
     fatherName = json['father_name'];
     servantName = json['servant_name'];
     status =
-        json['status'] != null ? new Status.fromJson(json['status']) : null;
+        json['status'] != null ? Status.fromJson(json['status']) : null;
     attendant = json['attendant'];
     attendantPhone = json['attendant_phone'];
     addressType = json['address_type'];
@@ -70,37 +70,37 @@ class VisitModel {
   }
 
   Map<String, dynamic> toJsonEdit() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['area_id'] = this.areaId;
-    data['attendant'] = this.attendant;
-    data['attendant_phone'] = this.attendantPhone;
-    data['address_type'] = this.addressType;
-    data['address'] = this.address;
-    data['address_url'] = this.addressUrl;
-    data['patient_nums'] = this.patientNums;
-    data['from'] = this.from;
-    data['to'] = this.to;
-    data['date'] = this.date;
-    data['note'] = this.note;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['area_id'] = areaId;
+    data['attendant'] = attendant;
+    data['attendant_phone'] = attendantPhone;
+    data['address_type'] = addressType;
+    data['address'] = address;
+    data['address_url'] = addressUrl;
+    data['patient_nums'] = patientNums;
+    data['from'] = from;
+    data['to'] = to;
+    data['date'] = date;
+    data['note'] = note;
     return data;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if(e1C1F!=null) data['E1C1F']=this.e1C1F;
-    if(nR!=null) data['NR']=this.nR;
-    data['user_id']=this.userId;
-    data['area_id'] = this.areaId;
-    data['attendant'] = this.attendant;
-    data['attendant_phone'] = this.attendantPhone;
-    data['address_type'] = this.addressType;
-    data['address'] = this.address;
-    data['address_url'] = this.addressUrl;
-    data['patient_nums'] = this.patientNums;
-    data['from'] = this.from;
-    data['to'] = this.to;
-    data['date'] = this.date;
-    data['note'] = this.note;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if(e1C1F!=null) data['E1C1F']=e1C1F;
+    if(nR!=null) data['NR']=nR;
+    data['user_id']=userId;
+    data['area_id'] = areaId;
+    data['attendant'] = attendant;
+    data['attendant_phone'] = attendantPhone;
+    data['address_type'] = addressType;
+    data['address'] = address;
+    data['address_url'] = addressUrl;
+    data['patient_nums'] = patientNums;
+    data['from'] = from;
+    data['to'] = to;
+    data['date'] = date;
+    data['note'] = note;
     return data;
   }
 }
@@ -117,9 +117,9 @@ class Status {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['value'] = this.value;
-    data['name'] = this.name;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['value'] = value;
+    data['name'] = name;
     return data;
   }
 }

@@ -1,6 +1,5 @@
 import 'package:ar_visiting_app/app/core/utils/app_colors.dart';
 import 'package:ar_visiting_app/app/modules/home/controllers/home_controller.dart';
-import 'package:ar_visiting_app/app/modules/home/views/widgets/my_date_visit_list_widget.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

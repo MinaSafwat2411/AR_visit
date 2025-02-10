@@ -1,11 +1,7 @@
 
 import 'dart:async';
-
-import 'package:ar_visiting_app/app/core/services/dio_helper.dart';
-import 'package:ar_visiting_app/app/core/utils/backend_endpoint.dart';
 import 'package:get/get.dart';
 import '../../../core/services/cache_helper.dart';
-import '../../../core/services/secure_cache_helper.dart';
 import '../../../routes/app_pages.dart';
 
 class SplashController extends GetxController {

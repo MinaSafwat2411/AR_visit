@@ -20,11 +20,13 @@ class CreatePasswordScreen extends GetView<RegisterController> {
               }else if(value.length<8){
                 return 'passwordValidate2'.tr;
               }
+              return null;
             },),
             CustomTextFormField(textController: controller.confirmPasswordController, label: 'confirmpassword'.tr, validator: (value) {
               if(value!=controller.passwordController.text){
                 return 'passwordValidate3'.tr;
               }
+              return null;
             },),
           ],
         )

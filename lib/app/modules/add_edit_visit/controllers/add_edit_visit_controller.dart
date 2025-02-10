@@ -2,11 +2,9 @@ import 'package:ar_visiting_app/app/core/controller/main_controller.dart';
 import 'package:ar_visiting_app/app/core/models/area/areamodel.dart';
 import 'package:ar_visiting_app/app/core/models/login/loginmodel.dart';
 import 'package:ar_visiting_app/app/core/models/visits/visitmodel.dart';
-import 'package:ar_visiting_app/app/core/services/secure_cache_helper.dart';
 import 'package:ar_visiting_app/app/modules/visit_details/di/operation_type.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../core/services/cache_helper.dart';
 import '../../../routes/app_pages.dart';
 
 class AddEditVisitController extends GetxController {

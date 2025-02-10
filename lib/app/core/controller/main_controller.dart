@@ -7,9 +7,7 @@ import 'package:ar_visiting_app/app/core/models/visits/VisitsModel.dart';
 import 'package:ar_visiting_app/app/core/models/visits/visitmodel.dart';
 import 'package:ar_visiting_app/app/core/services/cache_helper.dart';
 import 'package:ar_visiting_app/app/core/services/dio_helper.dart';
-import 'package:ar_visiting_app/app/core/services/secure_cache_helper.dart';
 import 'package:ar_visiting_app/app/core/utils/backend_endpoint.dart';
-import 'package:ar_visiting_app/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 
 import '../models/register/register_model.dart';
@@ -105,9 +103,6 @@ class MainController extends GetxController {
 
   Future<VisitModel> editVisit(String lang, String token, VisitModel visit) async {
     try {
-      print(visit.toJsonEdit());
-      print(token);
-      print('${BackendEndpoint.visits}/${visit.id.toString()}');
       final response = await DioHelper.putData(
           url: '${BackendEndpoint.visits}/${visit.id.toString()}',
           token: token,
@@ -120,7 +115,6 @@ class MainController extends GetxController {
       Get.snackbar("Visits", "Visit add successfully");
       return apiResponse.data ?? VisitModel();
     } catch (e) {
-      print(e.toString());
       Get.snackbar("Error", e.toString());
       return VisitModel();
     }
@@ -190,7 +184,6 @@ class MainController extends GetxController {
           token: token,
           lang: lang,
           query: {'user_id': id});
-      print(response.data);
       final apiResponse = ApiResponse<List<VisitModel>>.fromJson(
         response.data,
         (json) {
@@ -202,7 +195,6 @@ class MainController extends GetxController {
       );
       return apiResponse.data ?? [];
     } catch (e) {
-      print(e.toString());
       Get.snackbar('Error', 'Failed to retrieve report data');
       return [];
     }

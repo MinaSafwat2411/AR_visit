@@ -1,7 +1,6 @@
 import 'package:ar_visiting_app/app/modules/register/controllers/register_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 
 class CustomButton extends StatelessWidget {
   const CustomButton(

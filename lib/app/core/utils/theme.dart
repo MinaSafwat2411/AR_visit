@@ -16,7 +16,6 @@ final ThemeData darkTheme = ThemeData(
   colorScheme: const ColorScheme.dark(
     primary: Colors.deepPurpleAccent,
     secondary: Colors.tealAccent,
-    background: AppColors.codGray2,
     surface: AppColors.codGray,
   ),
   cardTheme: CardTheme(
