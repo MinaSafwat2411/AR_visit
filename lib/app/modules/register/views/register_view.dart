@@ -59,7 +59,7 @@ class RegisterView extends GetView<RegisterController> {
                 ],
               ),
             ),
-            RegisterButton(onPressed: () {
+            Obx(() => RegisterButton(onPressed: () {
               switch(controller.pageController.page?.toInt()){
                 case 0 :if(controller.key1.currentState!.validate()){
                   controller.currentScreen.value = 1;
@@ -77,6 +77,7 @@ class RegisterView extends GetView<RegisterController> {
               }
               controller.getBtnText();
             },btnColor: AppColors.trinidadColor,height: 50,)
+            )
           ],
         ),
       ),
