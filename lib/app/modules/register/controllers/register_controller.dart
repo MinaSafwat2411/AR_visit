@@ -48,7 +48,6 @@ class RegisterController extends GetxController{
     );
     await mainController.register(lang.value, register.value);
     isLoading(false);
-    Get.back();
   }
 
   @override

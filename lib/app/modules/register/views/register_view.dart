@@ -2,6 +2,7 @@ import 'package:ar_visiting_app/app/modules/register/controllers/register_contro
 import 'package:ar_visiting_app/app/modules/register/screens/add_name_arid_screen.dart';
 import 'package:ar_visiting_app/app/modules/register/screens/add_phone_email_screen.dart';
 import 'package:ar_visiting_app/app/modules/register/screens/create_password_screen.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -27,19 +28,41 @@ class RegisterView extends GetView<RegisterController> {
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.max,
               children: [
-                Expanded(child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: Obx(() => Container(height: 2,color:controller.currentScreen.value == 0 ?  AppColors.trinidadColor:AppColors.white,),
-                ))),
-                Expanded(child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: Obx(() => Container(height: 2,color: controller.currentScreen.value == 1 ? AppColors.trinidadColor:AppColors.white,),
-                ))),
-                Expanded(child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: Obx(() => Container(height: 2,color: controller.currentScreen.value == 2?AppColors.trinidadColor:AppColors.white,),
-                ))),
-              ],),
+                Expanded(
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: Obx(
+                          () => Container(
+                            height: 2,
+                            color: controller.currentScreen.value == 0
+                                ? AppColors.trinidadColor
+                                : AppColors.white,
+                          ),
+                        ))),
+                Expanded(
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: Obx(
+                          () => Container(
+                            height: 2,
+                            color: controller.currentScreen.value == 1
+                                ? AppColors.trinidadColor
+                                : AppColors.white,
+                          ),
+                        ))),
+                Expanded(
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: Obx(
+                          () => Container(
+                            height: 2,
+                            color: controller.currentScreen.value == 2
+                                ? AppColors.trinidadColor
+                                : AppColors.white,
+                          ),
+                        ))),
+              ],
+            ),
             const SizedBox(height: 200),
             Text(
               'loginTitle'.tr,
@@ -51,6 +74,7 @@ class RegisterView extends GetView<RegisterController> {
             ),
             Expanded(
               child: PageView(
+                physics: const NeverScrollableScrollPhysics(),
                 controller: controller.pageController,
                 children: const [
                   AddNameAridScreen(),
@@ -59,25 +83,40 @@ class RegisterView extends GetView<RegisterController> {
                 ],
               ),
             ),
-            Obx(() => RegisterButton(onPressed: () {
-              switch(controller.pageController.page?.toInt()){
-                case 0 :if(controller.key1.currentState!.validate()){
-                  controller.currentScreen.value = 1;
-                  controller.pageController.jumpToPage(1);
-                }
-                break;
-                case 1 :if(controller.key2.currentState!.validate()){
-                  controller.currentScreen.value = 2;
-                  controller.pageController.jumpToPage(2);
-                }
-                break;
-                case 2 :if(controller.key3.currentState!.validate()){
-                  controller.registerAccount();
-                }
-              }
-              controller.getBtnText();
-            },btnColor: AppColors.trinidadColor,height: 50,)
-            )
+            Obx(() => ConditionalBuilder(
+                  condition: !controller.isLoading.value,
+                  builder: (context) => RegisterButton(
+                    onPressed: () {
+                      switch (controller.pageController.page?.toInt()) {
+                        case 0:
+                          if (controller.key1.currentState!.validate()) {
+                            controller.currentScreen.value = 1;
+                            controller.pageController.jumpToPage(1);
+                          }
+                          break;
+                        case 1:
+                          if (controller.key2.currentState!.validate()) {
+                            controller.currentScreen.value = 2;
+                            controller.pageController.jumpToPage(2);
+                          }
+                          break;
+                        case 2:
+                          if (controller.key3.currentState!.validate()) {
+                            controller.registerAccount();
+                            Get.back();
+                          }
+                      }
+                      controller.getBtnText();
+                    },
+                    btnColor: AppColors.trinidadColor,
+                    height: 50,
+                  ),
+                  fallback: (context) => const Center(
+                    child: CircularProgressIndicator(
+                      color: AppColors.trinidadColor,
+                    ),
+                  ),
+                ))
           ],
         ),
       ),
