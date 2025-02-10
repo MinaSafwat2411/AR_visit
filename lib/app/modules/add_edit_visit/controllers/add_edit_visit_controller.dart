@@ -137,7 +137,6 @@ class AddEditVisitController extends GetxController {
     }
   }
   Future<void> getData() async {
-    try {
       var userData = await mainController.getUserData(lang.value, token.value);
       var areaData = await mainController.getAreaData(lang.value, token.value);
       for (var element in areaData) {
@@ -148,9 +147,6 @@ class AddEditVisitController extends GetxController {
         userNames.add(element.name!);
         userId.add(element.id!);
       }
-    }catch(e){
-      Get.snackbar("Error", "Failed to retrieve area details");
-    }
   }
 
   void clone()async{

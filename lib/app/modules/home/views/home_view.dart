@@ -147,7 +147,7 @@ class HomeView extends GetView<HomeController> {
                   rightButtonText: 'no'.tr,
                   rightFunction: () {
                     Get.back(closeOverlays: true);
-                    Get.toNamed(Routes.ADD_EDIT_VISIT,arguments: [controller.lang,controller.isDark,controller.token,OperationType.ADD]);
+                    Get.toNamed(Routes.ADD_EDIT_VISIT,arguments: [controller.lang.value,controller.isDark.value,controller.token.value,OperationType.ADD]);
                   },
                 ),
               );
