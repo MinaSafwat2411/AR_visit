@@ -81,6 +81,7 @@ class HomeController extends GetxController {
     getVisitsData();
     getArchivesData();
     getProfile();
+    getFatherServantData();
     runApp(MyApp(lang: lang.value,isDark:  isDark.value,));
   }
   void changeTheme()async{
