@@ -32,7 +32,7 @@ class MyDateVisitListWidget extends GetView<HomeController> {
           ),
             ConstrainedBox(
         constraints: BoxConstraints(
-        maxHeight: 100 * controller.meSearchResults[visitsIndex].visits.length.toDouble(),
+        maxHeight: 110 * controller.meSearchResults[visitsIndex].visits.length.toDouble(),
         ),
           child: Obx(() => ReorderableListView(
             physics: const NeverScrollableScrollPhysics(),
