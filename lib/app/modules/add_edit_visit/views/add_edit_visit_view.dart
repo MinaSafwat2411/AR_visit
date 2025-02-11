@@ -95,7 +95,7 @@ class AddEditVisitView extends GetView<AddEditVisitController> {
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                CustomDropDownList(
+                                if(controller.currentScreen.value== 0)CustomDropDownList(
                                   onChangeValue: (String? value) {
                                     controller.userType.value = value!;
                                   },
@@ -103,7 +103,7 @@ class AddEditVisitView extends GetView<AddEditVisitController> {
                                   items: controller.userNames,
                                   currentValue: controller.userType.value,
                                 ),
-                                Padding(
+                                if(controller.currentScreen.value== 0) Padding(
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 6),
                                   child: Row(

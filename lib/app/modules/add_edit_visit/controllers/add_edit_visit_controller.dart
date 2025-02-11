@@ -180,7 +180,7 @@ class AddEditVisitController extends GetxController {
 
 
   void displayData() {
-    dateController = TextEditingController(text: visit.value.date);
+    if(currentScreen.value != 2)dateController = TextEditingController(text: visit.value.date);
     fromTimeController = TextEditingController(text: visit.value.from);
     toTimeController = TextEditingController(text: visit.value.to);
     numberOfPeopleController =TextEditingController(text: visit.value.patientNums.toString());
