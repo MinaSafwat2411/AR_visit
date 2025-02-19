@@ -14,25 +14,33 @@ class VisitDetailsControllers extends GetxController {
   var lang = ''.obs;
   var visitId = RxInt(-1);
   var mainController = MainController();
-  var father = <User>[].obs;
+  var father = <DropDown>[].obs;
   var fatherNames = <String>[].obs;
   var fatherId = <int>[].obs;
-  var servant = <User>[].obs;
+  var servant = <DropDown>[].obs;
   var servantNames = <String>[].obs;
   var servantId = <int>[].obs;
   var isDark = RxBool(false);
 
   Future<void> getFatherServantNames() async {
     isLoading(true);
-    servant.value = (await mainController.getUserList(lang.value,token.value,2));
+    servant.value = (await mainController.getFatherServantData(lang.value,token.value,2));
     for (var servant in servant) {
-      servantNames.add(servant.name!);
-      servantId.add(servant.id!);
+      if (lang.value == 'en') {
+        servantNames.add(servant.name?.name??'');
+      } else {
+        servantNames.add(servant.name?.nameAr??'');
+      }
+      servantId.add(servant.id??-1);
     }
-    father.value = (await mainController.getUserList(lang.value,token.value,1));
+    father.value = (await mainController.getFatherServantData(lang.value,token.value,1));
     for (var father in father) {
-      fatherNames.add(father.name!);
-      fatherId.add(father.id!);
+      if (lang.value == 'en') {
+        fatherNames.add(father.name?.name??'');
+      } else {
+        fatherNames.add(father.name?.nameAr??'');
+      }
+      fatherId.add(father.id??-1);
     }
     isLoading(false);
   }

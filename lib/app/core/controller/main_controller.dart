@@ -3,7 +3,6 @@ import 'package:ar_visiting_app/app/core/models/area/areamodel.dart';
 import 'package:ar_visiting_app/app/core/models/login/loginmodel.dart';
 import 'package:ar_visiting_app/app/core/models/oder/order_model.dart';
 import 'package:ar_visiting_app/app/core/models/profile/profile_model.dart';
-import 'package:ar_visiting_app/app/core/models/visits/VisitsModel.dart';
 import 'package:ar_visiting_app/app/core/models/visits/visitmodel.dart';
 import 'package:ar_visiting_app/app/core/services/cache_helper.dart';
 import 'package:ar_visiting_app/app/core/services/dio_helper.dart';
@@ -13,7 +12,6 @@ import 'package:get/get.dart';
 import '../models/register/register_model.dart';
 
 class MainController extends GetxController {
-
   String changeFormatDB(String date) {
     var newDate = '';
     try {
@@ -36,12 +34,14 @@ class MainController extends GetxController {
     return newDate;
   }
 
-  Future<VisitModel> getVisitData(String lang, String token, int id) async {
+  Future<VisitModel> getVisitData(
+      String lang, String token, int id) async {
     try {
       final response = await DioHelper.getData(
           url: '${BackendEndpoint.visits}/${id.toString()}',
           token: token,
-          lang: lang);
+          lang: lang,
+      );
       final apiResponse = ApiResponse<VisitModel>.fromJson(response.data,
           (json) => VisitModel.fromJson(json as Map<String, dynamic>));
       return apiResponse.data ?? VisitModel();
@@ -65,20 +65,40 @@ class MainController extends GetxController {
     }
   }
 
-  Future<List<User>> getUserData(String lang, String token) async {
+  Future<List<DropDown>> getUserData(String lang, String token) async {
     try {
       var responseUsers = await DioHelper.getData(
           url: BackendEndpoint.dropDown, lang: lang, token: token);
-      final ApiResponse<List<User>> apiResponseUsers =
+      final ApiResponse<List<DropDown>> apiResponseUsers =
           ApiResponse.fromJson(responseUsers.data, (json) {
         if (json == null) {
           return [];
         }
-        return (json as List).map((e) => User.fromJson(e)).toList();
+        return (json as List).map((e) => DropDown.fromJson(e)).toList();
       });
       return apiResponseUsers.data ?? [];
     } catch (e) {
-      Get.snackbar("Error", "Failed to retrieve area details");
+      Get.snackbar("Error", "Failed to retrieve Users data");
+      return [];
+    }
+  }
+  Future<List<DropDown>> getFatherServantData(String lang, String token,int id) async {
+    try {
+      var responseUsers = await DioHelper.getData(
+          url: BackendEndpoint.dropDown, lang: lang, token: token,
+      query: {
+            'type': id
+      });
+      final ApiResponse<List<DropDown>> apiResponseUsers =
+      ApiResponse.fromJson(responseUsers.data, (json) {
+        if (json == null) {
+          return [];
+        }
+        return (json as List).map((e) => DropDown.fromJson(e)).toList();
+      });
+      return apiResponseUsers.data ?? [];
+    } catch (e) {
+      Get.snackbar("Error", "Failed to retrieve Users data");
       return [];
     }
   }
@@ -101,7 +121,8 @@ class MainController extends GetxController {
     }
   }
 
-  Future<VisitModel> editVisit(String lang, String token, VisitModel visit) async {
+  Future<VisitModel> editVisit(
+      String lang, String token, VisitModel visit) async {
     try {
       final response = await DioHelper.putData(
           url: '${BackendEndpoint.visits}/${visit.id.toString()}',
@@ -147,27 +168,21 @@ class MainController extends GetxController {
     }
   }
 
-  Future<List<DayVisits>> getMeVisitData(String lang, String token) async {
+  Future<List<VisitModel>> getMeVisitData(String lang, String token,Map<String,dynamic> q) async {
     try {
       final meResponse = await DioHelper.getData(
-        query: {'me': 1},
+        query: q,
         url: BackendEndpoint.visits,
         token: token,
         lang: lang,
       );
-      final meApiResponse = ApiResponse<List<DayVisits>>.fromJson(
+      final meApiResponse = ApiResponse<List<VisitModel>>.fromJson(
         meResponse.data,
         (json) {
           if (json == null) {
             return [];
           }
-          return (json as List<dynamic>).map((dayJson) {
-            if (dayJson == null) {
-              return DayVisits(day: 'Unknown', visits: <VisitModel>[].obs);
-            } else {
-              return DayVisits.fromJson(dayJson as Map<String, dynamic>);
-            }
-          }).toList();
+          return (json as List).map((e) => VisitModel.fromJson(e)).toList();
         },
       );
       return meApiResponse.data ?? [];
@@ -177,13 +192,13 @@ class MainController extends GetxController {
     }
   }
 
-  Future<List<VisitModel>> getReport(String lang, String token, int id) async {
+  Future<List<VisitModel>> getReport(String lang, String token, int id,Map<String,dynamic> q) async {
     try {
       final response = await DioHelper.getData(
           url: BackendEndpoint.reports,
           token: token,
           lang: lang,
-          query: {'user_id': id});
+          query: q);
       final apiResponse = ApiResponse<List<VisitModel>>.fromJson(
         response.data,
         (json) {
@@ -195,33 +210,27 @@ class MainController extends GetxController {
       );
       return apiResponse.data ?? [];
     } catch (e) {
+      print(e.toString());
       Get.snackbar('Error', 'Failed to retrieve report data');
       return [];
     }
   }
 
-  Future<List<DayVisits>> getAllVisitData(
-      String lang, String token, Map<String, dynamic> query) async {
+  Future<List<VisitModel>> getAllVisitData(String lang, String token,Map<String, dynamic> q) async {
     try {
       final allResponse = await DioHelper.getData(
-        query: query,
         url: BackendEndpoint.visits,
         token: token,
         lang: lang,
+        query: q
       );
-      final allApiResponse = ApiResponse<List<DayVisits>>.fromJson(
+      final allApiResponse = ApiResponse<List<VisitModel>>.fromJson(
         allResponse.data,
         (json) {
           if (json == null) {
             return [];
           }
-          return (json as List<dynamic>).map((dayJson) {
-            if (dayJson == null) {
-              return DayVisits(day: 'Unknown', visits: <VisitModel>[].obs);
-            } else {
-              return DayVisits.fromJson(dayJson as Map<String, dynamic>);
-            }
-          }).toList();
+          return (json as List).map((e) => VisitModel.fromJson(e)).toList();
         },
       );
       return allApiResponse.data ?? [];
@@ -231,7 +240,8 @@ class MainController extends GetxController {
     }
   }
 
-  Future<VisitModel> addVisit(String lang, String token,VisitModel visit) async {
+  Future<VisitModel> addVisit(
+      String lang, String token, VisitModel visit) async {
     visit.date = changeFormatDB(visit.date ?? '');
     try {
       var response = await DioHelper.postData(
@@ -261,12 +271,13 @@ class MainController extends GetxController {
     }
   }
 
-  Future<List<VisitModel>> getArchivesVisits(String lang, String token) async {
+  Future<List<VisitModel>> getArchivesVisits(String lang, String token,Map<String, dynamic> q) async {
     try {
       final response = await DioHelper.getData(
         url: BackendEndpoint.archive,
         token: token,
         lang: lang,
+        query: q
       );
       final apiResponse = ApiResponse<List<VisitModel>>.fromJson(
         response.data,
@@ -306,7 +317,7 @@ class MainController extends GetxController {
     }
   }
 
-  Future<void> onCanceled(String lang, String token,int id) async {
+  Future<void> onCanceled(String lang, String token, int id) async {
     try {
       await DioHelper.putData(
           url: '${BackendEndpoint.cancel}/${id.toString()}',
@@ -351,12 +362,14 @@ class MainController extends GetxController {
 
       return apiResponse.data ?? [];
     } catch (e) {
+      print(e.toString());
       Get.snackbar('Error', 'Failed to retrieve user list');
       return [];
     }
   }
 
-  Future<void> assignServant(String lang, String token,int visitId, int servantId) async {
+  Future<void> assignServant(
+      String lang, String token, int visitId, int servantId) async {
     try {
       await DioHelper.putData(
           url: '${BackendEndpoint.servent}/${visitId.toString()}',
@@ -368,7 +381,8 @@ class MainController extends GetxController {
     }
   }
 
-  Future<void> assignFather(String lang, String token, int visitId, int fatherId) async {
+  Future<void> assignFather(
+      String lang, String token, int visitId, int fatherId) async {
     try {
       await DioHelper.putData(
           url: '${BackendEndpoint.father}/${visitId.toString()}',
@@ -379,15 +393,13 @@ class MainController extends GetxController {
       Get.snackbar('Error', 'Failed to assign servant');
     }
   }
-  Future<void> register(String lang , RegisterModel register)async{
 
+  Future<void> register(String lang, RegisterModel register) async {
     try {
       await DioHelper.postData(
-          url: BackendEndpoint.register,
-          lang: 'en',
-          data: register.toJson());
-  }catch(e){
+          url: BackendEndpoint.register, lang: 'en', data: register.toJson());
+    } catch (e) {
       Get.snackbar('Error', 'Failed to register');
     }
-    }
+  }
 }

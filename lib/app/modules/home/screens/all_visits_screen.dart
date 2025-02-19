@@ -81,9 +81,8 @@ class AllVisitsScreen extends GetView<HomeController> {
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: ConditionalBuilder(
                   condition: !controller.isLoadingInternal.value,
-                  builder: (context) => controller.allVisits.isNotEmpty
-                      ? DateVisitListWidget(
-                          visits: controller.allSearchResults)
+                  builder: (context) => controller.allVisitsFiltered.isNotEmpty
+                      ? const DateVisitListWidget()
                       : Center(child: Text('noVisits'.tr)),
                   fallback: (context) => const Center(
                       child: CircularProgressIndicator(

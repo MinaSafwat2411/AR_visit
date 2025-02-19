@@ -15,49 +15,101 @@ import '../../../core/services/cache_helper.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../routes/app_pages.dart';
 import '../../../core/models/tags/tags_model.dart';
-import '../../visit_details/di/operation_type.dart';
 import '../screens/report_screen.dart';
+import 'package:collection/collection.dart';
 
 class HomeController extends GetxController {
-  var screens = <Widget>[const VisitsScreen(), const ArchiveVisitsScreen(), const ReportScreen(), const ProfileScreen()].obs;
+  var screens = <Widget>[
+    const VisitsScreen(),
+    const ArchiveVisitsScreen(),
+    const ReportScreen(),
+    const ProfileScreen()
+  ].obs;
   var pageController = PageController();
   var visitsPageController = PageController();
-  var title = <RxString>[RxString('visits'.tr),RxString('archives'.tr),RxString('reports'.tr),RxString('profile'.tr),].obs;
+  var title = <RxString>[
+    RxString('visits'.tr),
+    RxString('archives'.tr),
+    RxString('reports'.tr),
+    RxString('profile'.tr),
+  ].obs;
   var currentScreen = 0.obs;
   var isLoading = false.obs;
   var isLoadingInternal = false.obs;
   var mainController = MainController();
   var me = RxBool(true);
-  var lastPage = RxBool(false);
-  var onMeSearch = RxBool(false);
-  var onAllSearch = RxBool(false);
+  var lastPageAll = RxBool(false);
+  var lastPageMe = RxBool(false);
+  var lastPageArchive = RxBool(false);
+  var lastPageReports = RxBool(false);
   var token = ''.obs;
-  var searchQuery = ''.obs;
-  var allSearchQuery = ''.obs;
   var lang = ''.obs;
   var userNames = <String>[].obs;
   var userId = <int>[].obs;
   var tags = [
-    TagsModel(name: 'New',value: 1,type: null,nameAr: 'جديد',isSelected: RxBool(false)),
-    TagsModel(name: 'inprogress',value: 2,type: null,nameAr: 'قيد التنفيذ',isSelected: RxBool(false)),
-    TagsModel(name: 'assigned',value: 3,type: 'assigned',nameAr: 'تم تعيينه',isSelected: RxBool(false)),
-    TagsModel(name: 'Delayed',value: 4,type: null,nameAr: 'متأخر',isSelected: RxBool(false)),
-    TagsModel(name: 'done',value: 5,type: null,nameAr: 'تم',isSelected: RxBool(false)),
-    TagsModel(name: 'cancelled',value: 6,type: null,nameAr: 'تم إلغاؤه',isSelected: RxBool(false)),
+    TagsModel(
+        name: 'New',
+        value: 1,
+        type: null,
+        nameAr: 'جديد',
+        isSelected: RxBool(false)),
+    TagsModel(
+        name: 'inprogress',
+        value: 2,
+        type: null,
+        nameAr: 'قيد التنفيذ',
+        isSelected: RxBool(false)),
+    TagsModel(
+        name: 'assigned',
+        value: 3,
+        type: 'assigned',
+        nameAr: 'تم تعيينه',
+        isSelected: RxBool(false)),
+    TagsModel(
+        name: 'Delayed',
+        value: 4,
+        type: null,
+        nameAr: 'متأخر',
+        isSelected: RxBool(false)),
+    TagsModel(
+        name: 'done',
+        value: 5,
+        type: null,
+        nameAr: 'تم',
+        isSelected: RxBool(false)),
+    TagsModel(
+        name: 'cancelled',
+        value: 6,
+        type: null,
+        nameAr: 'تم إلغاؤه',
+        isSelected: RxBool(false)),
   ];
   var isSubmitted = RxBool(false);
-  var meVisits = <DayVisits>[].obs;
-  var allVisits = <DayVisits>[].obs;
-  var meSearchResults = <DayVisits>[].obs;
-  var archiveSearchResults = <VisitModel>[].obs;
+  var myVisitsGrouped = <DayVisits>[].obs;
+  var allVisitsGrouped = <DayVisits>[].obs;
   var visitsReport = <VisitModel>[].obs;
-  var allSearchResults = <DayVisits>[].obs;
   var patient = User().obs;
   var visitsArchives = <VisitModel>[].obs;
   var isDark = RxBool(false);
-  var profile =ProfileModel().obs;
-  var order =<int>[];
-  var orderVisits =<VisitModel>[].obs;
+  var profile = ProfileModel().obs;
+  var order = <int>[];
+  var orderVisits = <VisitModel>[].obs;
+  var myVisits = <VisitModel>[].obs;
+  var archiveVisits = <VisitModel>[].obs;
+  var allVisits = <VisitModel>[].obs;
+  var allVisitsFiltered = <DayVisits>[].obs;
+  var archiveVisitsFiltered = <VisitModel>[].obs;
+  var selectedTag = 0.obs;
+  var allVisitsScrollController = ScrollController();
+  var myVisitsScrollController = ScrollController();
+  var archiveVisitsScrollController = ScrollController();
+  var reportScrollController = ScrollController();
+  var currentPageAll = 1.obs;
+  var currentPageArchive = 1.obs;
+  var currentPageReports = 1.obs;
+  var currentPageMy = 1.obs;
+  var isLoadingMore = false.obs;
+  var userRx = ''.obs;
   TextEditingController searchController = TextEditingController();
   TextEditingController allSearchController = TextEditingController();
   TextEditingController archiveSearchController = TextEditingController();
@@ -67,75 +119,74 @@ class HomeController extends GetxController {
   TextEditingController familyId = TextEditingController();
   TextEditingController familyNumber = TextEditingController();
   TextEditingController phone = TextEditingController();
-  var id =RxInt(-1);
+  var id = RxInt(-1);
 
-  void changeVisitOrder()async{
-    await mainController.orderVisit(lang.value,token.value,OrderModel(ids: order));
+  void changeVisitOrder() async {
+    await mainController.orderVisit(
+        lang.value, token.value, OrderModel(ids: order));
   }
-  void changeLanguage(String languageCode) async{
+
+  void changeLanguage(String languageCode) async {
     lang.value = languageCode;
     CacheHelper.saveData(key: 'lang', value: languageCode);
     var locale = Locale(languageCode);
     Get.updateLocale(locale);
-    title.value = [RxString('visits'.tr),RxString('archives'.tr),RxString('reports'.tr),RxString('profile'.tr),].obs;
-    getVisitsData();
-    getArchivesData();
-    getProfile();
-    getFatherServantData();
-    runApp(MyApp(lang: lang.value,isDark:  isDark.value,));
-  }
-  void changeTheme()async{
-    await CacheHelper.saveData(key: 'isDark', value: isDark.value);
-    runApp(MyApp(lang: lang.value,isDark:  isDark.value,));
+    title.value = [
+      RxString('visits'.tr),
+      RxString('archives'.tr),
+      RxString('reports'.tr),
+      RxString('profile'.tr),
+    ].obs;
+    getData();
+    runApp(MyApp(
+      lang: lang.value,
+      isDark: isDark.value,
+    ));
   }
 
-  
+  void changeTheme() async {
+    await CacheHelper.saveData(key: 'isDark', value: isDark.value);
+    runApp(MyApp(
+      lang: lang.value,
+      isDark: isDark.value,
+    ));
+  }
+
   void logout() async {
     isLoadingInternal(true);
-    mainController.logout(lang.value,token.value);
-    Get.offAllNamed(Routes.LOGIN,arguments: [lang.value,isDark.value]);
+    mainController.logout(lang.value, token.value);
+    Get.offAllNamed(Routes.LOGIN, arguments: [lang.value, isDark.value]);
     isLoadingInternal(false);
   }
+
   String formatDate(String dateString) {
-    DateTime date = DateTime.parse(dateString.replaceAll('/', '-'));
-    String formattedDate = DateFormat('d-MMM', lang.value == 'ar' ? 'ar' : 'en').format(date);
+    DateTime date = DateFormat('dd-MM-yyyy').parseStrict(dateString);
+    String formattedDate =
+        DateFormat('d-MMM', lang.value == 'ar' ? 'ar' : 'en').format(date);
     return formattedDate;
   }
 
-  void onDone(int id) async {
-    isLoadingInternal(true);
-    mainController.onDone(lang.value,token.value,id);
-    getVisitsData();
-  }
-  Future<void> getArchivesData() async {
-      isLoadingInternal(true);
-      visitsArchives.value = [];  
-      visitsArchives.value =await mainController.getArchivesVisits(lang.value,token.value);
-      archiveSearchResults.value= visitsArchives;
-      isLoadingInternal(false);
+  RxList<DayVisits> groupByDay(List<VisitModel> visits) {
+    var groupedVisits = groupBy(visits, (visit) => visit.date);
+    var groupedVisitsList = <DayVisits>[];
+    groupedVisits.forEach(
+      (key, value) {
+        groupedVisitsList.add(DayVisits(day: key ?? "", visits: RxList(value)));
+      },
+    );
+
+    return groupedVisitsList.obs;
   }
 
-  Future<void> getFatherServantData() async {
-    try {
-      var userData = await mainController.getUserData(lang.value,token.value);
-      for (var element in userData) {
-        userNames.add(element.name!);
-        userId.add(element.id!);
-      }
-    }catch(e){
-      Get.snackbar("Error", "Failed to retrieve area details");
-    }
-  }
-
-  Future<void> onUserSelected(String user)async{
+  Future<void> onUserSelected(String user) async {
     isLoadingInternal(true);
-    visitsReport.value = await mainController.getReport(lang.value,token.value,userId[userNames.indexOf(user)]);
-    isLoadingInternal(false);
-  }
-
-  void getProfile()async{
-    isLoadingInternal(true);
-    profile.value = await mainController.getProfile(lang.value,token.value);
+    lastPageReports(false);
+    currentPageReports(1);
+    visitsReport.value = await mainController.getReport(
+        lang.value, token.value, userId[userNames.indexOf(user)], {
+          'user_id': userId[userNames.indexOf(user)],
+    });
+    userRx(user);
     isLoadingInternal(false);
   }
 
@@ -153,62 +204,41 @@ class HomeController extends GetxController {
 
   void addPatient() async {
     isSubmitted(true);
-    await mainController.addPatient(lang.value,token.value,User(
-        statusValue: 2,
-        e1C1F: familyId.text,
-        nR: familyNumber.text,
-        email: email.text,
-        phone: phone.text,
-        name: name.text,
-        nameAr: nameAr.text));
-        isSubmitted(false);
-  }
-    void onSearchArchive(String value) {
-    if (value.isEmpty||value =='') {
-      archiveSearchResults.value = visitsArchives;
-    } else {
-      archiveSearchResults.value = visitsArchives.where((value)=> value.userName!.toLowerCase().contains(value.userName!.toLowerCase())).toList();
-    }
+    await mainController.addPatient(
+        lang.value,
+        token.value,
+        User(
+            statusValue: 2,
+            e1C1F: familyId.text,
+            nR: familyNumber.text,
+            email: email.text,
+            phone: phone.text,
+            name: name.text,
+            nameAr: nameAr.text));
+    isSubmitted(false);
   }
 
-  void onSearchMe(String value) {
-    if (value.isEmpty||value =='') {
-      meSearchResults.value = meVisits;
+  void onSearchArchive(String value) {
+    if (value.isEmpty) {
+      archiveVisitsFiltered.value = archiveVisits;
     } else {
-      meSearchResults.value = meVisits
-          .map((day) => DayVisits(
-              day: day.day,
-              visits: day.visits
-                  .where((visit) => visit.userName!
-                      .toLowerCase()
-                      .contains(value.toLowerCase()))
-                  .toList().obs))
-          .where((day) => day.visits.isNotEmpty)
-          .toList().obs;
-    }
-  }
-    void onSearchAll(String value) {
-    if (value.isEmpty||value =='') {
-      allSearchResults.value = allVisits;
-    } else  {
-      allSearchResults.value = allVisits
-          .map((day) => DayVisits(
-              day: day.day,
-              visits: day.visits
-                  .where((visit) => visit.userName!
-                      .toLowerCase()
-                      .contains(value.toLowerCase()))
-                  .toList().obs))
-          .where((day) => day.visits.isNotEmpty)
+      archiveVisitsFiltered.value = archiveVisits
+          .where((element) =>
+              element.userName!.toLowerCase().contains(value.toLowerCase()))
           .toList();
     }
   }
 
-  void onCanceled(int id) async {
-    Get.back(closeOverlays: true);
-    isLoadingInternal(true);
-    mainController.onCanceled(lang.value,token.value,id);
-    getVisitsData();
+  void onSearchAll(String value) {
+    if (value.isEmpty) {
+      allVisitsFiltered.value = groupByDay(allVisits);
+    } else {
+      allVisitsFiltered.value = groupByDay(allVisits
+          .where((element) =>
+              element.userName!.toLowerCase().contains(value.toLowerCase()) &&
+              element.status?.value == tags[selectedTag.value].value)
+          .toList());
+    }
   }
 
   Color statusColor(int status) {
@@ -224,15 +254,10 @@ class HomeController extends GetxController {
         color = AppColors.orange;
       case 5:
         color = AppColors.green;
-        case 6:
-          color=AppColors.red;
+      case 6:
+        color = AppColors.red;
     }
     return color;
-  }
-
-  void onClone(VisitModel visit) async {
-    Get.toNamed(Routes.ADD_EDIT_VISIT,
-        arguments: [lang.value,isDark.value,token.value,OperationType.CLONE,visit]);
   }
 
   void onTagsChanged(int index) {
@@ -240,45 +265,140 @@ class HomeController extends GetxController {
       for (int i = 0; i < tags.length; i++) {
         tags[i].isSelected.value = false;
       }
+      allVisitsFiltered.value = groupByDay(allVisits);
     } else {
       for (int i = 0; i < tags.length; i++) {
         tags[i].isSelected.value = false;
       }
       tags[index].isSelected.value = true;
+      selectedTag(index);
+      allVisitsFiltered.value = groupByDay(allVisits
+          .where((element) => element.status?.value == tags[index].value)
+          .toList());
     }
-    allSearchController.text = '';
-    getVisitsData();
   }
 
-  Future<void> getVisitsData() async {
-    int index = tags.indexWhere((element) => element.isSelected.value == true);
-    isLoadingInternal(true);
-    Map<String, dynamic> query = {};
-    if (index != -1) {
-        query = {'status': tags[index].value};
+  Future<void> getData() async {
+    try {
+      isLoadingInternal(true);
+      myVisits.value = await mainController
+          .getMeVisitData(lang.value, token.value, {'me': 1});
+      allVisits.value =
+          await mainController.getAllVisitData(lang.value, token.value, {});
+      archiveVisits.value =
+          await mainController.getArchivesVisits(lang.value, token.value, {});
+      profile.value = await mainController.getProfile(lang.value, token.value);
+      allVisitsGrouped.value = groupByDay(allVisits);
+      allVisitsFiltered.value = groupByDay(allVisits);
+      archiveVisitsFiltered.value = archiveVisits;
+      myVisitsGrouped.value = groupByDay(myVisits);
+      userNames([]);
+      userId([]);
+      var userData = await mainController.getUserData(lang.value, token.value);
+      for (var element in userData) {
+        if (lang.value == 'en') {
+          userNames.add(element.name?.name ?? '');
+        } else {
+          userNames.add(element.name?.nameAr ?? '');
+        }
+        userId.add(element.id ?? -1);
+      }
+    } catch (e) {
+      Get.snackbar("Error", "Failed to retrieve data");
+    } finally {
+      isLoadingInternal(false);
     }
-    meVisits.value =await mainController.getMeVisitData(lang.value,token.value);
-    allVisits.value = await mainController.getAllVisitData(lang.value,token.value,query);
-    meSearchResults.value = meVisits;
-    meSearchResults.value = meVisits;
-    allSearchResults.value = allVisits;
-    isLoadingInternal(false);
   }
 
   void onBottomNavItemClicked(int index) {
     pageController.jumpToPage(index);
   }
 
+  Future<void> getMoreDataAllVisits() async {
+    if (isLoadingMore.value || lastPageAll.value) return;
+
+    isLoadingMore.value = true;
+
+    currentPageAll.value++; // Increment the page before fetching new data
+
+    var data = await mainController.getAllVisitData(
+        lang.value, token.value, {"page": currentPageAll.value});
+
+    if (data.isNotEmpty) {
+      allVisits.addAll(data); // Efficiently add new data to existing list
+      allVisitsGrouped.value = groupByDay(allVisits); // Update grouped data
+      allVisitsFiltered.assignAll(allVisitsGrouped); // Trigger UI update
+    } else {
+      lastPageAll.value = true;
+    }
+
+    isLoadingMore.value = false;
+  }
+
+  Future<void> getMoreDataMyVisits() async {
+    if (isLoadingMore.value || lastPageMe.value) return;
+
+    isLoadingMore.value = true;
+
+    currentPageMy.value++; // Increment the page before fetching new data
+
+    var data = await mainController.getMeVisitData(
+        lang.value, token.value, {"me": 1, "page": currentPageMy.value});
+
+    if (data.isNotEmpty) {
+      myVisits.addAll(data);
+      myVisitsGrouped.value = groupByDay(myVisits);
+    } else {
+      lastPageMe.value = true;
+    }
+
+    isLoadingMore.value = false;
+  }
+
+  Future<void> getMoreDataArchiveVisits() async {
+    if (isLoadingMore.value || lastPageArchive.value) return;
+    isLoadingMore.value = true;
+    currentPageArchive.value++;
+
+    var data = await mainController.getArchivesVisits(
+        lang.value, token.value, {"page": currentPageArchive.value});
+
+    if (data.isNotEmpty) {
+      archiveVisits.addAll(data);
+      archiveVisitsFiltered.value = archiveVisits;
+    } else {
+      lastPageMe.value = true;
+    }
+
+    isLoadingMore.value = false;
+  }
+
+  Future<void> getMoreDataReportsVisits(String user) async {
+    if (isLoadingMore.value || lastPageReports.value) return;
+    isLoadingMore.value = true;
+    currentPageReports.value++;
+
+    var data = await mainController.getReport(
+        lang.value, token.value, userId[userNames.indexOf(user)], {
+      'user_id': userId[userNames.indexOf(user)],
+      'page': currentPageReports.value
+    });
+    print(data);
+    if (data.isNotEmpty) {
+      visitsReport.addAll(data);
+    } else {
+      lastPageMe.value = true;
+    }
+    isLoadingMore.value = false;
+  }
+
   @override
   void onInit() async {
     isLoading(true);
-    isDark.value =Get.arguments[1];
-    lang.value =Get.arguments[0];
-    token.value =Get.arguments[2];
-    getVisitsData();
-    getArchivesData();
-    getProfile();
-    getFatherServantData();
+    isDark.value = Get.arguments[1];
+    lang.value = Get.arguments[0];
+    token.value = Get.arguments[2];
+    await getData();
     isLoading(false);
     super.onInit();
   }

@@ -338,8 +338,7 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                                     style: const TextStyle(fontSize: 18),
                                   ),
                                   Text(
-                                    controller.getAddressType(
-                                        controller.visit.value.addressType ?? -1),
+                                      controller.visit.value.addressType?.name??'',
                                     style: const TextStyle(color: AppColors.gray),
                                   ),
                                   const Divider(
@@ -350,7 +349,7 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                                     style: const TextStyle(fontSize: 18),
                                   ),
                                   Text(
-                                    controller.visit.value.areaName ?? '',
+                                    controller.visit.value.area?.name ?? '',
                                     style: const TextStyle(color: AppColors.gray),
                                   ),
                                   const Divider(

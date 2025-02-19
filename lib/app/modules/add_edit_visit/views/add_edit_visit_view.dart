@@ -3,6 +3,7 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../core/utils/app_colors.dart';
 import '../../../core/widgets/custom_alert.dart';
@@ -14,20 +15,20 @@ import '../controllers/add_edit_visit_controller.dart';
 
 class AddEditVisitView extends GetView<AddEditVisitController> {
   const AddEditVisitView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Obx(() => Text(
-            controller.titles[controller.currentScreen.value],
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 26,
-              fontFamily: 'Inter',
-            ),
-          )
-          ),
+                controller.titles[controller.currentScreen.value],
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 26,
+                  fontFamily: 'Inter',
+                ),
+              )),
           leading: IconButton(
             onPressed: () {
               Get.back();
@@ -39,44 +40,44 @@ class AddEditVisitView extends GetView<AddEditVisitController> {
           width: MediaQuery.of(context).size.width * 0.9,
           height: 58,
           child: Obx(() => ConditionalBuilder(
-            fallback: (context) => const Center(
-              child: CircularProgressIndicator(color: AppColors.trinidadColor,),
-            ),
-            condition: !controller.internalLoading.value,
-            builder: (context) {
-              return Obx(() => CustomButton(
-                text: controller.buttonText[controller.currentScreen.value],
-                btnColor: AppColors.trinidadColor,
-                onPressed: () {
-                  if (controller.formKey.currentState!.validate()) {
-                    showDialog(
-                        context: context,
-                        builder: (context) =>  CustomDoubleAlert(
-                              title: 'Save Visit',
-                              rightFunction: () {
-                                Get.back(closeOverlays: true);
-                              },
-                              leftFunction: () {
-                                Get.back(closeOverlays: true);
-                                switch(controller.currentScreen.value){
-                                  case 0:controller.addVisit();
-                                  case 1 :controller.editVisit();
-                                  case 2: controller.clone();
-                                }
-
-                              },
-                              rightButtonText: 'no'.tr,
-                              leftButtonText: 'yes'.tr,
-                            )
-
-                    );
-                  }
-                },
-              )
-              );
-            }
-          )
-          ),
+              fallback: (context) => const Center(
+                    child: CircularProgressIndicator(
+                      color: AppColors.trinidadColor,
+                    ),
+                  ),
+              condition: !controller.internalLoading.value,
+              builder: (context) {
+                return Obx(() => CustomButton(
+                      text:
+                          controller.buttonText[controller.currentScreen.value],
+                      btnColor: AppColors.trinidadColor,
+                      onPressed: () {
+                        if (controller.formKey.currentState!.validate()) {
+                          showDialog(
+                              context: context,
+                              builder: (context) => CustomDoubleAlert(
+                                    title: 'Save Visit',
+                                    rightFunction: () {
+                                      Get.back(closeOverlays: true);
+                                    },
+                                    leftFunction: () {
+                                      Get.back(closeOverlays: true);
+                                      switch (controller.currentScreen.value) {
+                                        case 0:
+                                          controller.addVisit();
+                                        case 1:
+                                          controller.editVisit();
+                                        case 2:
+                                          controller.clone();
+                                      }
+                                    },
+                                    rightButtonText: 'no'.tr,
+                                    leftButtonText: 'yes'.tr,
+                                  ));
+                        }
+                      },
+                    ));
+              })),
         ),
         body: Obx(() => ConditionalBuilder(
             condition: !controller.isLoading.value,
@@ -95,46 +96,48 @@ class AddEditVisitView extends GetView<AddEditVisitController> {
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                if(controller.currentScreen.value== 0)CustomDropDownList(
-                                  onChangeValue: (String? value) {
-                                    controller.userType.value = value!;
-                                  },
-                                  label: 'user'.tr,
-                                  items: controller.userNames,
-                                  currentValue: controller.userType.value,
-                                ),
-                                if(controller.currentScreen.value== 0) Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 6),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      const Text(
-                                        'E1C1F',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      CustomSmallTextField(
-                                        textController:
-                                            controller.patientFamIDController,
-                                        label: 'XXXX',
-                                      ),
-                                      const Text(
-                                        'NR',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      CustomSmallTextField(
-                                        label: 'X',
-                                        textController: controller
-                                            .patientIDNumberController,
-                                      ),
-                                    ],
+                                if (controller.currentScreen.value == 0)
+                                  CustomDropDownList(
+                                    onChangeValue: (String? value) {
+                                      controller.userType.value = value!;
+                                    },
+                                    label: 'user'.tr,
+                                    items: controller.userNames,
+                                    currentValue: controller.userType.value,
                                   ),
-                                ),
+                                if (controller.currentScreen.value == 0)
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 6),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        const Text(
+                                          'E1C1F',
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                        CustomSmallTextField(
+                                          textController:
+                                              controller.patientFamIDController,
+                                          label: 'XXXX',
+                                        ),
+                                        const Text(
+                                          'NR',
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                        CustomSmallTextField(
+                                          label: 'X',
+                                          textController: controller
+                                              .patientIDNumberController,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 CustomTextFormField(
                                   textController:
                                       controller.assistantNameController,
@@ -196,7 +199,7 @@ class AddEditVisitView extends GetView<AddEditVisitController> {
                                   },
                                   label: 'zone'.tr,
                                   items: controller.areaNames,
-                                  currentValue: controller.visit.value.areaName,
+                                  currentValue: controller.visit.value.area?.name,
                                 ),
                                 CustomTextFormField(
                                   textController:
@@ -212,6 +215,16 @@ class AddEditVisitView extends GetView<AddEditVisitController> {
                                   validator: (date) {
                                     if (date == null || date.isEmpty) {
                                       return 'dateValidate'.tr;
+                                    }
+                                    try {
+                                      DateTime datePicked =
+                                          DateFormat("dd-MM-yyyy")
+                                              .parseStrict(date);
+                                      if (datePicked.isBefore(DateTime.now())) {
+                                        return 'dateValidate2'.tr;
+                                      }
+                                    } catch (e) {
+                                      return 'Invalid date format';
                                     }
                                     return null;
                                   },

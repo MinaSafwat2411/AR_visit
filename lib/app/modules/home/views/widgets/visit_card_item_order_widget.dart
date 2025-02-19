@@ -17,7 +17,7 @@ class VisitCardItemOrderWidget extends GetView<HomeController> {
       onTap: () {
         Get.toNamed(Routes.VISIT_DETAILS, arguments: [controller.lang.value,controller.isDark.value, controller.token.value,visit])?.then((value) {
           if(value){
-            controller.getVisitsData();
+            controller.getData();
           }
         },);
         },
@@ -65,7 +65,7 @@ class VisitCardItemOrderWidget extends GetView<HomeController> {
             ),
             ),
             Text(
-            '${'zone'.tr}: ${visit.areaName}',
+            '${'zone'.tr}: ${visit.area?.name}',
             style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
             ),
             Text(

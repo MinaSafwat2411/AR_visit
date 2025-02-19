@@ -87,6 +87,9 @@ class VisitsScreen extends GetView<HomeController> {
         ),
         Expanded(
           child: PageView(
+            onPageChanged: (value) {
+              controller.me(true);
+            },
             physics: const NeverScrollableScrollPhysics(),
             controller: controller.visitsPageController,
             children: const [MyVisitsScreen(), AllVisitsScreen()],

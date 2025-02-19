@@ -3,71 +3,93 @@ import 'package:ar_visiting_app/app/modules/home/controllers/home_controller.dar
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'visit_card_item_order_widget.dart';
+
 class MyDateVisitListWidget extends GetView<HomeController> {
-  const MyDateVisitListWidget({
-    super.key,
-  });
+  const MyDateVisitListWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => RefreshIndicator(
+    return RefreshIndicator(
       color: AppColors.trinidadColor,
       onRefresh: () async {
-        controller.getVisitsData();
-        controller.getArchivesData();
+        await controller.getData();
       },
-      child: ListView.separated(
-      physics: const BouncingScrollPhysics(),
-      itemBuilder: (context, visitsIndex) {
-        return Column(
-        children: [
-          Row(
-          children: [
-            const SizedBox(width: 10),
-            Text(
-            controller.formatDate(controller.meSearchResults[visitsIndex].day),
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
-            ),
-          ],
-          ),
-            ConstrainedBox(
-        constraints: BoxConstraints(
-        maxHeight: 110 * controller.meSearchResults[visitsIndex].visits.length.toDouble(),
-        ),
-          child: Obx(() => ReorderableListView(
-            physics: const NeverScrollableScrollPhysics(),
-            onReorder: (oldIndex, newIndex) {
-              controller.order=[];
-              for (var element in controller.meSearchResults[visitsIndex].visits) {
-                controller.order.add(element.id??-1);
-              }
-              if (newIndex > oldIndex) {
-                newIndex -= 1;
-              }
-              final item = controller.meSearchResults[visitsIndex].visits.removeAt(oldIndex);
-              controller.meSearchResults[visitsIndex].visits.insert(newIndex, item);
-              final id = controller.order.removeAt(oldIndex);
-              controller.order.insert(newIndex, id);
-              controller.changeVisitOrder();
+      child: Obx(
+            () => NotificationListener<ScrollNotification>(
+          onNotification: (ScrollNotification scrollInfo) {
+            if (scrollInfo.metrics.pixels >= scrollInfo.metrics.maxScrollExtent &&
+                !controller.isLoadingMore.value) {
+              controller.getMoreDataMyVisits();
+            }
+            return false;
+          },
+          child: ListView.separated(
+            controller: controller.myVisitsScrollController,
+            physics: const BouncingScrollPhysics(),
+            itemBuilder: (context, visitsIndex) {
+              return Column(
+                children: [
+                  Row(
+                    children: [
+                      const SizedBox(width: 10),
+                      Text(
+                        controller.formatDate(
+                            controller.myVisitsGrouped[visitsIndex].day),
+                        style: const TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.w500),
+                      ),
+                    ],
+                  ),
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxHeight: 110 *
+                          controller.myVisitsGrouped[visitsIndex].visits.length
+                              .toDouble(),
+                    ),
+                    child: Obx(
+                          () => ReorderableListView(
+                        physics: const NeverScrollableScrollPhysics(),
+                        onReorder: (oldIndex, newIndex) {
+                          controller.order = controller.myVisitsGrouped[visitsIndex]
+                              .visits
+                              .map((e) => e.id ?? -1)
+                              .toList();
+                          if (newIndex > oldIndex) {
+                            newIndex -= 1;
+                          }
+                          final item = controller.myVisitsGrouped[visitsIndex]
+                              .visits
+                              .removeAt(oldIndex);
+                          controller.myVisitsGrouped[visitsIndex].visits
+                              .insert(newIndex, item);
+                          final id = controller.order.removeAt(oldIndex);
+                          controller.order.insert(newIndex, id);
+                          controller.changeVisitOrder();
+                        },
+                        children: [
+                          for (int index = 0;
+                          index <
+                              controller.myVisitsGrouped[visitsIndex]
+                                  .visits.length;
+                          index++)
+                            VisitCardItemOrderWidget(
+                              key: ValueKey(controller
+                                  .myVisitsGrouped[visitsIndex].visits[index].id),
+                              visit: controller
+                                  .myVisitsGrouped[visitsIndex].visits[index],
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              );
             },
-          children: [
-            for (int index = 0; index < controller.meSearchResults[visitsIndex].visits.length; index++)
-               VisitCardItemOrderWidget(
-                key: ValueKey(controller.meSearchResults[visitsIndex].visits[index].id),
-                visit: controller.meSearchResults[visitsIndex].visits[index],
-              ),
-
-          ],
-          )
+            separatorBuilder: (context, index) => const SizedBox(height: 5),
+            itemCount: controller.myVisitsGrouped.length,
           ),
-        )
-
-        ]
-        );
-      },
-      separatorBuilder: (context, index) => const SizedBox(height: 5),
-      itemCount: controller.meSearchResults.length,
+        ),
       ),
-    ));
+    );
   }
 }

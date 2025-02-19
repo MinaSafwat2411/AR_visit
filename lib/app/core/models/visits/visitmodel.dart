@@ -1,3 +1,5 @@
+import 'package:ar_visiting_app/app/core/models/area/areamodel.dart';
+
 class VisitModel {
   int? id;
   String? userName;
@@ -7,10 +9,10 @@ class VisitModel {
   Status? status;
   String? attendant;
   String? attendantPhone;
-  int? addressType;
+  AddressType? addressType;
   String? address;
   String? addressUrl;
-  String? areaName;
+  AreaModel? area;
   int? patientNums;
   String? from;
   String? to;
@@ -20,6 +22,7 @@ class VisitModel {
   int? userId;
   int? e1C1F;
   int? nR;
+  int? addressTypeId;
 
   VisitModel(
       {this.id,
@@ -36,12 +39,13 @@ class VisitModel {
       this.addressType,
       this.address,
       this.addressUrl,
-      this.areaName,
+      this.area,
       this.areaId,
       this.patientNums,
       this.from,
       this.to,
       this.date,
+        this.addressTypeId,
       this.note});
 
   VisitModel.fromJson(Map<String, dynamic> json) {
@@ -57,16 +61,18 @@ class VisitModel {
         json['status'] != null ? Status.fromJson(json['status']) : null;
     attendant = json['attendant'];
     attendantPhone = json['attendant_phone'];
-    addressType = json['address_type'];
     address = json['address'];
     addressUrl = json['address_url'];
     areaId = json['area_id'];
-    areaName = json['area_name'];
+    area = json['area_name'] != null?AreaModel.fromJson(json['area']):null;
     patientNums = json['patient_nums'];
     from = json['from'];
     to = json['to'];
     date = json['date'];
     note = json['note'];
+    addressType = json['address_type'] != null
+        ? AddressType.fromJson(json['address_type'])
+        : null;
   }
 
   Map<String, dynamic> toJsonEdit() {
@@ -74,7 +80,7 @@ class VisitModel {
     data['area_id'] = areaId;
     data['attendant'] = attendant;
     data['attendant_phone'] = attendantPhone;
-    data['address_type'] = addressType;
+    data['address_type'] = addressTypeId;
     data['address'] = address;
     data['address_url'] = addressUrl;
     data['patient_nums'] = patientNums;
@@ -93,7 +99,7 @@ class VisitModel {
     data['area_id'] = areaId;
     data['attendant'] = attendant;
     data['attendant_phone'] = attendantPhone;
-    data['address_type'] = addressType;
+    data['address_type'] = addressTypeId;
     data['address'] = address;
     data['address_url'] = addressUrl;
     data['patient_nums'] = patientNums;
@@ -121,5 +127,14 @@ class Status {
     data['value'] = value;
     data['name'] = name;
     return data;
+  }
+}
+class AddressType{
+  int? value;
+  String? name;
+  AddressType({this.value,this.name});
+  AddressType.fromJson(Map<String, dynamic> json) {
+    value = json['value'];
+    name = json['name'];
   }
 }

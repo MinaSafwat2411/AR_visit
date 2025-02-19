@@ -70,6 +70,7 @@ class AppStringsEn extends AppStrings {
     'fAQ': 'FAQ',
     'settings': 'Settings',
     'language': 'Language',
+    'dateValidate2': 'Date should be from today to after',
     'languageComfim': 'choose your language',
     'toValidate': 'End time of visit must be chosen',
     'dateValidate': 'Date of visit must be chosen',
@@ -254,6 +255,7 @@ class AppStringsAr extends AppStrings {
     'confirmpassword': 'تأكيد كلمة السر',
     'emailValidate': 'رجاء إدخال بريد إلكتروني صحيح',
     'phoneValidate': 'يجب أن يتكون الهاتف من 11 رقم',
-    'nameValidate': 'لا يمكن أن يكون الاسم فارغًا'
+    'nameValidate': 'لا يمكن أن يكون الاسم فارغًا',
+    'dateValidate2': 'تاريخ يجب ان يكون من اليوم إلى بعد',
   };
 }

@@ -398,6 +398,7 @@ class HomeView extends GetView<HomeController> {
           builder: (context) {
             return PageView(
               onPageChanged: (value) {
+                controller.me(true);
                 controller.currentScreen.value=value;
               },
               controller: controller.pageController,

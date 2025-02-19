@@ -116,17 +116,14 @@ class ProfileScreen extends GetView<HomeController> {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 14.0),
-                        child: Obx(() =>Container(
-                          decoration:  BoxDecoration(color: controller.isDark.value? AppColors.codGray2: AppColors.white),
-                          child:  Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                            child: Obx(() => Text(
-                              'presonalInformation'.tr,
-                              style:  TextStyle(
-                                  backgroundColor: controller.isDark.value? AppColors.codGray2: AppColors.white, fontSize: 15),
-                            )),
-                          ),
-                        ))
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                          child: Obx(() => Text(
+                            'presonalInformation'.tr,
+                            style:  TextStyle(
+                                backgroundColor: controller.isDark.value? AppColors.codGray2: AppColors.white, fontSize: 15),
+                          )),
+                        )
                         ,
                       ),
                     ],
@@ -229,18 +226,16 @@ class ProfileScreen extends GetView<HomeController> {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 14.0),
-                        child: Obx(() =>Container(
-                          decoration: BoxDecoration( color: controller.isDark.value? AppColors.codGray2: AppColors.white),
-                          child:  Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                            child: Obx(() =>Text(
-                              'appSetting'.tr,
-                              style:  TextStyle(
-                                  backgroundColor: controller.isDark.value? AppColors.codGray2: AppColors.white, fontSize: 15),
-                            )
-                            ),
-                          ),
-                        )),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                          child: Obx(() =>Text(
+                            'appSetting'.tr,
+                            style:  TextStyle(
+                                backgroundColor: controller.isDark.value? AppColors.codGray2: AppColors.white, fontSize: 15),
+                          )
+                          ,
+                        ),
+                                                ),
                       ),
                     ],
                   ),

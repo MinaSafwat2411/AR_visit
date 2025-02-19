@@ -114,3 +114,23 @@ class Type {
     };
   }
 }
+
+class DropDown{
+  int? id;
+  Name? name;
+  DropDown({this.id, this.name});
+  DropDown.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'] != null ? Name.fromJson(json['name']) : null;
+  }
+}
+class Name {
+  String? name;
+  String? nameAr;
+  Name({this.name, this.nameAr});
+  Name.fromJson(Map<String, dynamic> json) {
+    name = json['en'];
+    nameAr = json['ar'];
+  }
+
+}

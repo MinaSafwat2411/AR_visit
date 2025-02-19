@@ -25,10 +25,7 @@ class AddEditVisitController extends GetxController {
   var token = ''.obs;
   var newVisit = VisitModel().obs;
   var mainController = MainController();
-  var visit =VisitModel(
-    areaName: null,
-    addressType: null
-  ).obs;
+  var visit =VisitModel().obs;
   var isDark = RxBool(false);
   var visitId = RxInt(-1);
   var titles =<String>['newVisitTitle'.tr,'editVisitTitle'.tr,'cloneVisitTitle'.tr].obs;
@@ -47,19 +44,6 @@ class AddEditVisitController extends GetxController {
   TextEditingController patientIDNumberController = TextEditingController();
   TextEditingController noteController = TextEditingController();
   TextEditingController googleLinkController = TextEditingController();
-
-
-
-  Future<void> getVisitDetails() async {
-    isLoading.value = true;
-    try {
-
-    } catch (e) {
-      Get.snackbar("Error", "Failed to retrieve visit details: $e");
-    } finally {
-      isLoading.value = false;
-    }
-  }
 
 
   Future<void> selectDate(BuildContext context) async {
@@ -135,14 +119,19 @@ class AddEditVisitController extends GetxController {
     }
   }
   Future<void> getData() async {
+      userNames([]);
+      userId([]);
       var userData = await mainController.getUserData(lang.value, token.value);
-      var areaData = await mainController.getAreaData(lang.value, token.value);
-      for (var element in areaData) {
-        areaNames.add(element.name!);
-        areaId.add(element.id!);
+      for (var element in userData) {
+        if(lang.value=='en') {
+          userNames.add(element.name?.name??'');
+        } else {
+          userNames.add(element.name?.nameAr??'');
+        }
+        userId.add(element.id ?? -1);
       }
       for (var element in userData) {
-        userNames.add(element.name!);
+        userNames.add(element.name?.name??'');
         userId.add(element.id!);
       }
   }
@@ -153,8 +142,7 @@ class AddEditVisitController extends GetxController {
 
   void editVisit() async{
     internalLoading(true);
-    try{
-      newVisit.value = VisitModel(
+    newVisit.value = VisitModel(
         date: mainController.changeFormatDB(dateController.text),
         from: fromTimeController.text,
         to: toTimeController.text,
@@ -165,17 +153,12 @@ class AddEditVisitController extends GetxController {
         note: noteController.text,
         addressUrl: googleLinkController.text,
         areaId: areaId[areaNames.indexOf(areaName.value)],
-        addressType: addressTypeList.indexOf(addressType.value)+1,
+        addressTypeId: addressTypeList.indexOf(addressType.value)+1,
         id: visit.value.id,
       );
       visit.value = await mainController.editVisit(lang.value,token.value,newVisit.value);
       Get.offNamedUntil(
           Routes.VISIT_DETAILS,arguments: [lang.value,isDark.value,token.value,visit.value], (route) => route.settings.name == Routes.HOME);
-    }catch (e){
-      Get.snackbar("Error", e.toString());
-    }finally{
-      internalLoading(false);
-    }
   }
 
 
@@ -191,8 +174,8 @@ class AddEditVisitController extends GetxController {
     googleLinkController = TextEditingController(text: visit.value.addressUrl);
     patientFamIDController=TextEditingController(text: visit.value.e1C1F.toString());
     patientIDNumberController=TextEditingController(text: visit.value.nR.toString());
-    areaName.value=visit.value.areaName??'';
-    addressType.value=addressTypeList[visit.value.addressType!-1];
+    areaName.value=visit.value.area?.name??'';
+    addressType.value=addressTypeList[visit.value.addressTypeId!-1];
     userType.value =visit.value.userName??'';
   }
 
@@ -214,7 +197,7 @@ class AddEditVisitController extends GetxController {
         note: noteController.text,
         addressUrl: googleLinkController.text,
         areaId: areaId[areaNames.indexOf(areaName.value)],
-        addressType: addressTypeList.indexOf(addressType.value)+1,
+        addressTypeId: addressTypeList.indexOf(addressType.value)+1,
         userId: userId[userNames.indexOf(userType.value)]
       );
       visit.value = await mainController.addVisit(lang.value,token.value,newVisit.value);

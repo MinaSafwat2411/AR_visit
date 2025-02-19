@@ -2,7 +2,6 @@ import 'package:ar_visiting_app/app/core/widgets/custom_dropdownlist.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../../core/utils/app_colors.dart';
 import '../controllers/home_controller.dart';
 import '../views/widgets/visit_card_item_widget.dart';
@@ -16,34 +15,50 @@ class ReportScreen extends GetView<HomeController> {
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: CustomDropDownList(onChangeValue: (value) {
-            controller.onUserSelected(value?? '');
-          },
+          child: CustomDropDownList(
+            onChangeValue: (value) {
+              controller.onUserSelected(value ?? '');
+            },
             items: controller.userNames,
             label: 'select user',
           ),
         ),
-        const SizedBox(height: 20,),
+        const SizedBox(height: 20),
         Expanded(
           child: Obx(() => Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: ConditionalBuilder(
-              condition: !controller.isLoadingInternal.value,
-              builder: (context) => controller.allVisits.isNotEmpty
-                  ?           ListView.separated(
-                physics: const BouncingScrollPhysics(),
-                shrinkWrap: true,
-                itemBuilder: (context, visitIndex) {
-                  return VisitCardItemWidget(visit: controller.visitsReport[visitIndex]);  // Pass the VisitModel object
-                },
-                separatorBuilder: (context, index) => const SizedBox(height: 10),
-                itemCount:controller.visitsReport.length,
-              )
-                  : Center(child: Text('noVisits'.tr)),
-              fallback: (context) => const Center(
-                  child: CircularProgressIndicator(
-                    color: AppColors.trinidadColor,
-                  )),
+            child: NotificationListener<ScrollNotification>(
+              onNotification: (ScrollNotification scrollInfo) {
+                if (scrollInfo.metrics.pixels >= scrollInfo.metrics.maxScrollExtent &&
+                    !controller.isLoadingMore.value) {
+                  controller.getMoreDataReportsVisits(controller.userRx.value);
+                }
+                return false;
+              },
+              child: ConditionalBuilder(
+                condition: !controller.isLoadingInternal.value,
+                builder: (context) => controller.visitsReport.isNotEmpty
+                    ? Obx(() => ListView.separated(
+                  controller: controller.reportScrollController,
+                  physics: const BouncingScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: controller.visitsReport.length + 1, // +1 for loader
+                  itemBuilder: (context, visitIndex) {
+                    if (visitIndex < controller.visitsReport.length) {
+                      return VisitCardItemWidget(
+                        visit: controller.visitsReport[visitIndex],
+                      );
+                    }
+                  },
+                  separatorBuilder: (context, index) => const SizedBox(height: 10),
+                )
+                )
+                    : Center(child: Text('noVisits'.tr)),
+                fallback: (context) => const Center(
+                    child: CircularProgressIndicator(
+                      color: AppColors.trinidadColor,
+                    )),
+              ),
             ),
           )),
         )
