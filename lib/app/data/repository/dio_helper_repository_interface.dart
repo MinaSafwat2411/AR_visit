@@ -28,7 +28,7 @@ abstract class DioHelperRepositoryInterface {
 
   Future<ApiResponse<List<VisitModel>>> getMeVisitData(String lang, String token,int page);
 
-  Future<ApiResponse<List<VisitModel>>> getReport(String lang, String token, int id);
+  Future<ApiResponse<List<VisitModel>>> getReport(String lang, String token, int id,int page);
 
   Future<ApiResponse<List<VisitModel>>> getAllVisitData(String lang, String token,int page);
 

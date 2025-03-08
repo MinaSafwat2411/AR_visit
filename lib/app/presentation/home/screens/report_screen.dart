@@ -29,9 +29,9 @@ class ReportScreen extends GetView<HomeController> {
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: NotificationListener<ScrollNotification>(
                   onNotification: (ScrollNotification scrollInfo) {
-                    if (scrollInfo.metrics.pixels >=
-                            scrollInfo.metrics.maxScrollExtent &&
-                        !controller.isLoadingMore.value && !controller.lastPageReports.value) {
+                    if ((scrollInfo.metrics.pixels >=
+                            scrollInfo.metrics.maxScrollExtent) &&
+                        !(controller.reportsLoadingMore.value) && !(controller.lastPageReports.value)) {
                       controller
                           .getMoreDataReportsVisits(controller.userRx.value);
                     }

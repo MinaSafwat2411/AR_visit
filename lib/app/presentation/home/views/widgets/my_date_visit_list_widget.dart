@@ -20,7 +20,7 @@ class MyDateVisitListWidget extends GetView<HomeController> {
               onNotification: (ScrollNotification scrollInfo) {
                 if (scrollInfo.metrics.pixels >=
                     scrollInfo.metrics.maxScrollExtent &&
-                    !controller.isLoadingMore.value && !controller.lastPageMe.value) {
+                    !controller.meLoadingMore.value && !controller.lastPageMe.value) {
                   controller.getMoreDataMyVisits();
                 }
                 return false;

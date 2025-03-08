@@ -110,8 +110,8 @@ class BaseUseCase extends BaseUseCaseInterface {
 
   @override
   Future<List<VisitModel>?> getReport(
-      String lang, String token, int userId) async {
-    final useCase = await repository.getReport(lang, token, userId);
+      String lang, String token, int userId,int page) async {
+    final useCase = await repository.getReport(lang, token, userId,page);
     errorHandle(useCase.statusCode, useCase.message);
     return useCase.data;
   }

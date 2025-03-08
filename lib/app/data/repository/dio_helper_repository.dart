@@ -222,10 +222,11 @@ class DioHelperRepository extends DioHelperRepositoryInterface {
 
   @override
   Future<ApiResponse<List<VisitModel>>> getReport(
-      String lang, String token ,int userId) async {
+      String lang, String token ,int userId,int page) async {
     try {
       final response = await DioHelper.getData(
-          url: BackendEndpoint.reports, token: token, lang: lang, query: {'user_id': userId});
+          url: BackendEndpoint.reports, token: token, lang: lang, query: {'user_id': userId,
+      'page': page});
       final apiResponse = ApiResponse<List<VisitModel>>.fromJson(
         response.data,
         (json) {

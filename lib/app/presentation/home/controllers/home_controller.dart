@@ -147,7 +147,7 @@ class HomeController extends GetxController {
     isLoadingInternal(true);
     lastPageReports(false);
     currentPageReports(1);
-    visitsReport(await useCase.getReport(lang.value, token.value, userId[userNames.indexOf(user)]));
+    visitsReport(await useCase.getReport(lang.value, token.value, userId[userNames.indexOf(user)],1));
     userRx(user);
     isLoadingInternal(false);
   }
@@ -321,10 +321,11 @@ class HomeController extends GetxController {
     if (reportsLoadingMore.value) return;
     reportsLoadingMore(true);
     var getMoreReports = await useCase.getReport(
-        lang.value, token.value, userId[userNames.indexOf(user)]);
+        lang.value, token.value, userId[userNames.indexOf(user)], currentPageReports.value);
 
     if (getMoreReports == null || getMoreReports.isEmpty) {
       lastPageReports(true);
+      print(lastPageReports.value);
     } else {
       visitsReport.addAll(getMoreReports);
       currentPageReports(currentPageReports.value + 1);

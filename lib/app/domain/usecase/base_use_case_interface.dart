@@ -25,7 +25,7 @@ abstract class BaseUseCaseInterface {
 
   Future<List<VisitModel>?> getMeVisitData(String lang, String token,int page);
 
-  Future<List<VisitModel>?> getReport(String lang, String token, int id);
+  Future<List<VisitModel>?> getReport(String lang, String token, int id,int page);
 
   Future<List<VisitModel>?> getAllVisitData(String lang, String token,int page);
 

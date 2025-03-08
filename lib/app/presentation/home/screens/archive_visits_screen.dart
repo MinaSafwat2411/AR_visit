@@ -85,7 +85,7 @@ class ArchiveVisitsScreen extends GetView<HomeController> {
                                     if (scrollInfo.metrics.pixels >=
                                             scrollInfo
                                                 .metrics.maxScrollExtent &&
-                                        !controller.isLoadingMore.value && !controller.lastPageArchive.value) {
+                                        !controller.archiveLoadingMore.value && !controller.lastPageArchive.value) {
                                       controller.getMoreDataArchiveVisits();
                                     }
                                     return false;
