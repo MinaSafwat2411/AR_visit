@@ -44,7 +44,7 @@ class MyDateVisitListWidget extends GetView<HomeController> {
                       ),
                       ConstrainedBox(
                         constraints: BoxConstraints(
-                          maxHeight: 100 *
+                          maxHeight: 107 *
                               controller.myVisitsGrouped[visitsIndex].visits
                                   .length
                                   .toDouble(),
