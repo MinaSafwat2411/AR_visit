@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:ar_visiting_app/app/data/models/enums/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -39,6 +42,19 @@ class CacheHelper{
     if (value is int) return await sharedPreferences!.setInt(key!, value);
     if (value is double) return await sharedPreferences!.setDouble(key!, value);
     throw ArgumentError('Invalid type');
+  }
+
+  static Future<void> saveEnums(EnumsModel enums) async {
+    String jsonString = jsonEncode(enums.toJson());
+    await sharedPreferences?.setString('enum', jsonString);
+  }
+
+  static Future<EnumsModel?> getEnums() async {
+    String? jsonString = sharedPreferences?.getString('enum');
+    if (jsonString != null) {
+      return EnumsModel.fromJson(jsonDecode(jsonString));
+    }
+    return null;
   }
 
   static Future<bool>  removeData({

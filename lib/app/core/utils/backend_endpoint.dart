@@ -7,7 +7,7 @@ class BackendEndpoint {
   static const visits = '$api/visits';
   static const order = '$visits/order';
   static const reports = '$visits/reports';
-  static const inprogress = '$visits/inprogress';
+  static const inProgress = '$visits/inprogress';
   static const cancel = '$visits/cancel';
   static const delay = '$visits/delay';
   static const done = '$visits/done';
@@ -19,7 +19,7 @@ class BackendEndpoint {
   static const patient = '$users/patient';
   static const dropDown = '$users/dropdown';
   static const profile = '$users/profile';
-  static const servent ='$visits/servant';
+  static const servant ='$visits/servant';
   static const father ='$visits/father';
   static const register = '$auth/register';
 }

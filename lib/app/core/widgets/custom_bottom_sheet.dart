@@ -1,8 +1,9 @@
 import 'package:ar_visiting_app/app/core/utils/app_colors.dart';
-import 'package:ar_visiting_app/app/modules/visit_details/controllers/visit_details_controllers.dart';
-import 'package:ar_visiting_app/app/modules/visit_details/di/bottom_sheet_type.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../presentation/visit_details/controllers/visit_details_controllers.dart';
+import '../../presentation/visit_details/di/bottom_sheet_type.dart';
 
 class CustomBottomSheet extends GetView<VisitDetailsControllers> {
   final String title;

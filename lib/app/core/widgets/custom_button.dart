@@ -1,6 +1,7 @@
-import 'package:ar_visiting_app/app/modules/register/controllers/register_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../presentation/register/controllers/register_controller.dart';
 
 class CustomButton extends StatelessWidget {
   const CustomButton(

@@ -1,17 +1,16 @@
-
-import 'package:ar_visiting_app/app/modules/home/bindings/home_binding.dart';
-import 'package:ar_visiting_app/app/modules/home/views/home_view.dart';
-import 'package:ar_visiting_app/app/modules/splash/bindings/splash_binding.dart';
-import 'package:ar_visiting_app/app/modules/splash/views/splash_views.dart';
-import 'package:ar_visiting_app/app/modules/visit_details/blinding/visit_details_blinding.dart';
-import 'package:ar_visiting_app/app/modules/visit_details/views/visit_details_views.dart';
 import 'package:get/get.dart';
-import '../modules/add_edit_visit/bindings/add_edit_visit_binding.dart';
-import '../modules/add_edit_visit/views/add_edit_visit_view.dart';
-import '../modules/login/bindings/login_binding.dart';
-import '../modules/login/views/login_view.dart';
-import '../modules/register/bindings/register_blinding.dart';
-import '../modules/register/views/register_view.dart';
+import '../presentation/add_edit_visit/bindings/add_edit_visit_binding.dart';
+import '../presentation/add_edit_visit/views/add_edit_visit_view.dart';
+import '../presentation/home/bindings/home_binding.dart';
+import '../presentation/home/views/home_view.dart';
+import '../presentation/login/bindings/login_binding.dart';
+import '../presentation/login/views/login_view.dart';
+import '../presentation/register/bindings/register_blinding.dart';
+import '../presentation/register/views/register_view.dart';
+import '../presentation/splash/bindings/splash_binding.dart';
+import '../presentation/splash/views/splash_views.dart';
+import '../presentation/visit_details/blinding/visit_details_blinding.dart';
+import '../presentation/visit_details/views/visit_details_views.dart';
 
 part 'app_routes.dart';
 
