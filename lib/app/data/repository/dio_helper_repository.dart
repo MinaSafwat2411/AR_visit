@@ -198,7 +198,10 @@ class DioHelperRepository extends DioHelperRepositoryInterface {
       String lang, String token, int page) async {
     try {
       final response = await DioHelper.getData(
-        query: {'page': page},
+        query: {
+          'page': page,
+          'me': 1
+        },
         url: BackendEndpoint.visits,
         token: token,
         lang: lang,
