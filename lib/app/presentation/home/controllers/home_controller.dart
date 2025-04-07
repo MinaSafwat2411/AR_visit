@@ -325,12 +325,19 @@ class HomeController extends GetxController {
 
     if (getMoreReports == null || getMoreReports.isEmpty) {
       lastPageReports(true);
-      print(lastPageReports.value);
     } else {
       visitsReport.addAll(getMoreReports);
       currentPageReports(currentPageReports.value + 1);
     }
     reportsLoadingMore(false);
+  }
+  void onDone(int id)async{
+    await useCase.onDone(lang.value, token.value, id);
+    refresh();
+  }
+  void onCanceled(int id)async{
+    await useCase.onCanceled(lang.value, token.value, id);
+    refresh();
   }
 
   @override

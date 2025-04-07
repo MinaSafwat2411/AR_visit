@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 
 import '../../../core/utils/app_colors.dart';
 import '../../../core/widgets/custom_alert.dart';
+import '../../../core/widgets/custom_bottom_nav_item.dart';
 import '../../../routes/app_pages.dart';
 import '../../visit_details/di/operation_type.dart';
 import '../controllers/home_controller.dart';
@@ -160,228 +161,18 @@ class HomeView extends GetView<HomeController> {
             ),
           ),
         ),
-        bottomNavigationBar: BottomAppBar(
-          elevation: 10,
-          shadowColor: AppColors.gray,
-          shape: const CircularNotchedRectangle(),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Row(
-                children: [
-                  MaterialButton(
-                    height: 60,
-                    splashColor: Colors.transparent,
-                    onPressed: () {
-                      controller.onBottomNavItemClicked(0);
-                    },
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Obx(() => Container(
-                                  decoration: BoxDecoration(
-                                      color: controller.isDark.value ?
-                                      controller.currentScreen.value == 0
-                                          ? AppColors.trinidadColor
-                                          : AppColors.codGray
-                                       :controller.currentScreen.value == 0
-                                          ? AppColors.trinidadColor
-                                          : AppColors.white,
-                                      borderRadius: BorderRadius.circular(15)),
-                                  height: 30,
-                                  width: 55,
-                                )),
-                            Obx(() => Icon(
-                                  Icons.people_outline,
-                                  color: controller.isDark.value ?
-                                  controller.currentScreen.value == 0
-                                      ? AppColors.black
-                                      : AppColors.white
-                                   :controller.currentScreen.value == 0
-                                      ? AppColors.white
-                                      : AppColors.black,
-                                )),
-                          ],
-                        ),
-                        Obx(() => Text(
-                              'visits'.tr,
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: controller.isDark.value ? controller.currentScreen.value == 0
-                                      ? AppColors.trinidadColor
-                                      : AppColors.white
-                                      :controller.currentScreen.value == 0
-                                      ? AppColors.trinidadColor
-                                      : AppColors.black),
-                            )),
-                      ],
-                    ),
-                  ),
-                  MaterialButton(
-                    splashColor: Colors.transparent,
-                    height: 60,
-                    onPressed: () {
-                      controller.onBottomNavItemClicked(1);
-                    },
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Obx(() => Container(
-                                  decoration: BoxDecoration(
-                                      color: controller.isDark.value ? 
-                                      controller.currentScreen.value == 1
-                                          ? AppColors.trinidadColor
-                                          : AppColors.codGray
-                                      :controller.currentScreen.value == 1
-                                          ? AppColors.trinidadColor
-                                          : AppColors.white,
-                                      borderRadius: BorderRadius.circular(15)),
-                                  height: 30,
-                                  width: 55,
-                                )),
-                            Obx(() => Icon(
-                              Icons.archive_outlined,
-                              color:controller.isDark.value ? 
-                              controller.currentScreen.value == 1
-                                  ? AppColors.black
-                                  : AppColors.white
-                              : controller.currentScreen.value == 1
-                                  ? AppColors.white
-                                  : AppColors.black,
-                            )),
-                          ],
-                        ),
-                        Obx(() => Text(
-                              'archive'.tr,
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: controller.isDark.value ? controller.currentScreen.value == 1
-                                      ? AppColors.trinidadColor
-                                      : AppColors.white
-                                      :controller.currentScreen.value == 1
-                                      ? AppColors.trinidadColor
-                                      : AppColors.black),
-                            )),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  MaterialButton(
-                    splashColor: Colors.transparent,
-                    height: 60,
-                    onPressed: () {
-                      controller.onBottomNavItemClicked(2);
-                    },
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Obx(() => Container(
-                                  decoration: BoxDecoration(
-                                      color: controller.isDark.value ? 
-                                      controller.currentScreen.value == 2
-                                          ? AppColors.trinidadColor
-                                          : AppColors.codGray
-                                      :controller.currentScreen.value == 2
-                                          ? AppColors.trinidadColor
-                                          : AppColors.white,
-                                      borderRadius: BorderRadius.circular(15)),
-                                  height: 30,
-                                  width: 55,
-                                )),
-                            Obx(() => Icon(
-                              Icons.analytics_outlined,
-                              color:controller.isDark.value ? 
-                              controller.currentScreen.value == 2
-                                  ? AppColors.black
-                                  : AppColors.white
-                              : controller.currentScreen.value == 2
-                                  ? AppColors.white
-                                  : AppColors.black,
-                            )),
-                          ],
-                        ),
-                        Obx(() => Text(
-                              'reports'.tr,
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: controller.isDark.value ? controller.currentScreen.value == 2
-                                      ? AppColors.trinidadColor
-                                      : AppColors.white
-                                      :controller.currentScreen.value == 2
-                                      ? AppColors.trinidadColor
-                                      : AppColors.black),
-                            )),
-                      ],
-                    ),
-                  ),
-                  MaterialButton(
-                    splashColor: Colors.transparent,
-                    height: 60,
-                    onPressed: () {
-                      controller.onBottomNavItemClicked(3);
-                    },
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Obx(() => Container(
-                                  decoration: BoxDecoration(
-                                      color: controller.isDark.value ? 
-                                      controller.currentScreen.value == 3
-                                          ? AppColors.trinidadColor
-                                          : AppColors.codGray
-                                      :controller.currentScreen.value == 3
-                                          ? AppColors.trinidadColor
-                                          : AppColors.white,
-                                      borderRadius: BorderRadius.circular(15)),
-                                  height: 30,
-                                  width: 55,
-                                )),
-                            Obx(() => Icon(
-                              Icons.person_outlined,
-                              color:controller.isDark.value ? 
-                              controller.currentScreen.value == 3
-                                  ? AppColors.black
-                                  : AppColors.white
-                              : controller.currentScreen.value == 3
-                                  ? AppColors.white
-                                  : AppColors.black,
-                            )),
-                          ],
-                        ),
-                        Obx(() => Text(
-                              'profile'.tr,
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: controller.isDark.value ? controller.currentScreen.value == 3
-                                      ? AppColors.trinidadColor
-                                      : AppColors.white
-                                      :controller.currentScreen.value == 3
-                                      ? AppColors.trinidadColor
-                                      : AppColors.black),
-                            )),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+        bottomNavigationBar: Obx(() => BottomNavigationBar(
+          currentIndex: controller.currentScreen.value,
+          onTap: (value) {
+            controller.onBottomNavItemClicked(value);
+          },
+          items: [
+            CustomBottomNavigationBarItem.create(icon: Icons.people_outline, label: 'visits'.tr),
+            CustomBottomNavigationBarItem.create(icon: Icons.archive_outlined, label: 'archive'.tr),
+            CustomBottomNavigationBarItem.create(icon: Icons.analytics_outlined, label: 'reports'.tr),
+            CustomBottomNavigationBarItem.create(icon: Icons.person_outlined, label: 'profile'.tr),
+          ],
+        )
         ),
         body: Obx(() => ConditionalBuilder(
           fallback: (context) => const Column(
@@ -401,6 +192,7 @@ class HomeView extends GetView<HomeController> {
                 controller.me(true);
                 controller.currentScreen.value=value;
               },
+              physics: const NeverScrollableScrollPhysics(),
               controller: controller.pageController,
               children: [
                 controller.screens[0],

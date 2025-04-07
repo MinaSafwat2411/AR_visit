@@ -88,7 +88,7 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                 position: PopupMenuPosition.under,
                 color: controller.isDark.value? AppColors.black:AppColors.white,
                 itemBuilder: (context) => <PopupMenuEntry<OperationType>>[
-                      PopupMenuItem<OperationType>(
+                      if(controller.visit.value.status?.value!=6&&controller.visit.value.status?.value!=5)PopupMenuItem<OperationType>(
                         value: OperationType.EDIT,
                         child: Row(
                           children: [
@@ -102,14 +102,14 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                           ],
                         ),
                       ),
-                      const PopupMenuDivider(
+                  if(controller.visit.value.status?.value!=6&&controller.visit.value.status?.value!=5)const PopupMenuDivider(
                         height: 1,
                       ),
-                      PopupMenuItem<OperationType>(
+                  if(controller.visit.value.status?.value!=6 && controller.visit.value.status?.value!=5)PopupMenuItem<OperationType>(
                         value: OperationType.CANCELED,
                         child: Row(
                           children: [
-                            const Icon(Icons.plus_one_outlined),
+                            const Icon(Icons.cancel_outlined),
                             const SizedBox(
                               width: 15,
                             ),
@@ -119,7 +119,7 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                           ],
                         ),
                       ),
-                      const PopupMenuDivider(
+                  if(controller.visit.value.status?.value!=6&&controller.visit.value.status?.value!=5)const PopupMenuDivider(
                         height: 1,
                       ),
                       PopupMenuItem<OperationType>(
@@ -138,10 +138,10 @@ class VisitDetailsViews extends GetView<VisitDetailsControllers> {
                           ],
                         ),
                       ),
-                      const PopupMenuDivider(
+                  if(controller.visit.value.status?.value!=6&&controller.visit.value.status?.value!=5)const PopupMenuDivider(
                         height: 1,
                       ),
-                      PopupMenuItem<OperationType>(
+                  if(controller.visit.value.status?.value!=6&&controller.visit.value.status?.value!=5)PopupMenuItem<OperationType>(
                           value: OperationType.DELAYED,
                           child: Row(
                             children: [

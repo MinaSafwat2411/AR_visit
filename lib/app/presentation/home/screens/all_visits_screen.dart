@@ -74,7 +74,7 @@ class AllVisitsScreen extends GetView<HomeController> {
                 itemBuilder: (context, index) => TagItemWidget(
                   index: index,
                 ),
-                itemCount: controller.tags.length,
+                itemCount: controller.tags.length-2,
               )),
         ),
         Expanded(

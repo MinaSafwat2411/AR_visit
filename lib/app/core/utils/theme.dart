@@ -49,12 +49,49 @@ final ThemeData darkTheme = ThemeData(
     ),
     hintStyle: const TextStyle(color: Colors.white54),
   ),
+  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+    backgroundColor: AppColors.codGray2,
+    selectedItemColor: AppColors.trinidadColor,
+    unselectedItemColor: AppColors.white,
+    showSelectedLabels: true,
+    selectedLabelStyle: TextStyle(
+      color: AppColors.trinidadColor,
+    ),
+    unselectedIconTheme: IconThemeData(
+      color: AppColors.white,
+    ),
+    unselectedLabelStyle: TextStyle(
+      color: AppColors.white,
+    ),
+    selectedIconTheme: IconThemeData(color: AppColors.trinidadColor),
+    elevation: 1,
+    type: BottomNavigationBarType.fixed,
+    showUnselectedLabels: true,
+    landscapeLayout: BottomNavigationBarLandscapeLayout.spread,
+  ),
 );
 var lightTheme = ThemeData(
-  bottomAppBarTheme: const BottomAppBarTheme(
-    color: AppColors.white
-  ),
-  scaffoldBackgroundColor: AppColors.white,
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      backgroundColor: AppColors.white,
+      selectedItemColor: AppColors.trinidadColor,
+      unselectedItemColor: AppColors.black,
+      showSelectedLabels: true,
+      selectedLabelStyle: TextStyle(
+        color: AppColors.trinidadColor,
+      ),
+      unselectedIconTheme: IconThemeData(
+        color: AppColors.black,
+      ),
+      unselectedLabelStyle: TextStyle(
+        color: AppColors.black,
+      ),
+      selectedIconTheme: IconThemeData(color: AppColors.trinidadColor),
+      elevation: 1,
+      type: BottomNavigationBarType.fixed,
+      showUnselectedLabels: true,
+      landscapeLayout: BottomNavigationBarLandscapeLayout.spread,
+    ),
+    scaffoldBackgroundColor: AppColors.white,
   appBarTheme: const AppBarTheme(
     backgroundColor: AppColors.white
   )

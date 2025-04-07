@@ -1,3 +1,5 @@
+import 'package:ar_visiting_app/app/core/widgets/address_type_bottom_sheet.dart';
+import 'package:ar_visiting_app/app/core/widgets/area_bottom_sheet.dart';
 import 'package:ar_visiting_app/app/core/widgets/custom_small_textField.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +11,8 @@ import '../../../core/utils/app_colors.dart';
 import '../../../core/widgets/custom_alert.dart';
 import '../../../core/widgets/custom_big_textfield.dart';
 import '../../../core/widgets/custom_button.dart';
-import '../../../core/widgets/custom_dropdownlist.dart';
 import '../../../core/widgets/custom_textformfield.dart';
+import '../../../core/widgets/patient_bottom_sheet.dart';
 import '../controllers/add_edit_visit_controller.dart';
 
 class AddEditVisitView extends GetView<AddEditVisitController> {
@@ -97,13 +99,31 @@ class AddEditVisitView extends GetView<AddEditVisitController> {
                                   height: 10,
                                 ),
                                 if (controller.currentScreen.value == 0)
-                                  CustomDropDownList(
-                                    onChangeValue: (String? value) {
-                                      controller.userType.value = value!;
+                                  GestureDetector(
+                                    onTap: () {
+                                      showModalBottomSheet<void>(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return PatientBottomSheet(
+                                            title: 'patient'.tr,
+                                            isDark: controller.isDark.value,
+                                            patients: controller.patient,
+                                          );
+                                        },
+                                      );
                                     },
-                                    label: 'user'.tr,
-                                    items: controller.userNames,
-                                    currentValue: controller.userType.value,
+                                    child: Container(
+                                      height: 50,
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(color: controller.isDark.value ?AppColors.white:AppColors.trinidadColor,width:1,),
+                                        borderRadius: BorderRadius.circular(8)
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Obx(() => Text(controller.selectedPatient.value.name?? 'user'.tr)),
+                                      ),
+                                    ),
                                   ),
                                 if (controller.currentScreen.value == 0)
                                   Padding(
@@ -174,13 +194,34 @@ class AddEditVisitView extends GetView<AddEditVisitController> {
                                     return null;
                                   },
                                 ),
-                                CustomDropDownList(
-                                  onChangeValue: (String? value) {
-                                    controller.addressType.value = value!;
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    showModalBottomSheet<void>(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AreaBottomSheet(
+                                          title: 'zone'.tr,
+                                          isDark: controller.isDark.value,
+                                          areas: controller.areas,
+                                        );
+                                      },
+                                    );
                                   },
-                                  label: 'addressType'.tr,
-                                  items: controller.addressTypeList,
-                                  currentValue: controller.addressType.value,
+                                  child: Container(
+                                    height: 50,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(color: controller.isDark.value ?AppColors.white:AppColors.trinidadColor,width:1,),
+                                        borderRadius: BorderRadius.circular(8)
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Obx(() => Text(controller.selectedArea.value.name?? 'zone'.tr)),
+                                    ),
+                                  ),
                                 ),
                                 CustomTextFormField(
                                   label: 'address'.tr,
@@ -193,13 +234,34 @@ class AddEditVisitView extends GetView<AddEditVisitController> {
                                     return null;
                                   },
                                 ),
-                                CustomDropDownList(
-                                  onChangeValue: (String? value) {
-                                    controller.areaName.value = value!;
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    showModalBottomSheet<void>(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AddressTypeBottomSheet(
+                                          title: 'addressType'.tr,
+                                          isDark: controller.isDark.value,
+                                          addressType: controller.addressType,
+                                        );
+                                      },
+                                    );
                                   },
-                                  label: 'zone'.tr,
-                                  items: controller.areaNames,
-                                  currentValue: controller.visit.value.area?.name,
+                                  child: Container(
+                                    height: 50,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(color: controller.isDark.value ?AppColors.white:AppColors.trinidadColor,width:1,),
+                                        borderRadius: BorderRadius.circular(8)
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Obx(() => Text(controller.selectedAddressType.value.addressTypeValue?? 'addressType'.tr)),
+                                    ),
+                                  ),
                                 ),
                                 CustomTextFormField(
                                   textController:

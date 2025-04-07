@@ -1,7 +1,9 @@
+import 'package:ar_visiting_app/app/data/models/address_type/address_type_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../data/models/area/areamodel.dart';
 import '../../../data/models/login/loginmodel.dart';
+import '../../../data/models/patient/patient_model.dart';
 import '../../../data/models/visits/visitmodel.dart';
 import '../../../data/repository/dio_helper_repository.dart';
 import '../../../domain/usecase/base_use_case.dart';
@@ -9,20 +11,10 @@ import '../../../routes/app_pages.dart';
 import '../../visit_details/di/operation_type.dart';
 
 class AddEditVisitController extends GetxController {
-  var addressType = ''.obs;
-  var userType = ''.obs;
-  var areaName = ''.obs;
-  var areaNames = <String>[].obs;
-  var areaId = <int>[].obs;
-  var userNames = <String>[].obs;
-  var userId = <int>[].obs;
-  var areaData =<AreaModel>[].obs;
-  var userData =<User>[].obs;
   var isLoading = false.obs;
   var id =''.obs;
   var lang=''.obs;
   final formKey = GlobalKey<FormState>();
-  var addressTypeList=<String>[].obs;
   var token = ''.obs;
   var newVisit = VisitModel().obs;
   var visit =VisitModel().obs;
@@ -32,6 +24,12 @@ class AddEditVisitController extends GetxController {
   var buttonText =<String>['add'.tr,'edit'.tr,'clone'.tr].obs;
   var currentScreen= RxInt(0);
   var internalLoading= RxBool(false);
+  var patient = <PatientModel>[].obs;
+  var addressType = <AddressTypeModel>[].obs;
+  var areas = <AreaModel>[].obs;
+  var selectedPatient = PatientModel().obs;
+  var selectedArea = AreaModel().obs;
+  var selectedAddressType = AddressTypeModel().obs;
   final BaseUseCase useCase = BaseUseCase(repository: DioHelperRepository.repository);
 
   TextEditingController dateController = TextEditingController();
@@ -47,6 +45,19 @@ class AddEditVisitController extends GetxController {
   TextEditingController googleLinkController = TextEditingController();
 
 
+  void getAddressType(){
+    if(lang.value=='en'){
+      addressType.add(AddressTypeModel(addressTypeTd: 1,addressTypeValue: 'Home'));
+      addressType.add(AddressTypeModel(addressTypeTd: 2,addressTypeValue: 'Hospital'));
+      addressType.add(AddressTypeModel(addressTypeTd: 3,addressTypeValue: 'Dar'));
+      addressType.add(AddressTypeModel(addressTypeTd: 4,addressTypeValue: 'others'));
+    }else{
+      addressType.add(AddressTypeModel(addressTypeTd: 1,addressTypeValue: 'منزل'));
+      addressType.add(AddressTypeModel(addressTypeTd: 2,addressTypeValue: 'مستشفى'));
+      addressType.add(AddressTypeModel(addressTypeTd: 3,addressTypeValue: 'دار'));
+      addressType.add(AddressTypeModel(addressTypeTd: 4,addressTypeValue: 'دار'));
+    }
+  }
   Future<void> selectDate(BuildContext context) async {
     DateTime? datePicked = await showDatePicker(
         context: context,
@@ -66,13 +77,6 @@ class AddEditVisitController extends GetxController {
               child: child!);
         });
     dateController.text = "${datePicked!.day.toString().padLeft(2, '0')}-${datePicked.month.toString().padLeft(2, '0')}-${datePicked.year}";
-  }
-  void getAddressType(){
-    if(lang.value=='en'){
-      addressTypeList.value=['Home','Hospital', 'Dar','others'];
-    }else{
-      addressTypeList.value=['منزل','مستشفى', 'دار','اخري'];
-    }
   }
 
   Future<void> selectedFromTime(BuildContext context) async {
@@ -120,21 +124,11 @@ class AddEditVisitController extends GetxController {
     }
   }
   Future<void> getData() async {
-      userNames([]);
-      userId([]);
-      var userData = await useCase.getUserData(lang.value, token.value) ?? [];
-      for (var element in userData) {
-        if(lang.value=='en') {
-          userNames.add(element.name?.name??'');
-        } else {
-          userNames.add(element.name?.nameAr??'');
-        }
-        userId.add(element.id ?? -1);
+      var patientData = await useCase.getUserData(lang.value, token.value)??[];
+      for (var element in patientData) {
+        patient.add(PatientModel(id: element.id,name: lang.value=='en'? element.name?.name??'' : element.name?.nameAr??''));
       }
-      for (var element in userData) {
-        userNames.add(element.name?.name??'');
-        userId.add(element.id!);
-      }
+      areas(await useCase.getAreaData(lang.value, token.value) ?? []);
   }
 
   void clone()async{
@@ -153,8 +147,8 @@ class AddEditVisitController extends GetxController {
         attendantPhone: assistantPhoneController.text,
         note: noteController.text,
         addressUrl: googleLinkController.text,
-        areaId: areaId[areaNames.indexOf(areaName.value)],
-        addressTypeId: addressTypeList.indexOf(addressType.value)+1,
+        areaId: selectedArea.value.id,
+        addressTypeId: selectedAddressType.value.addressTypeTd,
         id: visit.value.id,
       );
       visit(await useCase.editVisit(lang.value,token.value,newVisit.value));
@@ -175,12 +169,25 @@ class AddEditVisitController extends GetxController {
     googleLinkController = TextEditingController(text: visit.value.addressUrl);
     patientFamIDController=TextEditingController(text: visit.value.e1C1F.toString());
     patientIDNumberController=TextEditingController(text: visit.value.nR.toString());
-    areaName.value=visit.value.area?.name??'';
-    addressType.value=addressTypeList[visit.value.addressTypeId!-1];
-    userType.value =visit.value.userName??'';
+    selectedArea.value=AreaModel(id: visit.value.area?.id,name: visit.value.area?.name??'');
+    selectedAddressType.value=AddressTypeModel(addressTypeTd: visit.value.addressType?.value,addressTypeValue: visit.value.addressType?.name??'');
+    selectedPatient.value =PatientModel(name: visit.value.userName??'',id: visit.value.userId);
   }
 
+  void onSelectPatient(PatientModel patient){
+    selectedPatient.value = patient;
+    Get.back(closeOverlays: true);
+  }
 
+  void onSelectArea(AreaModel area){
+    selectedArea.value = area;
+    Get.back(closeOverlays: true);
+  }
+
+  void onSelectAddressType(AddressTypeModel addressType){
+    selectedAddressType.value = addressType;
+    Get.back(closeOverlays: true);
+  }
 
   void addVisit() async{
     internalLoading(true);
@@ -197,9 +204,9 @@ class AddEditVisitController extends GetxController {
         nR: int.parse(patientIDNumberController.text),
         note: noteController.text,
         addressUrl: googleLinkController.text,
-        areaId: areaId[areaNames.indexOf(areaName.value)],
-        addressTypeId: addressTypeList.indexOf(addressType.value)+1,
-        userId: userId[userNames.indexOf(userType.value)]
+        areaId: selectedArea.value.id,
+        addressTypeId: selectedAddressType.value.addressTypeTd,
+        userId: selectedPatient.value.id,
       );
       visit(await useCase.addVisit(lang.value,token.value,newVisit.value));
       Get.snackbar("Visits", "Visit add successfully");

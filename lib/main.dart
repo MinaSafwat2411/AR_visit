@@ -34,7 +34,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      darkTheme: isDark ? darkTheme:lightTheme,
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      themeMode: isDark? ThemeMode.dark: ThemeMode.light,
       translations: MyTranslations(),
       debugShowCheckedModeBanner: false,
       locale:  Locale(lang),
