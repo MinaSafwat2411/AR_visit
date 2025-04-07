@@ -12,7 +12,6 @@ void main() async {
   await initializeDateFormatting('ar','en');
   bool isDark = await CacheHelper.getData(key: 'isDark') ?? false;
   String lang = await CacheHelper.getData(key: 'lang') ?? 'en';
-
   runApp(MyApp(isDark: isDark,lang: lang));
 }
 class MyTranslations extends Translations {

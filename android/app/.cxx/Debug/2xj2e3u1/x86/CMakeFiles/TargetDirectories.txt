@@ -1,0 +1,2 @@
+D:/Projects/Mobile application/Flutter/Kenisa/AR visit/android/app/.cxx/Debug/2xj2e3u1/x86/CMakeFiles/edit_cache.dir
+D:/Projects/Mobile application/Flutter/Kenisa/AR visit/android/app/.cxx/Debug/2xj2e3u1/x86/CMakeFiles/rebuild_cache.dir
