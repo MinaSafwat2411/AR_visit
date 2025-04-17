@@ -27,7 +27,7 @@ if (flutterVersionName == null) {
 android {
     namespace = "com.example.ar_visiting_app"
     compileSdk flutter.compileSdkVersion
-
+    ndkVersion "28.0.13004108"
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11

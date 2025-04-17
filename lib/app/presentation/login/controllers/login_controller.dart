@@ -1,5 +1,6 @@
 import 'package:ar_visiting_app/app/core/services/cache_helper.dart';
 import 'package:ar_visiting_app/app/core/services/dio_helper.dart';
+import 'package:ar_visiting_app/app/data/models/enums/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

@@ -254,6 +254,10 @@ class HomeController extends GetxController {
       myVisitsGrouped.value = groupByDay(myVisits);
       userNames([]);
       userId([]);
+      currentPageAll(2);
+      currentPageArchive(2);
+      currentPageReports(2);
+      currentPageMy(2);
       var userData = await useCase.getUserData(lang.value, token.value)??[];
       for (var element in userData) {
         if (lang.value == 'en') {
@@ -333,11 +337,11 @@ class HomeController extends GetxController {
   }
   void onDone(int id)async{
     await useCase.onDone(lang.value, token.value, id);
-    refresh();
+    getData();
   }
   void onCanceled(int id)async{
     await useCase.onCanceled(lang.value, token.value, id);
-    refresh();
+    getData();
   }
 
   @override
@@ -347,6 +351,7 @@ class HomeController extends GetxController {
     lang.value = Get.arguments[0];
     token.value = Get.arguments[2];
     var cache = await CacheHelper.getEnums();
+    print("enums");
     if (cache != null) {
       for (var element in cache.visitsStatus!) {
         tags.add(TagsModel(name: element.name ?? '', isSelected: RxBool(false), value: element.value?? -1,type: element.name));

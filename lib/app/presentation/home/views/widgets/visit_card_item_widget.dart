@@ -15,6 +15,7 @@ class VisitCardItemWidget extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Slidable(
+      enabled: (controller.currentScreen.value== 0),
         key: ValueKey(visit.id),
         endActionPane: ActionPane(
           motion: const ScrollMotion(),

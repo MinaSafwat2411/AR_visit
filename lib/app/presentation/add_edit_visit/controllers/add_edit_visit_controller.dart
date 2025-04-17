@@ -44,6 +44,27 @@ class AddEditVisitController extends GetxController {
   TextEditingController noteController = TextEditingController();
   TextEditingController googleLinkController = TextEditingController();
 
+  String changeFormatDB(String date) {
+    var newDate = '';
+    try {
+      newDate =
+      '${date.substring(6, 10)}-${date.substring(3, 5)}-${date.substring(0, 2)}';
+    } catch (e) {
+      Get.snackbar('Error', 'Invalid date format');
+    }
+    return newDate;
+  }
+
+  String changeFormatView(String date) {
+    var newDate = '';
+    try {
+      newDate =
+      '${date.substring(0, 2)}-${date.substring(3, 5)}-${date.substring(6, 10)}';
+    } catch (e) {
+      Get.snackbar('Error', 'Invalid date format');
+    }
+    return newDate;
+  }
 
   void getAddressType(){
     if(lang.value=='en'){
@@ -193,7 +214,7 @@ class AddEditVisitController extends GetxController {
     internalLoading(true);
     try{
       newVisit.value = VisitModel(
-        date: dateController.text,
+        date: changeFormatDB(dateController.text),
         from: fromTimeController.text,
         to: toTimeController.text,
         patientNums: int.parse(numberOfPeopleController.text),
@@ -209,7 +230,6 @@ class AddEditVisitController extends GetxController {
         userId: selectedPatient.value.id,
       );
       visit(await useCase.addVisit(lang.value,token.value,newVisit.value));
-      Get.snackbar("Visits", "Visit add successfully");
       Get.offNamedUntil(
           Routes.VISIT_DETAILS,
               arguments: [lang.value,isDark.value,token.value,visit.value],

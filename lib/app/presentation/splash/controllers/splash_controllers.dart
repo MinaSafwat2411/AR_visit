@@ -38,7 +38,6 @@ class SplashController extends GetxController {
     } else {
       var enums =await useCase.getEnums(lang.value, token.value);
       if (enums != null) {
-        CacheHelper.saveEnums(enums);
         Get.offNamed(
             Routes.HOME, arguments: [lang.value, isDark.value, token.value]);
       }

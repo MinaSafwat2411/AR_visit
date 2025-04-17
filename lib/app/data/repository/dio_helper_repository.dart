@@ -517,6 +517,15 @@ class DioHelperRepository extends DioHelperRepositoryInterface {
         response.statusMessage ?? '',
       );
       CacheHelper.saveData(key: 'token', value: apiResponse.data?.token);
+      final response2 = await DioHelper.getData(
+          url: BackendEndpoint.enums, token: apiResponse.data?.token, lang: lang);
+      final apiResponse2 = ApiResponse<EnumsModel>.fromJson(
+        response2.data,
+            (json) => EnumsModel.fromJson(json as Map<String, dynamic>),
+        response.statusCode ?? 0,
+        response.statusMessage ?? '',
+      );
+      CacheHelper.saveEnums(apiResponse2.data?? EnumsModel());
       return apiResponse;
     } on DioException catch (e) {
       return errorHandler<UserModel>(e);
