@@ -1,3 +1,4 @@
+import 'package:ar_visiting_app/app/core/widgets/custom_loading.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,68 +12,28 @@ class AllVisitsScreen extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: SizedBox(
-            height: 50,
-            child: Form(
-                child: TextFormField(
-              style: TextStyle(
-                  color: controller.isDark.value
-                      ? AppColors.white
-                      : AppColors.gray,
-                  decoration: TextDecoration.none),
-              cursorColor:
-                  controller.isDark.value ? AppColors.white : AppColors.black,
-              controller: controller.allSearchController,
-              onChanged: (value) {
-                controller.onSearchAll(value);
-              },
-              textAlignVertical: TextAlignVertical.center,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: controller.isDark.value
-                    ? AppColors.gray
-                    : AppColors.waferColor,
-                // Set background color
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: controller.isDark.value
-                          ? AppColors.codGray
-                          : AppColors.waferColor),
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: controller.isDark.value
-                          ? AppColors.codGray
-                          : AppColors.waferColor),
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                focusColor: controller.isDark.value
-                    ? AppColors.codGray
-                    : AppColors.waferColor,
-                hintText: 'search'.tr,
-                prefixIcon: Icon(
-                  Icons.search,
-                  color: controller.isDark.value
-                      ? AppColors.white
-                      : AppColors.trinidadColor,
-                ),
-              ),
-            )),
+          padding: const EdgeInsets.all(8.0),
+          child: SearchBar(
+            controller: controller.searchController,
+            hintText: 'search'.tr,
+            onChanged:(value)=> controller.onSearch(value),
+            leading: const Icon(Icons.search, color: AppColors.trinidadColor),
+            backgroundColor: const WidgetStatePropertyAll(AppColors.softAmber),
+            textStyle: WidgetStatePropertyAll(textTheme.bodyLarge),
           ),
         ),
         Padding(
           padding: const EdgeInsets.only(left: 12, right: 12),
           child: SizedBox(
-              height: 45,
+              height: 50,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) => TagItemWidget(
-                  index: index,
+                  tags: controller.tags[index],
                 ),
                 itemCount: controller.tags.length-2,
               )),
@@ -83,12 +44,9 @@ class AllVisitsScreen extends GetView<HomeController> {
                 child: ConditionalBuilder(
                   condition: !controller.isLoadingInternal.value,
                   builder: (context) => controller.allVisitsFiltered.isNotEmpty
-                      ? const DateVisitListWidget()
+                      ?  DateVisitListWidget()
                       : Center(child: Text('noVisits'.tr)),
-                  fallback: (context) => const Center(
-                      child: CircularProgressIndicator(
-                    color: AppColors.trinidadColor,
-                  )),
+                  fallback: (context) => const CustomLoading(),
                 ),
               )),
         ),

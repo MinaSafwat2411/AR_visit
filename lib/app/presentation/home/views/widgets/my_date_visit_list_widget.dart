@@ -1,14 +1,17 @@
 import 'package:ar_visiting_app/app/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../appcontroller/app_controller.dart';
 import '../../controllers/home_controller.dart';
 import 'visit_card_item_order_widget.dart';
 
 class MyDateVisitListWidget extends GetView<HomeController> {
-  const MyDateVisitListWidget({super.key});
+  MyDateVisitListWidget({super.key});
+  final AppController appController = Get.find();
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return RefreshIndicator(
       color: AppColors.trinidadColor,
       onRefresh: () async {
@@ -36,15 +39,14 @@ class MyDateVisitListWidget extends GetView<HomeController> {
                           const SizedBox(width: 10),
                           Text(
                             controller.formatDate(
-                                controller.myVisitsGrouped[visitsIndex].day),
-                            style: const TextStyle(
-                                fontSize: 24, fontWeight: FontWeight.w500),
+                                controller.myVisitsGrouped[visitsIndex].day,appController.lang.value),
+                            style: textTheme.titleMedium,
                           ),
                         ],
                       ),
                       ConstrainedBox(
                         constraints: BoxConstraints(
-                          maxHeight: 107 *
+                          maxHeight: 110 *
                               controller.myVisitsGrouped[visitsIndex].visits
                                   .length
                                   .toDouble(),

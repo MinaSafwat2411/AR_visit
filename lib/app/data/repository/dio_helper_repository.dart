@@ -15,15 +15,20 @@ import '../models/register/register_model.dart';
 import '../models/visits/visitmodel.dart';
 
 class DioHelperRepository extends DioHelperRepositoryInterface {
-
   static final DioHelperRepository _instance = DioHelperRepository();
+
   static DioHelperRepository get repository => _instance;
+  String token = CacheHelper.getData(key: 'token') ?? '';
+  String lang = CacheHelper.getData(key: 'lang') ?? 'ar';
 
-
+  void getData() {
+    token = CacheHelper.getData(key: 'token') ?? '';
+    lang = CacheHelper.getData(key: 'lang') ?? 'ar';
+  }
 
   @override
-  Future<ApiResponse<VisitModel>> getVisitData(
-      String lang, String token, int id) async {
+  Future<ApiResponse<VisitModel>> getVisitData(int id) async {
+    getData();
     try {
       final response = await DioHelper.getData(
         url: '${BackendEndpoint.visits}/${id.toString()}',
@@ -43,8 +48,8 @@ class DioHelperRepository extends DioHelperRepositoryInterface {
   }
 
   @override
-  Future<ApiResponse<void>> addPatient(
-      String lang, String token, User patient) async {
+  Future<ApiResponse<void>> addPatient(User patient) async {
+    getData();
     try {
       final response = await DioHelper.postData(
           url: BackendEndpoint.patient,
@@ -64,8 +69,8 @@ class DioHelperRepository extends DioHelperRepositoryInterface {
   }
 
   @override
-  Future<ApiResponse<List<DropDown>>> getUserData(
-      String lang, String token) async {
+  Future<ApiResponse<List<DropDown>>> getUserData() async {
+    getData();
     try {
       var response = await DioHelper.getData(
           url: BackendEndpoint.dropDown, lang: lang, token: token);
@@ -87,8 +92,8 @@ class DioHelperRepository extends DioHelperRepositoryInterface {
   }
 
   @override
-  Future<ApiResponse<List<DropDown>>> getFatherServantData(
-      String lang, String token, int id) async {
+  Future<ApiResponse<List<DropDown>>> getFatherServantData(int id) async {
+    getData();
     try {
       var response = await DioHelper.getData(
           url: BackendEndpoint.dropDown,
@@ -113,8 +118,8 @@ class DioHelperRepository extends DioHelperRepositoryInterface {
   }
 
   @override
-  Future<ApiResponse<List<AreaModel>>> getAreaData(
-      String lang, String token) async {
+  Future<ApiResponse<List<AreaModel>>> getAreaData() async {
+    getData();
     try {
       var response = await DioHelper.getData(
           url: BackendEndpoint.areas, lang: lang, token: token);
@@ -136,8 +141,8 @@ class DioHelperRepository extends DioHelperRepositoryInterface {
   }
 
   @override
-  Future<ApiResponse<VisitModel>> editVisit(
-      String lang, String token, VisitModel visit) async {
+  Future<ApiResponse<VisitModel>> editVisit(VisitModel visit) async {
+    getData();
     try {
       final response = await DioHelper.putData(
           url: '${BackendEndpoint.visits}/${visit.id.toString()}',
@@ -157,7 +162,8 @@ class DioHelperRepository extends DioHelperRepositoryInterface {
   }
 
   @override
-  Future<ApiResponse<LogoutModel>> logout(String lang, String token) async {
+  Future<ApiResponse<LogoutModel>> logout() async {
+    getData();
     try {
       final response = await DioHelper.postData(
           url: BackendEndpoint.logout, token: token, lang: lang);
@@ -169,6 +175,7 @@ class DioHelperRepository extends DioHelperRepositoryInterface {
       );
       CacheHelper.removeData(key: 'token');
       CacheHelper.removeData(key: 'order');
+      this.token = '';
       return apiResponse;
     } on DioException catch (e) {
       return errorHandler<LogoutModel>(e);
@@ -176,8 +183,8 @@ class DioHelperRepository extends DioHelperRepositoryInterface {
   }
 
   @override
-  Future<ApiResponse<ProfileModel>> getProfile(
-      String lang, String token) async {
+  Future<ApiResponse<ProfileModel>> getProfile() async {
+    getData();
     try {
       final response = await DioHelper.getData(
           url: BackendEndpoint.profile, token: token, lang: lang);
@@ -194,14 +201,11 @@ class DioHelperRepository extends DioHelperRepositoryInterface {
   }
 
   @override
-  Future<ApiResponse<List<VisitModel>>> getMeVisitData(
-      String lang, String token, int page) async {
+  Future<ApiResponse<List<VisitModel>>> getMeVisitData(int page) async {
+    getData();
     try {
       final response = await DioHelper.getData(
-        query: {
-          'page': page,
-          'me': 1
-        },
+        query: {'page': page, 'me': 1},
         url: BackendEndpoint.visits,
         token: token,
         lang: lang,
@@ -224,12 +228,14 @@ class DioHelperRepository extends DioHelperRepositoryInterface {
   }
 
   @override
-  Future<ApiResponse<List<VisitModel>>> getReport(
-      String lang, String token ,int userId,int page) async {
+  Future<ApiResponse<List<VisitModel>>> getReport(int userId, int page) async {
+    getData();
     try {
       final response = await DioHelper.getData(
-          url: BackendEndpoint.reports, token: token, lang: lang, query: {'user_id': userId,
-      'page': page});
+          url: BackendEndpoint.reports,
+          token: token,
+          lang: lang,
+          query: {'user_id': userId, 'page': page});
       final apiResponse = ApiResponse<List<VisitModel>>.fromJson(
         response.data,
         (json) {
@@ -248,11 +254,14 @@ class DioHelperRepository extends DioHelperRepositoryInterface {
   }
 
   @override
-  Future<ApiResponse<List<VisitModel>>> getAllVisitData(
-      String lang, String token, int page) async {
+  Future<ApiResponse<List<VisitModel>>> getAllVisitData(int page) async {
+    getData();
     try {
       final response = await DioHelper.getData(
-          url: BackendEndpoint.visits, token: token, lang: lang, query: {'page': page});
+          url: BackendEndpoint.visits,
+          token: token,
+          lang: lang,
+          query: {'page': page});
       final apiResponse = ApiResponse<List<VisitModel>>.fromJson(
         response.data,
         (json) {
@@ -271,8 +280,8 @@ class DioHelperRepository extends DioHelperRepositoryInterface {
   }
 
   @override
-  Future<ApiResponse<VisitModel>> addVisit(
-      String lang, String token, VisitModel visit) async {
+  Future<ApiResponse<VisitModel>> addVisit(VisitModel visit) async {
+    getData();
     try {
       var response = await DioHelper.postData(
           url: BackendEndpoint.visits,
@@ -292,8 +301,8 @@ class DioHelperRepository extends DioHelperRepositoryInterface {
   }
 
   @override
-  Future<ApiResponse<void>> orderVisit(
-      String lang, String token, OrderModel order) async {
+  Future<ApiResponse<void>> orderVisit(OrderModel order) async {
+    getData();
     try {
       final response = await DioHelper.putData(
         url: BackendEndpoint.order,
@@ -314,11 +323,14 @@ class DioHelperRepository extends DioHelperRepositoryInterface {
   }
 
   @override
-  Future<ApiResponse<List<VisitModel>>> getArchivesVisits(
-      String lang, String token, int page) async {
+  Future<ApiResponse<List<VisitModel>>> getArchivesVisits(int page) async {
+    getData();
     try {
       final response = await DioHelper.getData(
-          url: BackendEndpoint.archive, token: token, lang: lang, query: {'page': page});
+          url: BackendEndpoint.archive,
+          token: token,
+          lang: lang,
+          query: {'page': page});
       final apiResponse = ApiResponse<List<VisitModel>>.fromJson(
         response.data,
         (json) {
@@ -337,8 +349,8 @@ class DioHelperRepository extends DioHelperRepositoryInterface {
   }
 
   @override
-  Future<ApiResponse<VisitModel>> onDone(
-      String lang, String token, int id) async {
+  Future<ApiResponse<VisitModel>> onDone(int id) async {
+    getData();
     try {
       final response = await DioHelper.putData(
           url: '${BackendEndpoint.done}/${id.toString()}',
@@ -357,8 +369,8 @@ class DioHelperRepository extends DioHelperRepositoryInterface {
   }
 
   @override
-  Future<ApiResponse<VisitModel>> onInProgress(
-      String lang, String token, int id) async {
+  Future<ApiResponse<VisitModel>> onInProgress(int id) async {
+    getData();
     try {
       final response = await DioHelper.putData(
           url: '${BackendEndpoint.inProgress}/${id.toString()}',
@@ -377,8 +389,8 @@ class DioHelperRepository extends DioHelperRepositoryInterface {
   }
 
   @override
-  Future<ApiResponse<VisitModel>> onCanceled(
-      String lang, String token, int id) async {
+  Future<ApiResponse<VisitModel>> onCanceled(int id) async {
+    getData();
     try {
       final response = await DioHelper.putData(
           url: '${BackendEndpoint.cancel}/${id.toString()}',
@@ -397,8 +409,8 @@ class DioHelperRepository extends DioHelperRepositoryInterface {
   }
 
   @override
-  Future<ApiResponse<VisitModel>> onDelayed(
-      String lang, String token, int id) async {
+  Future<ApiResponse<VisitModel>> onDelayed(int id) async {
+    getData();
     try {
       final response = await DioHelper.putData(
           url: '${BackendEndpoint.delay}/${id.toString()}',
@@ -417,8 +429,8 @@ class DioHelperRepository extends DioHelperRepositoryInterface {
   }
 
   @override
-  Future<ApiResponse<List<User>>> getUserList(
-      String lang, String token, int type) async {
+  Future<ApiResponse<List<User>>> getUserList(int type) async {
+    getData();
     try {
       final response = await DioHelper.getData(
           url: BackendEndpoint.dropDown,
@@ -444,8 +456,8 @@ class DioHelperRepository extends DioHelperRepositoryInterface {
   }
 
   @override
-  Future<ApiResponse<void>> assignServant(
-      String lang, String token, int visitId, int servantId) async {
+  Future<ApiResponse<void>> assignServant(int visitId, int servantId) async {
+    getData();
     try {
       final response = await DioHelper.putData(
           url: '${BackendEndpoint.servant}/${visitId.toString()}',
@@ -465,8 +477,8 @@ class DioHelperRepository extends DioHelperRepositoryInterface {
   }
 
   @override
-  Future<ApiResponse<void>> assignFather(
-      String lang, String token, int visitId, int fatherId) async {
+  Future<ApiResponse<void>> assignFather(int visitId, int fatherId) async {
+    getData();
     try {
       final response = await DioHelper.putData(
           url: '${BackendEndpoint.father}/${visitId.toString()}',
@@ -486,8 +498,8 @@ class DioHelperRepository extends DioHelperRepositoryInterface {
   }
 
   @override
-  Future<ApiResponse<void>> register(
-      String lang, RegisterModel register) async {
+  Future<ApiResponse<void>> register(RegisterModel register) async {
+    getData();
     try {
       final response = await DioHelper.postData(
           url: BackendEndpoint.register, lang: 'en', data: register.toJson());
@@ -504,7 +516,8 @@ class DioHelperRepository extends DioHelperRepositoryInterface {
   }
 
   @override
-  Future<ApiResponse<UserModel>> login(String lang, LoginModel login) async {
+  Future<ApiResponse<UserModel>> login(LoginModel login) async {
+    getData();
     try {
       final response = await DioHelper.postData(
         url: BackendEndpoint.login,
@@ -517,15 +530,18 @@ class DioHelperRepository extends DioHelperRepositoryInterface {
         response.statusMessage ?? '',
       );
       CacheHelper.saveData(key: 'token', value: apiResponse.data?.token);
+      token = apiResponse.data?.token ?? '';
       final response2 = await DioHelper.getData(
-          url: BackendEndpoint.enums, token: apiResponse.data?.token, lang: lang);
+          url: BackendEndpoint.enums,
+          token: apiResponse.data?.token,
+          lang: lang);
       final apiResponse2 = ApiResponse<EnumsModel>.fromJson(
         response2.data,
-            (json) => EnumsModel.fromJson(json as Map<String, dynamic>),
+        (json) => EnumsModel.fromJson(json as Map<String, dynamic>),
         response.statusCode ?? 0,
         response.statusMessage ?? '',
       );
-      CacheHelper.saveEnums(apiResponse2.data?? EnumsModel());
+      CacheHelper.saveEnums(apiResponse2.data ?? EnumsModel());
       return apiResponse;
     } on DioException catch (e) {
       return errorHandler<UserModel>(e);
@@ -533,7 +549,8 @@ class DioHelperRepository extends DioHelperRepositoryInterface {
   }
 
   @override
-  Future<ApiResponse<EnumsModel>> getEnums(String lang, String token) async {
+  Future<ApiResponse<EnumsModel>> getEnums() async {
+    getData();
     try {
       final response = await DioHelper.getData(
           url: BackendEndpoint.enums, token: token, lang: lang);
@@ -543,6 +560,7 @@ class DioHelperRepository extends DioHelperRepositoryInterface {
         response.statusCode ?? 0,
         response.statusMessage ?? '',
       );
+      await CacheHelper.saveEnums(apiResponse.data ?? EnumsModel());
       return apiResponse;
     } on DioException catch (e) {
       return errorHandler<EnumsModel>(e);
@@ -551,8 +569,8 @@ class DioHelperRepository extends DioHelperRepositoryInterface {
 
   static ApiResponse<T> errorHandler<T>(DioException e) {
     return ApiResponse<T>(
-      statusCode: e.response?.statusCode?? 0,
-      message: e.response?.statusMessage?? '',
+      statusCode: e.response?.statusCode ?? 0,
+      message: e.response?.statusMessage ?? '',
       data: null, // Ensure the data matches the expected type
     );
   }

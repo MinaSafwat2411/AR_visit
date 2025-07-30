@@ -1,5 +1,3 @@
-
-
 class ApiResponse<T> {
   final int statusCode;
   final String? status;
@@ -42,14 +40,6 @@ class LinksModel {
   LinksModel.fromJson(Map<String, dynamic> json) {
     links = json['links'] != null ? Links.fromJson(json['links']) : null;
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (links != null) {
-      data['links'] = links!.toJson();
-    }
-    return data;
-  }
 }
 
 class Links {
@@ -66,15 +56,6 @@ class Links {
     prev = json['prev'];
     next = json['next'];
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['first'] = first;
-    data['last'] = last;
-    data['prev'] = prev;
-    data['next'] = next;
-    return data;
-  }
 }
 
 class MetaModel {
@@ -84,14 +65,6 @@ class MetaModel {
 
   MetaModel.fromJson(Map<String, dynamic> json) {
     meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (meta != null) {
-      data['meta'] = meta!.toJson();
-    }
-    return data;
   }
 }
 
@@ -123,15 +96,4 @@ class Meta {
     total = json['total'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['current_page'] = currentPage;
-    data['from'] = from;
-    data['last_page'] = lastPage;
-    data['path'] = path;
-    data['per_page'] = perPage;
-    data['to'] = to;
-    data['total'] = total;
-    return data;
-  }
 }

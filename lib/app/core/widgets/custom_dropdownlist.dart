@@ -1,56 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
+import '../../data/models/login/loginmodel.dart';
+import '../../presentation/home/controllers/home_controller.dart';
 import '../utils/app_colors.dart';
 
-class CustomDropDownList extends StatelessWidget {
-   const CustomDropDownList({
+class CustomDropDownList extends GetView<HomeController> {
+  const CustomDropDownList({
     super.key,
-    this.items,
-    this.label,
-    this.currentValue,
-    required this.onChangeValue
   });
-
-  final List<String>? items;
-  final ValueChanged<String?> onChangeValue;
-  final String? label;
-  final String? currentValue;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 55,
-      child: DropdownButtonFormField<String>(
-        value: currentValue!=''? currentValue : null,
-        onSaved: onChangeValue,
-        items: items?.map((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList(),
-        borderRadius: BorderRadius.circular(20),
-        menuMaxHeight: 300,
-        onChanged: onChangeValue ,
-        decoration: InputDecoration(
-          labelText: label,
-          labelStyle:  const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-            color: AppColors.gray,
-          ),
-          floatingLabelStyle: const TextStyle(
-            color: Colors.black,
-          ),
-          border: OutlineInputBorder(
-            borderSide: const BorderSide(color: AppColors.alto),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color:AppColors.trinidadColor,),
+      child: DropdownMenu(
+        inputDecorationTheme: InputDecorationTheme(
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: const BorderSide(color: AppColors.boulder)),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: const BorderSide(color: AppColors.boulder)),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: const BorderSide(color: AppColors.boulder))),
+        dropdownMenuEntries: (controller.users)
+            .map((e) => DropdownMenuEntry<DropDown>(
+                  value: e,
+                  label: e.name?.nameAr ?? "",
+                ))
+            .toList(),
+        requestFocusOnTap: true,
+        onSelected: (value) {
+          controller.onUserSelected(value ?? DropDown());
+        },
+        width: double.infinity,
+        hintText: 'patientName'.tr,
+        menuHeight: 300,
+        enableSearch: true,
+        controller: controller.reportController,
+        enableFilter: true,
+        menuStyle: MenuStyle(
+          shape: WidgetStatePropertyAll(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
           ),
         ),
-        autofocus: false,
       ),
     );
   }

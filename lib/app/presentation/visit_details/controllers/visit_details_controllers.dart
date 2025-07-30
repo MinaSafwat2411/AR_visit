@@ -9,48 +9,46 @@ import '../../../data/repository/dio_helper_repository.dart';
 import '../../../domain/usecase/base_use_case.dart';
 
 class VisitDetailsControllers extends GetxController {
-  var token = ''.obs;
   var isLoading = false.obs;
   var visit = VisitModel().obs;
-  var lang = ''.obs;
   var visitId = RxInt(-1);
   var father = <DropDown>[].obs;
   var fatherNames = <String>[].obs;
+  var fatherNamesAr = <String>[].obs;
   var fatherId = <int>[].obs;
   var servant = <DropDown>[].obs;
   var servantNames = <String>[].obs;
+  var servantNamesAr = <String>[].obs;
   var servantId = <int>[].obs;
-  var isDark = RxBool(false);
   final useCase = BaseUseCase(repository: DioHelperRepository.repository);
 
   Future<void> getFatherServantNames() async {
     isLoading(true);
-    servant(await useCase.getFatherServantData(lang.value,token.value,2));
+    servant(await useCase.getFatherServantData(2));
     for (var servant in servant) {
-      if (lang.value == 'en') {
-        servantNames.add(servant.name?.name??'');
-      } else {
-        servantNames.add(servant.name?.nameAr??'');
-      }
-      servantId.add(servant.id??-1);
+      servantNames.add(servant.name?.name ?? '');
+      servantNamesAr.add(servant.name?.nameAr ?? '');
+      servantId.add(servant.id ?? -1);
     }
-    father(await useCase.getFatherServantData(lang.value,token.value,1));
+    father(await useCase.getFatherServantData(1));
     for (var father in father) {
-      if (lang.value == 'en') {
-        fatherNames.add(father.name?.name??'');
-      } else {
-        fatherNames.add(father.name?.nameAr??'');
-      }
-      fatherId.add(father.id??-1);
+      fatherNames.add(father.name?.name ?? '');
+      fatherNamesAr.add(father.name?.nameAr ?? '');
+      fatherId.add(father.id ?? -1);
     }
     isLoading(false);
   }
 
   onServantSelected(int index) async {
-    isLoading(true);
-    await useCase.assignServant(lang.value,token.value,visitId.value, servantId[index]);
-    isLoading(false);
-    getVisitData();
+    try {
+      isLoading(true);
+      await useCase.assignServant(visitId.value, servantId[index]);
+      await getVisitData();
+    }catch(e){
+      Get.snackbar('Error', 'Could not assign servant');
+    }finally{
+      isLoading(false);
+    }
   }
 
   Future<void> launchPhoneDialer(String phoneNumber) async {
@@ -78,34 +76,41 @@ class VisitDetailsControllers extends GetxController {
     return status == PermissionStatus.granted;
   }
 
-  void getVisitData() async {
-    isLoading(true);
-    visit(await useCase.getVisitData(lang.value,token.value,visitId.value));
-    isLoading(false);
+  Future<void> getVisitData() async {
+    try {
+      isLoading(true);
+      visit(await useCase.getVisitData(visitId.value));
+    } catch (e) {
+      Get.snackbar('Error', 'Could not get visit data');
+    } finally {
+      isLoading(false);
+    }
   }
 
   Color statusColor(int status) {
     var color = const Color(0xffffffff);
     switch (status) {
       case 1:
-        color = AppColors.violetPurple;
-      case 2:
-        color = AppColors.blue;
+        color = AppColors.deepBrown;
+      case 2 :
+        color =AppColors.charcoalGray;
       case 3:
-        color = AppColors.orange;
+        color = AppColors.blue;
       case 4:
-        color = AppColors.green;
+        color = AppColors.charcoalGray;
       case 5:
+        color = AppColors.green;
+      case 6:
         color = AppColors.red;
     }
     return color;
   }
 
-  String getAddressType(int address) {
+  String getAddressType(int address, String lang) {
     String s = '';
     switch (address) {
       case 1:
-        if (lang.value == 'ar') {
+        if (lang == 'ar') {
           switch (address) {
             case 1:
               s = 'المنزل';
@@ -142,47 +147,44 @@ class VisitDetailsControllers extends GetxController {
   }
 
   onFatherSelected(int index) async {
-    isLoading(true);
-    await useCase.assignFather(lang.value,token.value,visitId.value, fatherId[index]);
-    isLoading(false);
-    getVisitData();
+    try {
+      isLoading(true);
+      await useCase.assignFather(visitId.value, fatherId[index]);
+      await getVisitData();
+    } catch (e) {
+      Get.snackbar('Error', 'Could not assign father');
+    } finally {
+      isLoading(false);
+    }
   }
 
-
   void onDone() async {
-    Get.back(closeOverlays: true);
     isLoading(true);
-    visit(await useCase.onDone(lang.value,token.value,visitId.value));
+    visit(await useCase.onDone(visitId.value));
     isLoading(false);
   }
 
   void onCanceled() async {
-    Get.back(closeOverlays: true);
     isLoading(true);
-    visit(await useCase.onCanceled(lang.value,token.value,visitId.value));
+    visit(await useCase.onCanceled(visitId.value));
     isLoading(false);
   }
 
   void onInProgress() async {
-    Get.back(closeOverlays: true);
     isLoading(true);
-    visit(await useCase.onInProgress(lang.value,token.value,visitId.value));
+    visit(await useCase.onInProgress(visitId.value));
     isLoading(false);
   }
 
   void onDelay() async {
-    Get.back(closeOverlays: true);
     isLoading(true);
-    visit(await useCase.onDelayed(lang.value,token.value,visitId.value));
+    visit(await useCase.onDelayed(visitId.value));
     isLoading(false);
   }
 
   @override
   void onInit() async {
-    lang.value = Get.arguments[0];
-    isDark.value = Get.arguments[1];
-    token.value = Get.arguments[2];
-    visit.value = Get.arguments[3];
+    visit.value = Get.arguments;
     visitId.value = visit.value.id ?? -1;
     getFatherServantNames();
     super.onInit();

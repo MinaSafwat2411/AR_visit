@@ -31,6 +31,7 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
+        coreLibraryDesugaringEnabled true
     }
     kotlinOptions {
         jvmTarget = "11"
@@ -38,7 +39,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.ar_visiting_app"
-        minSdkVersion flutter.minSdkVersion // Use Flutter property
+        minSdkVersion 23 // Use Flutter property
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -49,6 +50,9 @@ android {
             signingConfig = signingConfigs.debug // Replace with your release signing config
         }
     }
+}
+dependencies {
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'
 }
 flutter {
     source = "../.."

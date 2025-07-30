@@ -1,14 +1,17 @@
 import 'package:ar_visiting_app/app/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../appcontroller/app_controller.dart';
 import '../../controllers/home_controller.dart';
 import 'visit_card_item_widget.dart';
 
 class DateVisitListWidget extends GetView<HomeController> {
-  const DateVisitListWidget({super.key});
+  DateVisitListWidget({super.key});
+  final AppController appController = Get.find();
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return RefreshIndicator(
       color: AppColors.trinidadColor,
       onRefresh: () async {
@@ -37,9 +40,8 @@ class DateVisitListWidget extends GetView<HomeController> {
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Text(
                       controller.formatDate(
-                          controller.allVisitsFiltered[visitsIndex].day),
-                      style: const TextStyle(
-                          fontSize: 24, fontWeight: FontWeight.w500),
+                          controller.allVisitsFiltered[visitsIndex].day,appController.lang.value),
+                      style: textTheme.titleMedium,
                     ),
                   ),
                   ListView.separated(

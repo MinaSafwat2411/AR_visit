@@ -10,13 +10,14 @@ class CustomSmallTextField extends StatelessWidget {
     this.textController,
     this.label,
     this.validator,
-    this.function
-
+    this.function,
+    required this.isDark,
   });
   final TextEditingController? textController;
   final String? label;
   final FormFieldValidator? validator;
   final Function()? function;
+  final bool isDark;
 
   @override
   Widget build(BuildContext context) {
@@ -27,28 +28,34 @@ class CustomSmallTextField extends StatelessWidget {
           controller: textController,
           decoration: InputDecoration(
             labelText: label,
-            labelStyle:  const TextStyle(
+            labelStyle:   TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
-              color: AppColors.gray,
+              color: isDark? AppColors.white:AppColors.boulder,
             ),
-            floatingLabelStyle: const TextStyle(
+            floatingLabelStyle:  TextStyle(
               fontWeight: FontWeight.w500,
-              color: AppColors.gray,
+              color: isDark? AppColors.white:AppColors.boulder,
             ),
             border: OutlineInputBorder(
               borderSide: const BorderSide(color: AppColors.alto),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(12),
             ),
             focusedBorder: const OutlineInputBorder(
               borderSide: BorderSide(
                 color:AppColors.trinidadColor,
               ),
+              borderRadius: BorderRadius.all(Radius.circular(12)),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: AppColors.boulder),
+              borderRadius: BorderRadius.circular(12),
             ),
           ),
           autofocus: false,
           cursorColor:AppColors.trinidadColor,
           validator: validator,
+        keyboardType: TextInputType.number,
         onTap: function,
       ),
     );

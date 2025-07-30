@@ -11,183 +11,182 @@ import 'package:get/get.dart';
 import '../../data/repository/dio_helper_repository.dart';
 import '../../routes/app_pages.dart';
 
-class BaseUseCase extends BaseUseCaseInterface {
+class BaseUseCase implements BaseUseCaseInterface {
   final DioHelperRepository repository;
 
   BaseUseCase({required this.repository});
 
   @override
-  Future<void> addPatient(
-      String lang, String token, User patient) async {
-    final useCase = await repository.addPatient(lang, token, patient);
+  Future<void> addPatient(User patient) async {
+    final useCase = await repository.addPatient(patient);
     errorHandle(useCase.statusCode, useCase.message);
   }
 
   @override
   Future<VisitModel?> addVisit(
-      String lang, String token, VisitModel visit) async {
-    final useCase = await repository.addVisit(lang, token, visit);
+      VisitModel visit) async {
+    final useCase = await repository.addVisit(visit);
     errorHandle(useCase.statusCode, useCase.message);
     return useCase.data;
   }
 
   @override
   Future<void> assignFather(
-      String lang, String token, int visitId, int fatherId) async {
+      int visitId, int fatherId) async {
     final useCase =
-        await repository.assignFather(lang, token, visitId, fatherId);
+        await repository.assignFather(visitId, fatherId);
     errorHandle(useCase.statusCode, useCase.message);
   }
 
   @override
   Future<void> assignServant(
-      String lang, String token, int visitId, int servantId) async {
+      int visitId, int servantId) async {
     final useCase =
-        await repository.assignServant(lang, token, visitId, servantId);
+        await repository.assignServant(visitId, servantId);
     errorHandle(useCase.statusCode, useCase.message);
   }
 
   @override
   Future<VisitModel?> editVisit(
-      String lang, String token, VisitModel visit) async {
-    final useCase = await repository.editVisit(lang, token, visit);
+      VisitModel visit) async {
+    final useCase = await repository.editVisit(visit);
     errorHandle(useCase.statusCode, useCase.message);
     return useCase.data;
   }
 
   @override
   Future<List<VisitModel>?> getAllVisitData(
-      String lang, String token, int page) async {
-    final useCase = await repository.getAllVisitData(lang, token, page);
+      int page) async {
+    final useCase = await repository.getAllVisitData(page);
     errorHandle(useCase.statusCode, useCase.message);
     return useCase.data;
   }
 
   @override
   Future<List<VisitModel>?> getArchivesVisits(
-      String lang, String token, int page) async {
-    final useCase = await repository.getArchivesVisits(lang, token, page);
+      int page) async {
+    final useCase = await repository.getArchivesVisits(page);
     errorHandle(useCase.statusCode, useCase.message);
     return useCase.data;
   }
 
   @override
-  Future<List<AreaModel>?> getAreaData(String lang, String token) async {
-    final useCase = await repository.getAreaData(lang, token);
+  Future<List<AreaModel>?> getAreaData() async {
+    final useCase = await repository.getAreaData();
     errorHandle(useCase.statusCode, useCase.message);
     return useCase.data;
   }
 
   @override
-  Future<EnumsModel?> getEnums(String lang, String token) async {
-    final useCase = await repository.getEnums(lang, token);
+  Future<EnumsModel?> getEnums() async {
+    final useCase = await repository.getEnums();
     errorHandle(useCase.statusCode, useCase.message);
     return useCase.data;
   }
 
   @override
   Future<List<DropDown>?> getFatherServantData(
-      String lang, String token, int id) async {
-    final useCase = await repository.getFatherServantData(lang, token, id);
+      int id) async {
+    final useCase = await repository.getFatherServantData(id);
     errorHandle(useCase.statusCode, useCase.message);
     return useCase.data;
   }
 
   @override
   Future<List<VisitModel>?> getMeVisitData(
-      String lang, String token, int page) async {
-    final useCase = await repository.getMeVisitData(lang, token, page);
+      int page) async {
+    final useCase = await repository.getMeVisitData(page);
     errorHandle(useCase.statusCode, useCase.message);
     return useCase.data;
   }
 
   @override
-  Future<ProfileModel?> getProfile(String lang, String token) async {
-    final useCase = await repository.getProfile(lang, token);
+  Future<ProfileModel?> getProfile() async {
+    final useCase = await repository.getProfile();
     errorHandle(useCase.statusCode, useCase.message);
     return useCase.data;
   }
 
   @override
   Future<List<VisitModel>?> getReport(
-      String lang, String token, int userId,int page) async {
-    final useCase = await repository.getReport(lang, token, userId,page);
+      int userId, int page) async {
+    final useCase = await repository.getReport(userId, page);
     errorHandle(useCase.statusCode, useCase.message);
     return useCase.data;
   }
 
   @override
-  Future<List<DropDown>?> getUserData(String lang, String token) async {
-    final useCase = await repository.getUserData(lang, token);
+  Future<List<DropDown>?> getUserData() async {
+    final useCase = await repository.getUserData();
     errorHandle(useCase.statusCode, useCase.message);
     return useCase.data;
   }
 
   @override
-  Future<List<User>?> getUserList(String lang, String token, int type) async {
-    final useCase = await repository.getUserList(lang, token, type);
+  Future<List<User>?> getUserList(int type) async {
+    final useCase = await repository.getUserList(type);
     errorHandle(useCase.statusCode, useCase.message);
     return useCase.data;
   }
 
   @override
-  Future<VisitModel?> getVisitData(String lang, String token, int id) async {
-    final useCase = await repository.getVisitData(lang, token, id);
+  Future<VisitModel?> getVisitData(int id) async {
+    final useCase = await repository.getVisitData(id);
     errorHandle(useCase.statusCode, useCase.message);
     return useCase.data;
   }
 
   @override
-  Future<UserModel?> login(String lang, LoginModel login) async {
-    final useCase = await repository.login(lang, login);
+  Future<UserModel?> login(LoginModel login) async {
+    final useCase = await repository.login(login);
     errorHandle(useCase.statusCode, useCase.message);
     return useCase.data;
   }
 
   @override
-  Future<LogoutModel?> logout(String lang, String token) async {
-    final useCase = await repository.logout(lang, token);
+  Future<LogoutModel?> logout() async {
+    final useCase = await repository.logout();
     errorHandle(useCase.statusCode, useCase.message);
     return useCase.data;
   }
 
   @override
-  Future<VisitModel?> onCanceled(String lang, String token, int id) async {
-    final useCase = await repository.onCanceled(lang, token, id);
+  Future<VisitModel?> onCanceled(int id) async {
+    final useCase = await repository.onCanceled(id);
     errorHandle(useCase.statusCode, useCase.message);
     return useCase.data;
   }
 
   @override
-  Future<VisitModel?> onDelayed(String lang, String token, int id) async {
-    final useCase = await repository.onDelayed(lang, token, id);
+  Future<VisitModel?> onDelayed(int id) async {
+    final useCase = await repository.onDelayed(id);
     errorHandle(useCase.statusCode, useCase.message);
     return useCase.data;
   }
 
   @override
-  Future<VisitModel?> onDone(String lang, String token, int id) async {
-    final useCase = await repository.onDone(lang, token, id);
+  Future<VisitModel?> onDone(int id) async {
+    final useCase = await repository.onDone(id);
     errorHandle(useCase.statusCode, useCase.message);
     return useCase.data;
   }
 
   @override
-  Future<VisitModel?> onInProgress(String lang, String token, int id) async {
-    final useCase = await repository.onInProgress(lang, token, id);
+  Future<VisitModel?> onInProgress(int id) async {
+    final useCase = await repository.onInProgress(id);
     errorHandle(useCase.statusCode, useCase.message);
     return useCase.data;
   }
 
   @override
-  Future<void> orderVisit(String lang, String token, OrderModel order) async {
-    final useCase = await repository.orderVisit(lang, token, order);
+  Future<void> orderVisit(OrderModel order) async {
+    final useCase = await repository.orderVisit(order);
     errorHandle(useCase.statusCode, useCase.message);
   }
 
   @override
-  Future<void> register(String lang, RegisterModel register) async {
-    final useCase = await repository.register(lang, register);
+  Future<void> register(RegisterModel register) async {
+    final useCase = await repository.register(register);
     errorHandle(useCase.statusCode, useCase.message);
   }
 
@@ -205,12 +204,13 @@ class BaseUseCase extends BaseUseCaseInterface {
         Get.snackbar("Error", "$statusCode: $message");
     }
   }
+
   @override
   String changeFormatDB(String date) {
     var newDate = '';
     try {
       newDate =
-      '${date.substring(6, 10)}-${date.substring(3, 5)}-${date.substring(0, 2)}';
+          '${date.substring(6, 10)}-${date.substring(3, 5)}-${date.substring(0, 2)}';
     } catch (e) {
       throw Exception('Invalid date format');
     }
@@ -222,7 +222,7 @@ class BaseUseCase extends BaseUseCaseInterface {
     var newDate = '';
     try {
       newDate =
-      '${date.substring(0, 2)}-${date.substring(3, 5)}-${date.substring(6, 10)}';
+          '${date.substring(0, 2)}-${date.substring(3, 5)}-${date.substring(6, 10)}';
     } catch (e) {
       throw Exception('Invalid date format');
     }

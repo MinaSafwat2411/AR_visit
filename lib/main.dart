@@ -3,16 +3,17 @@ import 'package:ar_visiting_app/app/core/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'app/appcontroller/app_controller.dart';
 import 'app/core/services/cache_helper.dart';
 import 'app/routes/app_pages.dart';
+import 'package:get/get.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await CacheHelper.init();
   await initializeDateFormatting('ar','en');
-  bool isDark = await CacheHelper.getData(key: 'isDark') ?? false;
-  String lang = await CacheHelper.getData(key: 'lang') ?? 'ar';
-  runApp(MyApp(isDark: isDark,lang: lang));
+  Get.put(AppController());
+  runApp(MyApp());
 }
 class MyTranslations extends Translations {
   @override
@@ -23,26 +24,24 @@ class MyTranslations extends Translations {
 }
 
 class MyApp extends StatelessWidget {
-   const MyApp({
+    MyApp({
     super.key,
-    required this.isDark,
-    required this.lang
   });
-  final bool isDark;
-  final String lang;
+  final AppController appController = Get.find();
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      themeMode: isDark? ThemeMode.dark: ThemeMode.light,
+    return Obx(() =>GetMaterialApp(
+      theme: AppThemes.light,
+      darkTheme:  AppThemes.dark,
+      themeMode: appController.isDark.value? ThemeMode.dark: ThemeMode.light,
       translations: MyTranslations(),
       debugShowCheckedModeBanner: false,
-      locale:  Locale(lang),
-      textDirection: lang =='en' ? TextDirection.ltr:TextDirection.rtl,
+      locale:  appController.currentLocale.value,
+      textDirection: appController.lang.value =='en' ? TextDirection.ltr:TextDirection.rtl,
       title: "AR Visit",
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
+    ),
     );
   }
 }

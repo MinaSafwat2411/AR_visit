@@ -76,10 +76,10 @@ class RegisterView extends GetView<RegisterController> {
               child: PageView(
                 physics: const NeverScrollableScrollPhysics(),
                 controller: controller.pageController,
-                children: const [
+                children:  [
                   AddNameAridScreen(),
-                  AddPhoneEmailScreen(),
-                  CreatePasswordScreen(),
+                  const AddPhoneEmailScreen(),
+                  const CreatePasswordScreen(),
                 ],
               ),
             ),

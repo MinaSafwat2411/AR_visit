@@ -10,6 +10,7 @@ class SplashViews extends GetView<SplashController> {
 
   @override
   Widget build(BuildContext context) {
+    var textTheme = Theme.of(context).textTheme;
     return GetBuilder<SplashController>(builder: (controller) {
       return Scaffold(
         body: Center(
@@ -53,11 +54,7 @@ class SplashViews extends GetView<SplashController> {
                     child: Text(
                         textAlign: TextAlign.center,
                         'copyRight'.tr,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: AppColors.boulder,
-                          fontWeight: FontWeight.w400,
-                        )),
+                        style: textTheme.bodySmall),
                   )
                 ],
               ),

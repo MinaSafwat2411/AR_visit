@@ -7,53 +7,53 @@ import '../../data/models/register/register_model.dart';
 import '../../data/models/visits/visitmodel.dart';
 
 abstract class BaseUseCaseInterface {
-  Future<VisitModel?> getVisitData(String lang, String token, int id);
+  Future<VisitModel?> getVisitData( int id);
 
-  Future<void> addPatient(String lang, String token, User patient);
+  Future<void> addPatient( User patient);
 
-  Future<List<DropDown>?> getUserData(String lang, String token);
+  Future<List<DropDown>?> getUserData();
 
-  Future<List<DropDown>?> getFatherServantData(String lang, String token,int id);
+  Future<List<DropDown>?> getFatherServantData(int id);
 
-  Future<List<AreaModel>?> getAreaData(String lang, String token);
+  Future<List<AreaModel>?> getAreaData();
 
-  Future<VisitModel?> editVisit(String lang, String token, VisitModel visit);
+  Future<VisitModel?> editVisit( VisitModel visit);
 
-  Future<void> logout(String lang, String token);
+  Future<void> logout();
 
-  Future<ProfileModel?> getProfile(String lang, String token);
+  Future<ProfileModel?> getProfile();
 
-  Future<List<VisitModel>?> getMeVisitData(String lang, String token,int page);
+  Future<List<VisitModel>?> getMeVisitData(int page);
 
-  Future<List<VisitModel>?> getReport(String lang, String token, int id,int page);
+  Future<List<VisitModel>?> getReport( int id,int page);
 
-  Future<List<VisitModel>?> getAllVisitData(String lang, String token,int page);
+  Future<List<VisitModel>?> getAllVisitData(int page);
 
-  Future<VisitModel?> addVisit(String lang, String token, VisitModel visit);
+  Future<VisitModel?> addVisit( VisitModel visit);
 
-  Future<void> orderVisit(String lang, String token, OrderModel order);
+  Future<void> orderVisit( OrderModel order);
 
-  Future<List<VisitModel>?> getArchivesVisits(String lang, String token,int page);
+  Future<List<VisitModel>?> getArchivesVisits(int page);
 
-  Future<VisitModel?> onDone(String lang, String token, int id);
+  Future<VisitModel?> onDone( int id);
 
-  Future<VisitModel?> onInProgress(String lang, String token, int id);
+  Future<VisitModel?> onInProgress( int id);
 
-  Future<VisitModel?> onCanceled(String lang, String token, int id);
+  Future<VisitModel?> onCanceled( int id);
 
-  Future<VisitModel?> onDelayed(String lang, String token, int id);
+  Future<VisitModel?> onDelayed( int id);
 
-  Future<List<User>?> getUserList(String lang, String token, int type);
+  Future<List<User>?> getUserList( int type);
 
-  Future<void> assignServant(String lang, String token, int visitId, int servantId);
+  Future<void> assignServant( int visitId, int servantId);
 
-  Future<void> assignFather(String lang, String token, int visitId, int fatherId);
+  Future<void> assignFather( int visitId, int fatherId);
 
-  Future<void> register(String lang, RegisterModel register);
+  Future<void> register( RegisterModel register);
 
-  Future<UserModel?> login(String lang, LoginModel login);
+  Future<UserModel?> login( LoginModel login);
 
-  Future<EnumsModel?> getEnums(String lang, String token);
+  Future<EnumsModel?> getEnums();
 
   String changeFormatDB(String date);
 

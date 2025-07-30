@@ -1,15 +1,22 @@
+import 'package:ar_visiting_app/app/core/widgets/custom_small_textField.dart';
 import 'package:ar_visiting_app/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../appcontroller/app_controller.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/widgets/custom_big_textfield.dart';
 import '../../../core/widgets/custom_button.dart';
 import '../controllers/login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
-  const LoginView({super.key});
+  LoginView({super.key});
+
+  final AppController appController = Get.find();
+
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       body: Form(
         key: controller.loginFormKey,
@@ -23,44 +30,32 @@ class LoginView extends GetView<LoginController> {
             children: [
                Text(
                 'loginTitle'.tr,
-                style: const TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.trinidadColor,
-                ),
+                style: textTheme.headlineMedium?.copyWith(),
               ),
               const SizedBox(height: 60),
-              TextFormField(
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'userValidate'.tr;
-                  }
-                  return null;
-                },
-                cursorColor: AppColors.trinidadColor,
-                controller: controller.aridTextController,
-                decoration: InputDecoration(
-                  labelText: 'userTitle'.tr,
-                  labelStyle: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.gray,
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Text("E1C1F"),
+                  CustomSmallTextField(
+                    isDark: appController.isDark.value,
+                    textController: controller.familyIdTextController,
+                    validator: (value) =>  value == null || value.isEmpty ? 'familyIdValidate'.tr : null,
                   ),
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide:
-                          const BorderSide(color: AppColors.trinidadColor)),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                      borderSide:
-                      const BorderSide(color: AppColors.trinidadColor),
+                  const Text("NR"),
+                  CustomSmallTextField(
+                    isDark: appController.isDark.value,
+                    textController: controller.numberIdTextController,
+                    validator: (value) =>  value == null || value.isEmpty ? 'numberIdValidate'.tr : null,
                   ),
-                ),
+                ],
               ),
               const SizedBox(height: 20),
               Obx(
-                () => TextFormField(
-                  obscureText: controller.observeBool(),
+                () => CustomBigTextField(
+                  observe: controller.observeBool(),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'passwordValidate1'.tr;
@@ -70,34 +65,22 @@ class LoginView extends GetView<LoginController> {
                     }
                     return null;
                   },
-                  cursorColor: AppColors.trinidadColor,
                   controller: controller.passwordTextController,
-                  decoration: InputDecoration(
-                    suffixIconColor: AppColors.trinidadColor,
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        controller.observeBool(!controller.observeBool());
-                      },
-                      icon: controller.observeBool()
-                          ? const Icon(Icons.visibility)
-                          : const Icon(Icons.visibility_off),
-                    ),
-                    labelText: 'passwordTitle'.tr,
-                    labelStyle: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.gray,
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                            const BorderSide(color: AppColors.trinidadColor)),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide:
-                      const BorderSide(color: AppColors.trinidadColor),
-                    ),
+                  isDark: appController.isDark.value,
+                  label: 'passwordTitle'.tr,
+                  icon: IconButton(
+                    onPressed: () {
+                      controller.observeBool.value =
+                          !controller.observeBool.value;
+                    },
+                    icon: Icon(
+                      controller.observeBool.value
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: AppColors.trinidadColor,
+                    )
                   ),
+                  border: 12,
                 ),
               ),
               const SizedBox(height: 40),
@@ -124,7 +107,7 @@ class LoginView extends GetView<LoginController> {
                    const SizedBox(width: 10,),
                    GestureDetector(
                     onTap: () {
-                      Get.toNamed(Routes.REGISTER,arguments: [controller.lang.value,controller.isDark.value]);
+                      Get.toNamed(Routes.REGISTER);
                     },
                      child:  Text('register'.tr,style: const TextStyle(
                       fontWeight: FontWeight.bold,

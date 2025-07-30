@@ -1,6 +1,4 @@
-
-import 'package:ar_visiting_app/app/data/models/logout/logout_model.dart';
-import 'package:ar_visiting_app/main.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -14,45 +12,39 @@ import '../../../data/models/visits/VisitsModel.dart';
 import '../../../data/models/visits/visitmodel.dart';
 import '../../../data/repository/dio_helper_repository.dart';
 import '../../../domain/usecase/base_use_case.dart';
-import '../../../routes/app_pages.dart';
+import '../screens/all_visits_screen.dart';
 import '../screens/archive_visits_screen.dart';
-import '../screens/profile_screen.dart';
+import '../screens/my_visits_screen.dart';
 import '../screens/report_screen.dart';
-import 'package:collection/collection.dart';
-
-import '../screens/visits_screen.dart';
 
 class HomeController extends GetxController {
   var screens = <Widget>[
-    const VisitsScreen(),
+    const MyVisitsScreen(),
+    const AllVisitsScreen(),
+    ReportScreen(),
     const ArchiveVisitsScreen(),
-    const ReportScreen(),
-    const ProfileScreen()
   ].obs;
   var pageController = PageController();
   var visitsPageController = PageController();
   var title = <RxString>[
+    RxString('me'.tr),
     RxString('visits'.tr),
-    RxString('archives'.tr),
     RxString('reports'.tr),
-    RxString('profile'.tr),
+    RxString('archives'.tr),
   ].obs;
   var currentScreen = 0.obs;
   var isLoading = false.obs;
   var isLoadingInternal = false.obs;
   var me = RxBool(true);
-  var token = ''.obs;
-  var lang = ''.obs;
-  var userNames = <String>[].obs;
-  var userId = <int>[].obs;
-  var tags =<TagsModel>[].obs;
+  var users = <DropDown>[].obs;
+  var selectedUser = DropDown().obs;
+  var tags = <TagsModel>[].obs;
   var isSubmitted = RxBool(false);
   var myVisitsGrouped = <DayVisits>[].obs;
   var allVisitsGrouped = <DayVisits>[].obs;
   var visitsReport = <VisitModel>[].obs;
   var patient = User().obs;
   var visitsArchives = <VisitModel>[].obs;
-  var isDark = RxBool(false);
   var profile = ProfileModel().obs;
   var order = <int>[];
   var orderVisits = <VisitModel>[].obs;
@@ -80,6 +72,8 @@ class HomeController extends GetxController {
   var lastPageMe = RxBool(false);
   var lastPageArchive = RxBool(false);
   var lastPageReports = RxBool(false);
+  var dataMap=<String,double>{};
+  RxInt selectedStatus = 0.obs;
   TextEditingController searchController = TextEditingController();
   TextEditingController allSearchController = TextEditingController();
   TextEditingController archiveSearchController = TextEditingController();
@@ -89,45 +83,20 @@ class HomeController extends GetxController {
   TextEditingController familyId = TextEditingController();
   TextEditingController familyNumber = TextEditingController();
   TextEditingController phone = TextEditingController();
+  TextEditingController reportController = TextEditingController();
 
   final useCase = BaseUseCase(repository: DioHelperRepository.repository);
 
   var id = RxInt(-1);
 
   void changeVisitOrder() async {
-    await useCase.orderVisit(
-        lang.value, token.value, OrderModel(ids: order));
+    await useCase.orderVisit(OrderModel(ids: order));
   }
 
-  void changeLanguage(String languageCode) async {
-    Get.back(closeOverlays: true);
-    if (languageCode != lang.value) {
-      CacheHelper.saveData(key: 'lang', value: languageCode);
-      Get.offAllNamed(Routes.SPLASH, arguments: true);
-    }
-  }
-
-  void changeTheme() async {
-    await CacheHelper.saveData(key: 'isDark', value: isDark.value);
-    runApp(MyApp(
-      lang: lang.value,
-      isDark: isDark.value,
-    ));
-  }
-
-  void logout() async {
-    isLoadingInternal(true);
-    LogoutModel? logout = await useCase.logout(lang.value, token.value);
-    if (logout != null) {
-      Get.offAllNamed(Routes.LOGIN, arguments: [lang.value, isDark.value]);
-    }
-    isLoadingInternal(false);
-  }
-
-  String formatDate(String dateString) {
+  String formatDate(String dateString,String lang) {
     DateTime date = DateFormat('dd-MM-yyyy').parseStrict(dateString);
     String formattedDate =
-        DateFormat('d-MMM', lang.value == 'ar' ? 'ar' : 'en').format(date);
+        DateFormat('d-MMM', lang).format(date);
     return formattedDate;
   }
 
@@ -143,12 +112,20 @@ class HomeController extends GetxController {
     return groupedVisitsList.obs;
   }
 
-  Future<void> onUserSelected(String user) async {
+  Future<void> onUserSelected(DropDown user) async {
     isLoadingInternal(true);
     lastPageReports(false);
     currentPageReports(1);
-    visitsReport(await useCase.getReport(lang.value, token.value, userId[userNames.indexOf(user)],1));
-    userRx(user);
+    visitsReport(await useCase.getReport(user.id??0, 1));
+    selectedUser(user);
+    dataMap = <String,double>{
+      'done'.tr:visitsReport.where((element) => element.status?.value == 5).length.toDouble(),
+      'cancel'.tr:visitsReport.where((element) => element.status?.value == 6).length.toDouble(),
+      'delayed'.tr:visitsReport.where((element) => element.status?.value == 4).length.toDouble(),
+      'assign'.tr:visitsReport.where((element) => element.status?.value == 3).length.toDouble(),
+      'new'.tr:visitsReport.where((element) => element.status?.value == 1).length.toDouble(),
+      'inprogress'.tr:visitsReport.where((element) => element.status?.value == 2).length.toDouble(),
+    };
     isLoadingInternal(false);
   }
 
@@ -166,17 +143,14 @@ class HomeController extends GetxController {
 
   void addPatient() async {
     isSubmitted(true);
-    await useCase.addPatient(
-        lang.value,
-        token.value,
-        User(
-            statusValue: 2,
-            e1C1F: familyId.text,
-            nR: familyNumber.text,
-            email: email.text,
-            phone: phone.text,
-            name: name.text,
-            nameAr: nameAr.text));
+    await useCase.addPatient(User(
+        statusValue: 2,
+        e1C1F: familyId.text,
+        nR: familyNumber.text,
+        email: email.text,
+        phone: phone.text,
+        name: name.text,
+        nameAr: nameAr.text));
     isSubmitted(false);
     Get.back(closeOverlays: true);
   }
@@ -192,6 +166,10 @@ class HomeController extends GetxController {
     }
   }
 
+  void onPageChange(int index){
+    currentScreen.value = index;
+  }
+
   void onSearchAll(String value) {
     if (value.isEmpty) {
       allVisitsFiltered.value = groupByDay(allVisits);
@@ -204,17 +182,43 @@ class HomeController extends GetxController {
     }
   }
 
+  void onSearchMy(String value) {
+    if (value.isEmpty) {
+      myVisitsGrouped.value = groupByDay(myVisits);
+    }
+    myVisitsGrouped.value = groupByDay(myVisits
+        .where((element) =>
+            element.userName!.toLowerCase().contains(value.toLowerCase()))
+        .toList());
+  }
+
+  void onSearch(String value) {
+    switch (currentScreen.value) {
+      case 0:
+        onSearchMy(value);
+        break;
+      case 1:
+        onSearchAll(value);
+        break;
+      case 2:
+        break;
+      case 3:
+        onSearchArchive(value);
+        break;
+    }
+  }
+
   Color statusColor(int status) {
     var color = const Color(0xffffffff);
     switch (status) {
       case 1:
-        color = AppColors.violetPurple;
-      case 2:
-        color = AppColors.blue;
+        color = AppColors.deepBrown;
+      case 2 :
+        color =AppColors.charcoalGray;
       case 3:
-        color = AppColors.trinidadColor;
+        color = AppColors.blue;
       case 4:
-        color = AppColors.orange;
+        color = AppColors.charcoalGray;
       case 5:
         color = AppColors.green;
       case 6:
@@ -224,17 +228,11 @@ class HomeController extends GetxController {
   }
 
   void onTagsChanged(int index) {
-    if (tags[index].isSelected.value) {
-      for (int i = 0; i < tags.length; i++) {
-        tags[i].isSelected.value = false;
-      }
+    if(selectedStatus.value == index){
+      selectedStatus.value = 0;
       allVisitsFiltered.value = groupByDay(allVisits);
-    } else {
-      for (int i = 0; i < tags.length; i++) {
-        tags[i].isSelected.value = false;
-      }
-      tags[index].isSelected.value = true;
-      selectedTag(index);
+    }else{
+      selectedStatus.value = index;
       allVisitsFiltered.value = groupByDay(allVisits
           .where((element) => element.status?.value == tags[index].value)
           .toList());
@@ -244,29 +242,23 @@ class HomeController extends GetxController {
   Future<void> getData() async {
     try {
       isLoadingInternal(true);
-      myVisits(await useCase.getMeVisitData(lang.value, token.value, 1));
-      allVisits(await useCase.getAllVisitData(lang.value, token.value, 1));
-      archiveVisits(await useCase.getArchivesVisits(lang.value, token.value, 1));
-      profile(await useCase.getProfile(lang.value, token.value));
+      myVisits.clear();
+      allVisits.clear();
+      archiveVisits.clear();
+      visitsReport.clear();
+      myVisits(await useCase.getMeVisitData(1));
+      allVisits(await useCase.getAllVisitData(1));
+      archiveVisits(await useCase.getArchivesVisits(1));
+      profile(await useCase.getProfile());
       allVisitsGrouped.value = groupByDay(allVisits);
       allVisitsFiltered.value = groupByDay(allVisits);
       archiveVisitsFiltered.value = archiveVisits;
       myVisitsGrouped.value = groupByDay(myVisits);
-      userNames([]);
-      userId([]);
       currentPageAll(2);
       currentPageArchive(2);
       currentPageReports(2);
       currentPageMy(2);
-      var userData = await useCase.getUserData(lang.value, token.value)??[];
-      for (var element in userData) {
-        if (lang.value == 'en') {
-          userNames.add(element.name?.name ?? '');
-        } else {
-          userNames.add(element.name?.nameAr ?? '');
-        }
-        userId.add(element.id ?? -1);
-      }
+      users(await useCase.getUserData() ?? []);
     } catch (e) {
       Get.snackbar("Error", "Failed to retrieve data");
     } finally {
@@ -275,86 +267,112 @@ class HomeController extends GetxController {
   }
 
   void onBottomNavItemClicked(int index) {
+    searchController.text = '';
     pageController.jumpToPage(index);
   }
 
   Future<void> getMoreDataAllVisits() async {
     if (allLoadingMore.value) return;
-    allLoadingMore(true);
-    var getMoreAll = await useCase.getAllVisitData(lang.value, token.value, currentPageAll.value);
-    if (getMoreAll == null || getMoreAll.isEmpty) {
-      lastPageAll(true);
-    } else {
-      allVisits.addAll(getMoreAll);
-      currentPageAll(currentPageAll.value + 1);
-      allVisitsGrouped.value = groupByDay(allVisits);
-      allVisitsFiltered(allVisitsGrouped);
+    if(allVisits.length<15) return;
+    try{
+      allLoadingMore(true);
+      var getMoreAll = await useCase.getAllVisitData(currentPageAll.value);
+      if (getMoreAll == null || getMoreAll.isEmpty) {
+        lastPageAll(true);
+      } else {
+        allVisits.addAll(getMoreAll);
+        currentPageAll(currentPageAll.value + 1);
+        allVisitsGrouped.value = groupByDay(allVisits);
+        allVisitsFiltered(allVisitsGrouped);
+      }
+    }catch(e){
+      Get.snackbar("Error", "Failed to retrieve data");
+    }finally{
+      allLoadingMore(false);
     }
-    allLoadingMore(false);
   }
 
   Future<void> getMoreDataMyVisits() async {
     if (meLoadingMore.value) return;
-    meLoadingMore(true);
-    var getMoreMe = await useCase.getMeVisitData(lang.value, token.value, currentPageMy.value);
-    if (getMoreMe == null || getMoreMe.isEmpty) {
-      lastPageMe(true);
-    } else {
-      myVisits.addAll(getMoreMe);
-      currentPageMy(currentPageMy.value + 1);
-      myVisitsGrouped.value = groupByDay(myVisits);
+    if(myVisits.length<15) return;
+    try{
+      meLoadingMore(true);
+      var getMoreMe = await useCase.getMeVisitData(currentPageMy.value);
+      if (getMoreMe == null || getMoreMe.isEmpty) {
+        lastPageMe(true);
+      } else {
+        myVisits.addAll(getMoreMe);
+        currentPageMy(currentPageMy.value + 1);
+        myVisitsGrouped.value = groupByDay(myVisits);
+      }
+    }catch(e){
+      Get.snackbar("Error", "Failed to retrieve data");
+    }finally{
+      meLoadingMore(false);
     }
-    meLoadingMore(false);
   }
 
   Future<void> getMoreDataArchiveVisits() async {
     if (archiveLoadingMore.value) return;
-    archiveLoadingMore(true);
-    var getMoreArchive = await useCase.getArchivesVisits(lang.value, token.value, currentPageArchive.value);
-    if (getMoreArchive == null || getMoreArchive.isEmpty) {
-      lastPageArchive(true);
-    } else {
-      archiveVisits.addAll(getMoreArchive);
-      currentPageArchive(currentPageArchive.value + 1);
-      archiveVisitsFiltered.value = archiveVisits;
+    if(archiveVisits.length<15) return;
+    try{
+      archiveLoadingMore(true);
+      var getMoreArchive =
+      await useCase.getArchivesVisits(currentPageArchive.value);
+      if (getMoreArchive == null || getMoreArchive.isEmpty) {
+        lastPageArchive(true);
+      } else {
+        archiveVisits.addAll(getMoreArchive);
+        currentPageArchive(currentPageArchive.value + 1);
+        archiveVisitsFiltered.value = archiveVisits;
+      }
+    }catch(e){
+      Get.snackbar("Error", "Failed to retrieve data");
+    }finally {
+      archiveLoadingMore(false);
     }
-    archiveLoadingMore(false);
   }
 
-  Future<void> getMoreDataReportsVisits(String user) async {
+  Future<void> getMoreDataReportsVisits() async {
     if (reportsLoadingMore.value) return;
-    reportsLoadingMore(true);
-    var getMoreReports = await useCase.getReport(
-        lang.value, token.value, userId[userNames.indexOf(user)], currentPageReports.value);
+    if(visitsReport.length<15) return;
+    try{
+      reportsLoadingMore(true);
+      var getMoreReports = await useCase.getReport(selectedUser.value.id??0, currentPageReports.value);
 
-    if (getMoreReports == null || getMoreReports.isEmpty) {
-      lastPageReports(true);
-    } else {
-      visitsReport.addAll(getMoreReports);
-      currentPageReports(currentPageReports.value + 1);
+      if (getMoreReports == null || getMoreReports.isEmpty) {
+        lastPageReports(true);
+      } else {
+        visitsReport.addAll(getMoreReports);
+        currentPageReports(currentPageReports.value + 1);
+      }
+    }catch(e){
+      Get.snackbar("Error", "Failed to retrieve data");
+    }finally {
+      reportsLoadingMore(false);
     }
-    reportsLoadingMore(false);
   }
-  void onDone(int id)async{
-    await useCase.onDone(lang.value, token.value, id);
+
+  void onDone(int id) async {
+    await useCase.onDone(id);
     getData();
   }
-  void onCanceled(int id)async{
-    await useCase.onCanceled(lang.value, token.value, id);
+
+  void onCanceled(int id) async {
+    await useCase.onCanceled(id);
     getData();
   }
 
   @override
   void onInit() async {
     isLoading(true);
-    isDark.value = Get.arguments[1];
-    lang.value = Get.arguments[0];
-    token.value = Get.arguments[2];
     var cache = await CacheHelper.getEnums();
-    print("enums");
     if (cache != null) {
       for (var element in cache.visitsStatus!) {
-        tags.add(TagsModel(name: element.name ?? '', isSelected: RxBool(false), value: element.value?? -1,type: element.name));
+        tags.add(TagsModel(
+            name: element.name ?? '',
+            value: element.value ?? -1,
+            type: element.name));
       }
     }
     await getData();

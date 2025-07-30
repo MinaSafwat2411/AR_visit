@@ -21,14 +21,10 @@ class VisitModel {
   String? note;
   int? areaId;
   int? userId;
-  int? e1C1F;
-  int? nR;
   int? addressTypeId;
 
   VisitModel(
       {this.id,
-      this.e1C1F,
-      this.nR,
       this.userId,
       this.userName,
       this.userPhone,
@@ -51,8 +47,6 @@ class VisitModel {
 
   VisitModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    e1C1F = json['E1C1F'];
-    nR = json['NR'];
     userId = json['user_id'];
     userName = json['user_name'];
     userPhone = json['user_phone'];
@@ -94,8 +88,6 @@ class VisitModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    if(e1C1F!=null) data['E1C1F']=e1C1F;
-    if(nR!=null) data['NR']=nR;
     data['user_id']=userId;
     data['area_id'] = areaId;
     data['attendant'] = attendant;

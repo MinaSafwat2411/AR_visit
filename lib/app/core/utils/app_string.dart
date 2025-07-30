@@ -65,6 +65,8 @@ class AppStringsEn extends AppStrings {
     'notes': 'Notes',
     'assign': 'Assign',
     'done': 'Done',
+    'new':'New',
+    'delayed':'Delayed',
     'profile': 'Profile',
     'account': 'Account',
     'fAQ': 'FAQ',
@@ -257,5 +259,7 @@ class AppStringsAr extends AppStrings {
     'phoneValidate': 'يجب أن يتكون الهاتف من 11 رقم',
     'nameValidate': 'لا يمكن أن يكون الاسم فارغًا',
     'dateValidate2': 'تاريخ يجب ان يكون من اليوم إلى بعد',
+    'new':'جديدة',
+    'delayed':'تم تأجيل',
   };
 }

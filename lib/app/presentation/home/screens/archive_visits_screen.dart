@@ -1,4 +1,5 @@
 import 'package:ar_visiting_app/app/core/utils/app_colors.dart';
+import 'package:ar_visiting_app/app/core/widgets/custom_loading.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,65 +12,22 @@ class ArchiveVisitsScreen extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
+    final TextTheme textTheme = Theme.of(context).textTheme;
     return Obx(() => ConditionalBuilder(
           condition: !controller.isLoading.value,
-          fallback: (context) => const Center(
-            child: CircularProgressIndicator(color: AppColors.trinidadColor),
-          ),
+          fallback: (context) => const CustomLoading(),
           builder: (context) {
             return Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: SizedBox(
-                    height: 50,
-                    child: Form(
-                      child: TextFormField(
-                        style: TextStyle(
-                            color: controller.isDark.value
-                                ? AppColors.white
-                                : AppColors.gray,
-                            decoration: TextDecoration.none),
-                        cursorColor: controller.isDark.value
-                            ? AppColors.white
-                            : AppColors.black,
-                        controller: controller.archiveSearchController,
-                        onChanged: (value) {
-                          controller.onSearchArchive(value);
-                        },
-                        textAlignVertical: TextAlignVertical.center,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: controller.isDark.value
-                              ? AppColors.gray
-                              : AppColors.waferColor,
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: controller.isDark.value
-                                    ? AppColors.codGray
-                                    : AppColors.waferColor),
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: controller.isDark.value
-                                    ? AppColors.codGray
-                                    : AppColors.waferColor),
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          focusColor: controller.isDark.value
-                              ? AppColors.codGray
-                              : AppColors.waferColor,
-                          hintText: 'search'.tr,
-                          prefixIcon: Icon(
-                            Icons.search,
-                            color: controller.isDark.value
-                                ? AppColors.white
-                                : AppColors.trinidadColor,
-                          ),
-                        ),
-                      ),
-                    ),
+                  padding: const EdgeInsets.all(8.0),
+                  child: SearchBar(
+                    controller: controller.searchController,
+                    hintText: 'search'.tr,
+                    onChanged:(value)=> controller.onSearch(value),
+                    leading: const Icon(Icons.search, color: AppColors.trinidadColor),
+                    backgroundColor: const WidgetStatePropertyAll(AppColors.softAmber),
+                    textStyle: WidgetStatePropertyAll(textTheme.bodyLarge),
                   ),
                 ),
                 Expanded(
@@ -108,10 +66,7 @@ class ArchiveVisitsScreen extends GetView<HomeController> {
                                   ),
                                 )
                               : Center(child: Text('noVisits'.tr)),
-                          fallback: (context) => const Center(
-                              child: CircularProgressIndicator(
-                            color: AppColors.trinidadColor,
-                          )),
+                          fallback: (context) => const CustomLoading(),
                         ),
                       )),
                 ),

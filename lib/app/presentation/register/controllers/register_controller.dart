@@ -22,8 +22,6 @@ class RegisterController extends GetxController{
   var validate = false.obs;
   var currentScreen= 0.obs;
   var btnText = 'next'.tr.obs;
-  var lang = ''.obs;
-  var isDark = RxBool(false);
   final useCase = BaseUseCase(repository: DioHelperRepository.repository);
 
 
@@ -36,8 +34,9 @@ class RegisterController extends GetxController{
   }
 
   void registerAccount()async{
-    isLoading(true);
-      await useCase.register(lang.value, RegisterModel(
+    try{
+      isLoading(true);
+      await useCase.register( RegisterModel(
           nameAr: nameArController.text,
           name: nameController.text,
           phone: phoneController.text,
@@ -46,13 +45,10 @@ class RegisterController extends GetxController{
           e1C1F: int.parse(familyIdController.text),
           password: passwordController.text
       ));
+    }catch(e){
+      Get.snackbar('Error', e.toString());
+    }finally{
       isLoading(false);
-  }
-
-  @override
-  void onInit() {
-    lang.value = Get.arguments[0];
-    isDark.value = Get.arguments[1];
-    super.onInit();
+    }
   }
 }
