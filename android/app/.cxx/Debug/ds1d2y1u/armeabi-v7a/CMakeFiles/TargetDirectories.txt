@@ -1,0 +1,2 @@
+C:/Users/minas/Documents/Projects/Mobile application/Flutter/Me/AR_visit/android/app/.cxx/Debug/ds1d2y1u/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/minas/Documents/Projects/Mobile application/Flutter/Me/AR_visit/android/app/.cxx/Debug/ds1d2y1u/armeabi-v7a/CMakeFiles/rebuild_cache.dir
