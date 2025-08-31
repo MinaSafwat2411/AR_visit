@@ -99,7 +99,7 @@ abstract class AppThemes {
         ), // Set text color
       ),
     ),
-    cardTheme: const CardTheme(
+    cardTheme: const CardThemeData(
       color: AppColors.softAmber,
       shadowColor: AppColors.gray,
       elevation: 2,
@@ -317,7 +317,7 @@ abstract class AppThemes {
         ), // Set text color
       ),
     ),
-    cardTheme: const CardTheme(
+    cardTheme: const CardThemeData(
       color: AppColors.softAmber,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(12)),
