@@ -4,9 +4,11 @@ import 'package:get/get.dart';
 import '../../../data/models/login/loginmodel.dart';
 import '../../../data/repository/dio_helper_repository.dart';
 import '../../../domain/usecase/base_use_case.dart';
+import '../../../domain/usecase/base_use_case_interface.dart';
 import '../../../routes/app_pages.dart';
 
 class LoginController extends GetxController {
+  LoginController(this.useCase);
   GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
   RxBool observeBool = true.obs;
   TextEditingController familyIdTextController = TextEditingController();
@@ -14,7 +16,8 @@ class LoginController extends GetxController {
   TextEditingController passwordTextController = TextEditingController();
   var isLoading = false.obs;
   var login = LoginModel().obs;
-  final useCase = BaseUseCase(repository: DioHelperRepository.repository);
+  final BaseUseCaseInterface useCase;
+
 
 
   void loginAccount() async {

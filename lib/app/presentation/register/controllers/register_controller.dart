@@ -3,8 +3,10 @@ import 'package:get/get.dart';
 import '../../../data/models/register/register_model.dart';
 import '../../../data/repository/dio_helper_repository.dart';
 import '../../../domain/usecase/base_use_case.dart';
+import '../../../domain/usecase/base_use_case_interface.dart';
 
 class RegisterController extends GetxController{
+  RegisterController(this.useCase);
   var pageController =PageController();
   var nameController =TextEditingController();
   var nameArController = TextEditingController();
@@ -22,7 +24,7 @@ class RegisterController extends GetxController{
   var validate = false.obs;
   var currentScreen= 0.obs;
   var btnText = 'next'.tr.obs;
-  final useCase = BaseUseCase(repository: DioHelperRepository.repository);
+  final BaseUseCaseInterface useCase;
 
 
   void getBtnText(){

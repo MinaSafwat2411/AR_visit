@@ -3,6 +3,7 @@ import 'package:ar_visiting_app/app/core/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'app/app_module.dart';
 import 'app/appcontroller/app_controller.dart';
 import 'app/core/services/cache_helper.dart';
 import 'app/routes/app_pages.dart';
@@ -10,6 +11,7 @@ import 'package:get/get.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await configureDependencies();
   await CacheHelper.init();
   await initializeDateFormatting('ar','en');
   Get.put(AppController());

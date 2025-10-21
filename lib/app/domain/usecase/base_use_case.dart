@@ -8,11 +8,13 @@ import 'package:ar_visiting_app/app/data/models/register/register_model.dart';
 import 'package:ar_visiting_app/app/data/models/visits/visitmodel.dart';
 import 'package:ar_visiting_app/app/domain/usecase/base_use_case_interface.dart';
 import 'package:get/get.dart';
-import '../../data/repository/dio_helper_repository.dart';
+import 'package:injectable/injectable.dart';
+import '../../data/repository/dio_helper_repository_interface.dart';
 import '../../routes/app_pages.dart';
 
+@LazySingleton(as: BaseUseCaseInterface)
 class BaseUseCase implements BaseUseCaseInterface {
-  final DioHelperRepository repository;
+  final DioHelperRepositoryInterface repository;
 
   BaseUseCase({required this.repository});
 

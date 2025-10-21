@@ -6,13 +6,16 @@ import 'package:get/get.dart';
 import '../../../data/models/profile/profile_model.dart';
 import '../../../data/repository/dio_helper_repository.dart';
 import '../../../domain/usecase/base_use_case.dart';
+import '../../../domain/usecase/base_use_case_interface.dart';
 import '../../../routes/app_pages.dart';
 
 class ProfileController extends GetxController {
+  ProfileController(this.useCase);
   var isLoading = false.obs;
   RxString lang=RxString('');
   var token = ''.obs;
-  final useCase = BaseUseCase(repository: DioHelperRepository.repository);
+  final BaseUseCaseInterface useCase;
+
   var profile = ProfileModel().obs;
 
   @override

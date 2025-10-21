@@ -7,8 +7,10 @@ import '../../../data/models/login/loginmodel.dart';
 import '../../../data/models/visits/visitmodel.dart';
 import '../../../data/repository/dio_helper_repository.dart';
 import '../../../domain/usecase/base_use_case.dart';
+import '../../../domain/usecase/base_use_case_interface.dart';
 
 class VisitDetailsControllers extends GetxController {
+  VisitDetailsControllers(this.useCase);
   var isLoading = false.obs;
   var visit = VisitModel().obs;
   var visitId = RxInt(-1);
@@ -20,7 +22,7 @@ class VisitDetailsControllers extends GetxController {
   var servantNames = <String>[].obs;
   var servantNamesAr = <String>[].obs;
   var servantId = <int>[].obs;
-  final useCase = BaseUseCase(repository: DioHelperRepository.repository);
+  final BaseUseCaseInterface useCase;
 
   Future<void> getFatherServantNames() async {
     isLoading(true);

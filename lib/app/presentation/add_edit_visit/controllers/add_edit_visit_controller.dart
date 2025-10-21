@@ -7,10 +7,12 @@ import '../../../data/models/patient/patient_model.dart';
 import '../../../data/models/visits/visitmodel.dart';
 import '../../../data/repository/dio_helper_repository.dart';
 import '../../../domain/usecase/base_use_case.dart';
+import '../../../domain/usecase/base_use_case_interface.dart';
 import '../../../routes/app_pages.dart';
 import '../../visit_details/di/operation_type.dart';
 
 class AddEditVisitController extends GetxController {
+  AddEditVisitController(this.useCase);
   var isLoading = false.obs;
   var id =''.obs;
   final formKey = GlobalKey<FormState>();
@@ -29,7 +31,7 @@ class AddEditVisitController extends GetxController {
   var selectedPatient = PatientModel().obs;
   var selectedArea = AreaModel().obs;
   var selectedAddressType = AddressTypeModel().obs;
-  final BaseUseCase useCase = BaseUseCase(repository: DioHelperRepository.repository);
+  final BaseUseCaseInterface useCase;
 
   TextEditingController dateController = TextEditingController();
   TextEditingController fromTimeController = TextEditingController();

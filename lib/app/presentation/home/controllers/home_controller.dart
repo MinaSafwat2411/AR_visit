@@ -12,12 +12,14 @@ import '../../../data/models/visits/VisitsModel.dart';
 import '../../../data/models/visits/visitmodel.dart';
 import '../../../data/repository/dio_helper_repository.dart';
 import '../../../domain/usecase/base_use_case.dart';
+import '../../../domain/usecase/base_use_case_interface.dart';
 import '../screens/all_visits_screen.dart';
 import '../screens/archive_visits_screen.dart';
 import '../screens/my_visits_screen.dart';
 import '../screens/report_screen.dart';
 
 class HomeController extends GetxController {
+  HomeController(this.useCase);
   var screens = <Widget>[
     const MyVisitsScreen(),
     const AllVisitsScreen(),
@@ -85,7 +87,7 @@ class HomeController extends GetxController {
   TextEditingController phone = TextEditingController();
   TextEditingController reportController = TextEditingController();
 
-  final useCase = BaseUseCase(repository: DioHelperRepository.repository);
+  final BaseUseCaseInterface useCase;
 
   var id = RxInt(-1);
 
