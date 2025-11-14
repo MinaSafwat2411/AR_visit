@@ -507,17 +507,6 @@ class DioHelperRepository extends DioHelperRepositoryInterface {
       );
       CacheHelper.saveData(key: 'token', value: apiResponse.data?.token);
       token = apiResponse.data?.token ?? '';
-      final response2 = await DioHelper.getData(
-          url: BackendEndpoint.enums,
-          token: apiResponse.data?.token,
-          lang: lang);
-      final apiResponse2 = ApiResponse<EnumsModel>.fromJson(
-        response2.data,
-        (json) => EnumsModel.fromJson(json as Map<String, dynamic>),
-        response.statusCode ?? 0,
-        response.statusMessage ?? '',
-      );
-      CacheHelper.saveEnums(apiResponse2.data ?? EnumsModel());
       return apiResponse;
     } on DioException catch (e) {
       return errorHandler<UserModel>(e);
@@ -535,9 +524,11 @@ class DioHelperRepository extends DioHelperRepositoryInterface {
         response.statusCode ?? 0,
         response.statusMessage ?? '',
       );
+      print(apiResponse.data);
       await CacheHelper.saveEnums(apiResponse.data ?? EnumsModel());
       return apiResponse;
     } on DioException catch (e) {
+      print(e.response?.data);
       return errorHandler<EnumsModel>(e);
     }
   }
@@ -548,5 +539,26 @@ class DioHelperRepository extends DioHelperRepositoryInterface {
       message: e.response?.statusMessage ?? '',
       data: null, // Ensure the data matches the expected type
     );
+  }
+
+  @override
+  String getLang() {
+    return lang;
+  }
+
+  @override
+  bool getTheme() {
+    return CacheHelper.getData(key: 'isDark') ?? false;
+  }
+
+  @override
+  Future<void> setLang(String lang) async{
+    this.lang = lang;
+    await CacheHelper.saveData(key: 'lang', value: lang);
+  }
+
+  @override
+  Future<void> setTheme(bool isDark) async{
+    await CacheHelper.saveData(key: 'isDark', value: isDark);
   }
 }

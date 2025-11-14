@@ -32,6 +32,7 @@ class AddEditVisitController extends GetxController {
   var selectedArea = AreaModel().obs;
   var selectedAddressType = AddressTypeModel().obs;
   final BaseUseCaseInterface useCase;
+  final key = GlobalKey<FormState>();
 
   TextEditingController dateController = TextEditingController();
   TextEditingController fromTimeController = TextEditingController();

@@ -25,6 +25,7 @@ class RegisterController extends GetxController{
   var currentScreen= 0.obs;
   var btnText = 'next'.tr.obs;
   final BaseUseCaseInterface useCase;
+  final key = GlobalKey<FormState>();
 
 
   void getBtnText(){

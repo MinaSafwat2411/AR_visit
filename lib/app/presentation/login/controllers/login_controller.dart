@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../data/models/login/loginmodel.dart';
-import '../../../data/repository/dio_helper_repository.dart';
-import '../../../domain/usecase/base_use_case.dart';
 import '../../../domain/usecase/base_use_case_interface.dart';
 import '../../../routes/app_pages.dart';
 
@@ -21,17 +19,24 @@ class LoginController extends GetxController {
 
 
   void loginAccount() async {
-    isLoading(true);
-
-    var login = await useCase.login(
-        LoginModel(
-            nR: int.parse(numberIdTextController.text),
-            e1C1F: int.parse(familyIdTextController.text),
-            password: passwordTextController.text));
-    if (login != null) {
-      Get.offNamed(Routes.HOME);
+    if (!validateForm()) {
+      return;
     }
-    isLoading(false);
+    try{
+      isLoading(true);
+       await useCase.login(
+          LoginModel(
+              nR: int.parse(numberIdTextController.text),
+              e1C1F: int.parse(familyIdTextController.text),
+              password: passwordTextController.text));
+      await useCase.getEnums();
+      Get.offNamed(Routes.HOME);
+    }catch(e){
+      Get.snackbar("Error", e.toString());
+    }finally{
+      isLoading(false);
+    }
+
   }
 
   bool validateForm() {
@@ -44,10 +49,6 @@ class LoginController extends GetxController {
 
   @override
   void onClose() {
-    super.onClose();
-    familyIdTextController.dispose();
-    numberIdTextController.dispose();
-    passwordTextController.dispose();
     super.onClose();
   }
 }

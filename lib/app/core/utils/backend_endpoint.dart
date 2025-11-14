@@ -1,5 +1,5 @@
 class BackendEndpoint {
-  static const baseUrl = 'http://41.130.162.205:5500/api/';
+  static const baseUrl = 'http://41.130.162.205:5000/api/';
   static const auth = 'auth';
   static const login = '$auth/login';
   static const logout = '$auth/logout';

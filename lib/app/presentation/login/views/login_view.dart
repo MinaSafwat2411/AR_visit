@@ -20,8 +20,6 @@ class LoginView extends GetView<LoginController> {
     return Scaffold(
       body: Form(
         key: controller.loginFormKey,
-        autovalidateMode:
-            AutovalidateMode.onUserInteraction, // Enable auto validation
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -43,12 +41,14 @@ class LoginView extends GetView<LoginController> {
                     isDark: appController.isDark.value,
                     textController: controller.familyIdTextController,
                     validator: (value) =>  value == null || value.isEmpty ? 'familyIdValidate'.tr : null,
+                    textKey: controller.loginFormKey,
                   ),
                   const Text("NR"),
                   CustomSmallTextField(
                     isDark: appController.isDark.value,
                     textController: controller.numberIdTextController,
                     validator: (value) =>  value == null || value.isEmpty ? 'numberIdValidate'.tr : null,
+                    textKey: controller.loginFormKey,
                   ),
                 ],
               ),

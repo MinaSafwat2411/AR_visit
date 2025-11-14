@@ -64,6 +64,7 @@ class TimeSection extends GetView<AddEditVisitController> {
                 controller.selectedFromTime(context);
               },
               isDark: isDark,
+              textKey: controller.formKey,
             ),
             Text(
               'to'.tr,
@@ -82,6 +83,7 @@ class TimeSection extends GetView<AddEditVisitController> {
               },
               label: 'end'.tr,
               isDark: isDark,
+              textKey: controller.formKey,
             ),
           ],
         ),
