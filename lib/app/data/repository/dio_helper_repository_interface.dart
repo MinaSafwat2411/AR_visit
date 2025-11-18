@@ -57,4 +57,12 @@ abstract class DioHelperRepositoryInterface {
   Future<ApiResponse<UserModel>> login(LoginModel login);
 
   Future<ApiResponse<EnumsModel>> getEnums();
+
+  bool getTheme();
+
+  String getLang();
+
+  Future<void> setLang(String lang);
+
+  Future<void> setTheme(bool isDark);
 }

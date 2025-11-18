@@ -58,4 +58,12 @@ abstract class BaseUseCaseInterface {
   String changeFormatDB(String date);
 
   String changeFormatView(String date);
+
+  bool getTheme();
+
+  String getLang();
+
+  Future<void> setLang(String lang);
+
+  Future<void> setTheme(bool isDark);
 }

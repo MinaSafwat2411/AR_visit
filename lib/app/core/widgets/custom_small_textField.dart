@@ -11,6 +11,7 @@ class CustomSmallTextField extends StatelessWidget {
     this.label,
     this.validator,
     this.function,
+    required this.textKey,
     required this.isDark,
   });
   final TextEditingController? textController;
@@ -18,6 +19,7 @@ class CustomSmallTextField extends StatelessWidget {
   final FormFieldValidator? validator;
   final Function()? function;
   final bool isDark;
+  final GlobalKey textKey;
 
   @override
   Widget build(BuildContext context) {

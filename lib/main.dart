@@ -6,6 +6,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'app/app_module.dart';
 import 'app/appcontroller/app_controller.dart';
 import 'app/core/services/cache_helper.dart';
+import 'app/domain/usecase/base_use_case_interface.dart';
 import 'app/routes/app_pages.dart';
 
 void main() async {
@@ -13,7 +14,7 @@ void main() async {
   await configureDependencies();
   await CacheHelper.init();
   await initializeDateFormatting('ar','en');
-  Get.put(AppController());
+  Get.put(AppController(getIt<BaseUseCaseInterface>()));
   runApp(MyApp());
 }
 class MyTranslations extends Translations {

@@ -53,6 +53,7 @@ class AddNameAridScreen extends GetView<RegisterController> {
                     return null;
                   },
                   isDark: appController.isDark.value,
+                  textKey: controller.key1,
                 ),
                 const Spacer(),
                 const Text("NR"),
@@ -67,6 +68,7 @@ class AddNameAridScreen extends GetView<RegisterController> {
                     return null;
                   },
                   isDark: appController.isDark.value,
+                  textKey: controller.key1,
                 ),
               ],
             ),
