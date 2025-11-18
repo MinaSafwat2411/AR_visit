@@ -226,4 +226,25 @@ class BaseUseCase implements BaseUseCaseInterface {
     }
     return newDate;
   }
+
+
+  @override
+  String getLang() {
+    return repository.getLang();
+  }
+
+  @override
+  bool getTheme() {
+    return repository.getTheme();
+  }
+
+  @override
+  Future<void> setLang(String lang) async{
+    await repository.setLang(lang);
+  }
+
+  @override
+  Future<void> setTheme(bool isDark) async{
+    await repository.setTheme(isDark);
+  }
 }

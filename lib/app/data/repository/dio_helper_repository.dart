@@ -545,4 +545,25 @@ class DioHelperRepository extends DioHelperRepositoryInterface {
       data: null, // Ensure the data matches the expected type
     );
   }
+
+  @override
+  String getLang() {
+    return lang;
+  }
+
+  @override
+  bool getTheme() {
+    return CacheHelper.getData(key: 'isDark') ?? false;
+  }
+
+  @override
+  Future<void> setLang(String lang) async{
+    this.lang = lang;
+    await CacheHelper.saveData(key: 'lang', value: lang);
+  }
+
+  @override
+  Future<void> setTheme(bool isDark) async{
+    await CacheHelper.saveData(key: 'isDark', value: isDark);
+  }
 }
