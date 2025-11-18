@@ -1,5 +1,3 @@
-import 'package:get/get.dart';
-
 class TagsModel {
   String name;
   int? value;

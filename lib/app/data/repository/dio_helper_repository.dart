@@ -1,13 +1,10 @@
 import 'package:ar_visiting_app/app/data/repository/dio_helper_repository_interface.dart';
 import 'package:dio/dio.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../core/services/cache_helper.dart';
 import '../../core/services/dio_helper.dart';
 import '../../core/utils/backend_endpoint.dart';
-import '../../routes/app_pages.dart';
 import '../models/api_response/api_response.dart';
 import '../models/area/areamodel.dart';
 import '../models/enums/enums.dart';
@@ -499,26 +496,25 @@ class DioHelperRepository extends DioHelperRepositoryInterface {
         url: BackendEndpoint.login,
         data: login.toJson(),
       );
-      var apiResponse = ApiResponse<UserModel>.fromJson(
-        response.data,
-        (json) => UserModel.fromJson(json as Map<String, dynamic>),
-        response.statusCode ?? 0,
-        response.statusMessage ?? '',
-      );
-      CacheHelper.saveData(key: 'token', value: apiResponse.data?.token);
-      token = apiResponse.data?.token ?? '';
-      final response2 = await DioHelper.getData(
-          url: BackendEndpoint.enums,
-          token: apiResponse.data?.token,
-          lang: lang);
-      final apiResponse2 = ApiResponse<EnumsModel>.fromJson(
-        response2.data,
-        (json) => EnumsModel.fromJson(json as Map<String, dynamic>),
-        response.statusCode ?? 0,
-        response.statusMessage ?? '',
-      );
-      CacheHelper.saveEnums(apiResponse2.data ?? EnumsModel());
-      return apiResponse;
+      print(response.statusCode);
+      print(response.data);
+      if (response.statusCode == 401) {
+        return ApiResponse<UserModel>(
+          statusCode: response.statusCode ?? 0,
+          message: response.statusMessage ?? '',
+          data: null,
+        );
+      }else{
+        var apiResponse = ApiResponse<UserModel>.fromJson(
+          response.data,
+              (json) => UserModel.fromJson(json as Map<String, dynamic>),
+          response.statusCode ?? 0,
+          response.statusMessage ?? '',
+        );
+        CacheHelper.saveData(key: 'token', value: apiResponse.data?.token);
+        token = apiResponse.data?.token ?? '';
+        return apiResponse;
+      }
     } on DioException catch (e) {
       return errorHandler<UserModel>(e);
     }

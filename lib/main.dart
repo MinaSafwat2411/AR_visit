@@ -7,7 +7,6 @@ import 'app/app_module.dart';
 import 'app/appcontroller/app_controller.dart';
 import 'app/core/services/cache_helper.dart';
 import 'app/routes/app_pages.dart';
-import 'package:get/get.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -285,7 +285,7 @@ class ProfileView extends GetView<ProfileController> {
                                                         appController
                                                             .toggleTheme();
                                                       },
-                                                      activeColor:
+                                                      activeThumbColor:
                                                           AppColors.trinidadColor,
                                                     ))
                                               ],

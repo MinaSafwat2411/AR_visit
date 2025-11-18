@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+
 import '../../../core/services/cache_helper.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../data/models/login/loginmodel.dart';
@@ -10,8 +11,6 @@ import '../../../data/models/profile/profile_model.dart';
 import '../../../data/models/tags/tags_model.dart';
 import '../../../data/models/visits/VisitsModel.dart';
 import '../../../data/models/visits/visitmodel.dart';
-import '../../../data/repository/dio_helper_repository.dart';
-import '../../../domain/usecase/base_use_case.dart';
 import '../../../domain/usecase/base_use_case_interface.dart';
 import '../screens/all_visits_screen.dart';
 import '../screens/archive_visits_screen.dart';
@@ -236,7 +235,11 @@ class HomeController extends GetxController {
     }else{
       selectedStatus.value = index;
       allVisitsFiltered.value = groupByDay(allVisits
-          .where((element) => element.status?.value == tags[index].value)
+          .where((element) {
+            print(element.status?.value);
+            print(tags[index].value);
+            return element.status?.value == index;
+          })
           .toList());
     }
   }

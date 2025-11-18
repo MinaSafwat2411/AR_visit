@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+
 import '../../../data/models/register/register_model.dart';
-import '../../../data/repository/dio_helper_repository.dart';
-import '../../../domain/usecase/base_use_case.dart';
 import '../../../domain/usecase/base_use_case_interface.dart';
 
 class RegisterController extends GetxController{

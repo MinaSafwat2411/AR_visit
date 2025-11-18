@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import '../../../data/models/login/loginmodel.dart';
 import '../../../data/models/visits/visitmodel.dart';
-import '../../../data/repository/dio_helper_repository.dart';
-import '../../../domain/usecase/base_use_case.dart';
 import '../../../domain/usecase/base_use_case_interface.dart';
 
 class VisitDetailsControllers extends GetxController {

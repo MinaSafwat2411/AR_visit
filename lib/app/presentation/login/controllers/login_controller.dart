@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../data/models/login/loginmodel.dart';
-import '../../../data/repository/dio_helper_repository.dart';
-import '../../../domain/usecase/base_use_case.dart';
 import '../../../domain/usecase/base_use_case_interface.dart';
 import '../../../routes/app_pages.dart';
 
 class LoginController extends GetxController {
   LoginController(this.useCase);
+
   GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
   RxBool observeBool = true.obs;
   TextEditingController familyIdTextController = TextEditingController();
@@ -18,21 +17,39 @@ class LoginController extends GetxController {
   var login = LoginModel().obs;
   final BaseUseCaseInterface useCase;
 
-
-
   void loginAccount() async {
     isLoading(true);
 
-    var login = await useCase.login(
-        LoginModel(
-            nR: int.parse(numberIdTextController.text),
-            e1C1F: int.parse(familyIdTextController.text),
-            password: passwordTextController.text));
-    if (login != null) {
-      Get.offNamed(Routes.HOME);
+    if (!validateForm()) {
+      isLoading(false);
+      return;
     }
-    isLoading(false);
+
+    try {
+      final value = await useCase.login(LoginModel(
+        nR: int.parse(numberIdTextController.text),
+        e1C1F: int.parse(familyIdTextController.text),
+        password: passwordTextController.text,
+      ));
+
+      if (value?.token != null) {
+        final enums = await useCase.getEnums();
+        print(enums?.toJson());
+        if (enums != null) {
+          Get.offNamed(Routes.HOME);
+        } else {
+          Get.snackbar("Error", "Failed to load app data");
+        }
+      } else {
+        Get.snackbar("Login Failed", "Invalid credentials. Please try again.");
+      }
+    } catch (e) {
+      Get.snackbar("Error", "Something went wrong: $e");
+    } finally {
+      isLoading(false);
+    }
   }
+
 
   bool validateForm() {
     final isValid = loginFormKey.currentState?.validate() ?? false;
@@ -44,7 +61,6 @@ class LoginController extends GetxController {
 
   @override
   void onClose() {
-    super.onClose();
     familyIdTextController.dispose();
     numberIdTextController.dispose();
     passwordTextController.dispose();

@@ -1,6 +1,8 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     id "com.android.application"
-    id 'com.google.gms.google-services' // FlutterFire
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
 }
@@ -24,8 +26,15 @@ if (flutterVersionName == null) {
 }
 
 
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file("key.properties")
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
+
 android {
-    namespace = "com.example.ar_visiting_app"
+    namespace = "org.avarewase.ar_visiting_app"
     compileSdk flutter.compileSdkVersion
     ndkVersion "28.0.13004108"
     compileOptions {
@@ -38,16 +47,24 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.ar_visiting_app"
-        minSdkVersion 23 // Use Flutter property
+        applicationId = "org.avarewase.ar_visiting_app"
+        minSdkVersion flutter.minSdkVersion // Use Flutter property
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
 
+    signingConfigs {
+        create("release") {
+            keyAlias keystoreProperties["keyAlias"]
+            keyPassword keystoreProperties["keyPassword"]
+            storeFile keystoreProperties["storeFile"] ? file(keystoreProperties["storeFile"]) : null
+            storePassword keystoreProperties["storePassword"]
+        }
+    }
     buildTypes {
         release {
-            signingConfig = signingConfigs.debug // Replace with your release signing config
+            signingConfig = signingConfigs.release // Replace with your release signing config
         }
     }
 }

@@ -9,8 +9,8 @@ import 'package:ar_visiting_app/app/data/models/visits/visitmodel.dart';
 import 'package:ar_visiting_app/app/domain/usecase/base_use_case_interface.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
+
 import '../../data/repository/dio_helper_repository_interface.dart';
-import '../../routes/app_pages.dart';
 
 @LazySingleton(as: BaseUseCaseInterface)
 class BaseUseCase implements BaseUseCaseInterface {
@@ -194,13 +194,9 @@ class BaseUseCase implements BaseUseCaseInterface {
 
   void errorHandle(int statusCode, String message) {
     switch (statusCode) {
-      case 401:
-        Get.offNamedUntil(Routes.LOGIN, (route) => false);
-        break;
       case 200:
         break;
       case 201:
-        Get.snackbar("Success", message);
         break;
       default:
         Get.snackbar("Error", "$statusCode: $message");

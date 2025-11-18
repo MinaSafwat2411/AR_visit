@@ -20,8 +20,6 @@ class LoginView extends GetView<LoginController> {
     return Scaffold(
       body: Form(
         key: controller.loginFormKey,
-        autovalidateMode:
-            AutovalidateMode.onUserInteraction, // Enable auto validation
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
